@@ -7,7 +7,7 @@ public class PageBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 4173315786854925606L;
-	private int startRow;
+	private int startRow=1;
 	private int endRow;
 	private int groupSize=10;
 	
