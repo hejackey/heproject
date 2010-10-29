@@ -17,10 +17,12 @@ public class TestAlexaIndexServer {
 	 */
 	public static void main(String[] args) throws IOException, ParseException {
 		BaseIndexServer indexServer = new AlexaIndexServer();
-		IndexWriter writer = indexServer.getIndexWriter();
-		indexServer.createIndex(writer);
-		
-		indexServer.searchIndex("title", "人人网");		
+		/*IndexWriter writer = indexServer.getIndexWriter();
+		indexServer.createIndex(writer);*/
+		long t1=System.currentTimeMillis();
+		indexServer.searchIndex("title", "人人网");
+		long t2 = System.currentTimeMillis();
+		System.out.println(t2-t1);
 	}
 
 }
