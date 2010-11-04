@@ -52,7 +52,7 @@ public abstract class BaseIndexServer {
 	public IndexWriter getIndexWriter(){
 		Analyzer analyzer = new IKAnalyzer();// 采用的分词器
 		
-		try {
+		try {//需要修改成单例模式
 			return new IndexWriter(FSDirectory.open(new File(
 					ConfigUtil.getConfProperty(ConfigUtil.confFile, ConfigUtil.INDEX_FILE_PATH))), analyzer, true,
 					IndexWriter.MaxFieldLength.LIMITED);
