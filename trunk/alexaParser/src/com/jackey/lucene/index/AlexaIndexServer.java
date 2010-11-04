@@ -27,8 +27,8 @@ public class AlexaIndexServer extends BaseIndexServer {
 	public void createIndex(IndexWriter writer) {
 		try{
 			AlexaDao dao = new AlexaDao(DbConnection.getDBConnection());			
-			List<AlexBean> aList = dao.getAlexas(2,10);
-			
+			List<AlexBean> aList = dao.getAlexas(1,20);
+			writer.setMaxFieldLength(3);
 			for(AlexBean alex : aList){
 				Document doc = new Document();
 				doc.add(new Field("title",alex.getTitle(),Field.Store.YES, Field.Index.ANALYZED));
@@ -37,10 +37,9 @@ public class AlexaIndexServer extends BaseIndexServer {
 				doc.add(new Field("sorttype",String.valueOf(alex.getSorttype()),Field.Store.YES, Field.Index.ANALYZED));
 				
 				writer.setUseCompoundFile(false);
-				writer.addDocument(doc);	
-				writer.optimize();
+				writer.addDocument(doc);					
 			}
-						
+			writer.optimize();			
 			writer.close();
 		}catch(CorruptIndexException e){;
 			log.error("create createIndex CorruptIndexException:"+e.getMessage());
