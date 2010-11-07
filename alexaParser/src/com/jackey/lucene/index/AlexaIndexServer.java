@@ -27,8 +27,9 @@ public class AlexaIndexServer extends BaseIndexServer {
 	public void createIndex(IndexWriter writer) {
 		try{
 			AlexaDao dao = new AlexaDao(DbConnection.getDBConnection());			
-			List<AlexBean> aList = dao.getAlexas(1,20);
-			writer.setMaxFieldLength(3);
+
+			List<AlexBean> aList = dao.getAlexas(1,1212);
+
 			for(AlexBean alex : aList){
 				Document doc = new Document();
 				doc.add(new Field("title",alex.getTitle(),Field.Store.YES, Field.Index.ANALYZED));
