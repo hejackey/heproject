@@ -1,0 +1,26 @@
+<TableLayout android:id="@+id/TableLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" android:stretchColumns="1">
+	<TableRow android:id="@+id/TableRow01" >
+		<TextView android:id="@+id/TextView01"  android:text="用户名："
+			android:textStyle="bold" android:gravity="right" android:padding="3dip"></TextView>
+		<EditText android:text="EditText01" android:id="@+id/username"
+			android:padding="3dip" android:scrollHorizontally="true"></EditText>
+	</TableRow>
+
+	<TableRow android:id="@+id/TableRow02" >
+		<TextView android:id="@+id/TextView02" android:text="登录密码："
+			android:padding="3dip" android:gravity="right" android:textStyle="bold"></TextView>
+		<EditText android:text="EditText01"  android:id="@+id/password"
+			android:padding="3dip" android:scrollHorizontally="true"
+			android:password="true"></EditText>
+	</TableRow>
+
+	<TableRow android:id="@+id/TableRow03" android:gravity="right">
+		<Button  android:id="@+id/cancel"
+			android:text="取消"></Button>
+		<Button  android:id="@+id/login"
+			android:text="登录"></Button>
+	</TableRow>
+
+</TableLayout>
