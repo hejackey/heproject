@@ -1,0 +1,14 @@
+<LinearLayout android:id="@+id/LinearLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical">
+	<CheckBox android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/color2"
+		android:text="绿色"></CheckBox>
+	<CheckBox android:layout_height="wrap_content" android:id="@+id/color1"
+		android:text="红色" android:layout_width="fill_parent"></CheckBox>
+
+
+<CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/color3" android:text="蓝色"></CheckBox>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/getCbVal" android:text="获取checkbox值"></Button>
+</LinearLayout>
