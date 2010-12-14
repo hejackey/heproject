@@ -1,0 +1,17 @@
+<LinearLayout android:id="@+id/LinearLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical">
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/spinner_val"
+		android:text="将要显示下拉列表显示的值"></TextView>
+	<Spinner android:layout_height="wrap_content" android:id="@+id/spinner"
+		android:layout_width="fill_parent"></Spinner>
+		
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/spinner_val1"
+		android:text="xml中载入数据"></TextView>
+	<Spinner android:layout_height="wrap_content" android:id="@+id/spinner1"
+		android:layout_width="fill_parent"
+		android:drawSelectorOnTop="false"></Spinner>
+</LinearLayout>

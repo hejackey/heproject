@@ -66,7 +66,6 @@ public class ActivityMain extends Activity {
 		Button but5 = (Button)findViewById(R.id.button5);
 		but5.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				
 				Intent intent = new Intent(ActivityMain.this, EditeTextActivity.class);
 				startActivity(intent);
 			}
@@ -75,8 +74,31 @@ public class ActivityMain extends Activity {
 		Button but6 = (Button)findViewById(R.id.button6);
 		but6.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				
 				Intent intent = new Intent(ActivityMain.this, CheckBoxActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button but7 = (Button)findViewById(R.id.button7);
+		but7.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, RadioGroupActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button but8 = (Button)findViewById(R.id.button8);
+		but8.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, SpinnerActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button but9 = (Button)findViewById(R.id.button9);
+		but9.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, AutoCompleteActivity.class);
 				startActivity(intent);
 			}
 		});

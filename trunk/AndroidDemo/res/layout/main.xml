@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
+    android:scrollbars="vertical">
 <!--<TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
@@ -39,7 +42,20 @@
 	
 	<Button android:id="@+id/button6"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="testCheckBox" />	
+		android:layout_height="wrap_content" android:text="testCheckBox" />
 		
+	<Button android:id="@+id/button7"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testRadioGroup" />
+				
+	<Button android:id="@+id/button8"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testSpinner" />
+		
+	<Button android:id="@+id/button9"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testAutoComplete" />
+			
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/but4val" android:text="but4"></TextView>
 </LinearLayout>
+</ScrollView>

@@ -33,5 +33,17 @@
 		<activity android:name=".CheckBoxActivity"
 			android:label="复选框 ">
 		</activity>
+		
+		<activity android:name=".RadioGroupActivity"
+			android:label="单选框 ">
+		</activity>
+		
+		<activity android:name=".SpinnerActivity"
+			android:label="下拉列表框 ">
+		</activity>
+		
+		<activity android:name=".AutoCompleteActivity"
+			android:label="自动补全">
+		</activity>
 	</application>
 </manifest>
