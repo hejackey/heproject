@@ -103,6 +103,30 @@ public class ActivityMain extends Activity {
 			}
 		});
 		
+		Button but10 = (Button)findViewById(R.id.button10);
+		but10.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, DatePickerActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button but11 = (Button)findViewById(R.id.button11);
+		but11.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, TimePickerActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button but12 = (Button)findViewById(R.id.button12);
+		but12.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, ProgressBarActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		button0= (Button) findViewById(R.id.button0);
 		button0.setOnClickListener(listen0);
 		button1= (Button) findViewById(R.id.button1);
