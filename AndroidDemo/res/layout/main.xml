@@ -67,7 +67,10 @@
 	<Button android:id="@+id/button12"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="testProgressBar" />
-		
+
+	<Button android:id="@+id/button13"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testRateBar" />		
 	
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/but4val" android:text="but4"></TextView>
 </LinearLayout>

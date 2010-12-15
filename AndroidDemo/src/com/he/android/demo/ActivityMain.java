@@ -127,6 +127,14 @@ public class ActivityMain extends Activity {
 			}
 		});
 		
+		Button but13 = (Button)findViewById(R.id.button13);
+		but13.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, RateBarActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		button0= (Button) findViewById(R.id.button0);
 		button0.setOnClickListener(listen0);
 		button1= (Button) findViewById(R.id.button1);
