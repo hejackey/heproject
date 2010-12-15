@@ -57,5 +57,9 @@
 		<activity android:name=".ProgressBarActivity"
 			android:label="进度条">
 		</activity>
+		
+		<activity android:name=".RateBarActivity"
+			android:label="投票控件">
+		</activity>
 	</application>
 </manifest>
