@@ -3,6 +3,8 @@ package com.he.android.demo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,6 +19,15 @@ public class ActivityMain extends Activity {
 	Button button1;
 	Button button2;
 	Button button3;
+	
+	Button menuBt1;
+	Button menuBt2;
+	
+	public static final int item0 = Menu.FIRST;
+	public static final int item1= Menu.FIRST+1;
+	public static final int item2= Menu.FIRST+2;
+	public static final int item3= Menu.FIRST+3;
+	public static final int item4= Menu.FIRST+4;
 	
 	public void onCreate(Bundle bundle){
 		super.onCreate(bundle);
@@ -134,6 +145,30 @@ public class ActivityMain extends Activity {
 				startActivity(intent);
 			}
 		});
+
+		Button but14 = (Button)findViewById(R.id.button14);
+		but14.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, TabDemoActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button but15 = (Button)findViewById(R.id.button15);
+		but15.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, GridViewActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button but16 = (Button)findViewById(R.id.button16);
+		but16.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this, ImageSwitchActivity.class);
+				startActivity(intent);
+			}
+		});
 		
 		button0= (Button) findViewById(R.id.button0);
 		button0.setOnClickListener(listen0);
@@ -143,5 +178,50 @@ public class ActivityMain extends Activity {
 		button2.setOnClickListener(listen2);
 		button3= (Button) findViewById(R.id.button3);
 		button3.setOnClickListener(listen3);
+		
+		
+		//////////////////menu²âÊÔ///////////////////////////////
+		menuBt1 = (Button)findViewById(R.id.menubt1);
+		menuBt2 = (Button)findViewById(R.id.menubt2);
+		menuBt1.setVisibility(View.INVISIBLE);
+		menuBt2.setVisibility(View.INVISIBLE);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu){
+		super.onCreateOptionsMenu(menu);
+		
+		menu.add(Menu.NONE, item0, Menu.NONE, "ÏÔÊ¾°´Å¥1").setIcon(R.drawable.icon);
+		menu.add(Menu.NONE, item1, Menu.NONE, "ÏÔÊ¾°´Å¥2");
+		menu.add(Menu.NONE, item2, Menu.NONE, "ÏÔÊ¾°´Å¥3");
+		menu.add(Menu.NONE, item3, Menu.NONE, "ÏÔÊ¾°´Å¥4");
+		menu.add(Menu.NONE, item4, Menu.NONE, "ÏÔÊ¾°´Å¥5");
+		//menu.findItem(item1);
+		
+		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()){
+		case item0:
+			showMenuBut1();
+			break;
+		case item1:
+			showMenuBut2();
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	public void showMenuBut1(){
+		setTitle("ÏÔÊ¾²Ëµ¥1");
+		menuBt1.setVisibility(View.VISIBLE);
+		menuBt2.setVisibility(View.INVISIBLE);
+	}
+	
+	public void showMenuBut2(){
+		setTitle("ÏÔÊ¾²Ëµ¥2");
+		menuBt2.setVisibility(View.VISIBLE);
+		menuBt1.setVisibility(View.INVISIBLE);
 	}
 }

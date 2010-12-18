@@ -4,4 +4,6 @@
     <string name="app_name">HelloDemo</string>
     <drawable name="yellow">#77ffff00</drawable>
     <drawable name="blue">#770000ff</drawable>
+    <drawable name="red">#773366ff</drawable>
+    <drawable name="green">#77cc99ff</drawable>
 </resources>
