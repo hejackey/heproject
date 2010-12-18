@@ -61,5 +61,17 @@
 		<activity android:name=".RateBarActivity"
 			android:label="投票控件">
 		</activity>
+		
+		<activity android:name=".TabDemoActivity"
+			android:label="tab标签">
+		</activity>
+		
+		<activity android:name=".GridViewActivity"
+			android:label="gridView组件">
+		</activity>
+		
+		<activity android:name=".ImageSwitchActivity"
+			android:label="图片播放器">
+		</activity>
 	</application>
 </manifest>

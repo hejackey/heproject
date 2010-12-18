@@ -71,7 +71,37 @@
 	<Button android:id="@+id/button13"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="testRateBar" />		
+
+	<Button android:id="@+id/button14"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testTabBar" />	
+			
+	<Button android:id="@+id/button15"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testGridView" />
+		
+	<Button android:id="@+id/button16"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testImageSwitch" />
+		
+	<TextView android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:id="@+id/but4val" 
+		android:text="but4"></TextView>
+		
+	<TextView android:layout_width="wrap_content" 
+		android:layout_height="fill_parent" 
+		android:id="@+id/menuTv" 
+		android:text="测试menu文本框"></TextView>
+		
+	<Button android:id="@+id/menubt1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testMenu1" />
+		
+	<Button android:id="@+id/menubt2"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testMenu2" />
+		
 	
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/but4val" android:text="but4"></TextView>
 </LinearLayout>
 </ScrollView>
