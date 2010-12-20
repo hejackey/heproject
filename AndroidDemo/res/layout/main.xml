@@ -102,6 +102,24 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="testMenu2" />
 		
-	
+	<Button android:id="@+id/intentbt1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testIntentActivity1" />
+		
+	<Button android:id="@+id/intentbt2"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testIntentActivity2" />
+		
+	<Button android:id="@+id/listVBt1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testListViewActivity1" />
+		
+	<Button android:id="@+id/listVBt2"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testListViewActivity2" />
+		
+	<Button android:id="@+id/listVBt3"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testListViewActivity3" />
 </LinearLayout>
 </ScrollView>

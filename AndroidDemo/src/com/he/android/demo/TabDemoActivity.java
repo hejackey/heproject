@@ -7,9 +7,17 @@ import android.view.LayoutInflater;
 import android.widget.TabHost;
 
 public class TabDemoActivity extends TabActivity {
+	private String param;
+
 	public void onCreate(Bundle bundle){
 		super.onCreate(bundle);
 		TabHost tab = getTabHost();
+		
+		Bundle extra = getIntent().getExtras();
+		if(extra != null){
+			param = extra.getString("param");
+		}
+		setTitle(param);
 		
 		LayoutInflater.from(this).inflate(R.layout.tab,
 				tab.getTabContentView(), true);
