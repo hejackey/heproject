@@ -73,5 +73,25 @@
 		<activity android:name=".ImageSwitchActivity"
 			android:label="图片播放器">
 		</activity>
+		
+		<activity android:name=".IntentActivity"
+			android:label="普通Intent">
+		</activity>
+		
+		<activity android:name=".IntentParaActivity"
+			android:label="能传参数的Intent">
+		</activity>
+		
+		<activity android:name=".ListViewActivity1"
+			android:label="简单的listview">
+		</activity>
+		
+		<activity android:name=".ListViewActivity2"
+			android:label="简单的listview2">
+		</activity>
+		
+		<activity android:name=".ListViewActivity3"
+			android:label="简单的listview3">
+		</activity>
 	</application>
 </manifest>

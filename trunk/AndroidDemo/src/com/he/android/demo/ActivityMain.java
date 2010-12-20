@@ -28,6 +28,7 @@ public class ActivityMain extends Activity {
 	public static final int item2= Menu.FIRST+2;
 	public static final int item3= Menu.FIRST+3;
 	public static final int item4= Menu.FIRST+4;
+	protected static final int REQUEST_CODE = 0;
 	
 	public void onCreate(Bundle bundle){
 		super.onCreate(bundle);
@@ -150,6 +151,7 @@ public class ActivityMain extends Activity {
 		but14.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				Intent intent = new Intent(ActivityMain.this, TabDemoActivity.class);
+				intent.putExtra("param", "我也可以传参数");
 				startActivity(intent);
 			}
 		});
@@ -185,6 +187,50 @@ public class ActivityMain extends Activity {
 		menuBt2 = (Button)findViewById(R.id.menubt2);
 		menuBt1.setVisibility(View.INVISIBLE);
 		menuBt2.setVisibility(View.INVISIBLE);
+		
+		//////////////////intent测试/////////////////////////////
+		Button intentBt1 = (Button)findViewById(R.id.intentbt1);
+		intentBt1.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this,IntentParaActivity.class);
+				intent.putExtra("actm", "我是来自activity main的参数");
+				intent.putExtra("actm1", "2号参数");
+				startActivityForResult(intent,REQUEST_CODE);
+			}
+		});
+		
+		Button intentBt2 = (Button)findViewById(R.id.intentbt2);
+		intentBt2.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this,IntentActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		///////////////////ListView//////////////////////////////////
+		Button listVBt1 = (Button)findViewById(R.id.listVBt1);
+		listVBt1.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this,ListViewActivity1.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button listVBt2 = (Button)findViewById(R.id.listVBt2);
+		listVBt2.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this,ListViewActivity2.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button listVBt3 = (Button)findViewById(R.id.listVBt3);
+		listVBt3.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				Intent intent = new Intent(ActivityMain.this,ListViewActivity3.class);
+				startActivity(intent);
+			}
+		});
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu){
@@ -223,5 +269,22 @@ public class ActivityMain extends Activity {
 		setTitle("显示菜单2");
 		menuBt2.setVisibility(View.VISIBLE);
 		menuBt1.setVisibility(View.INVISIBLE);
+	}
+	
+	//IntentParaActivity点击按钮回调的函数
+	public void onActivityResult(int reqCode,int resCode,Intent mIntent){
+		String param="";
+		if(reqCode == REQUEST_CODE){
+			if(resCode == RESULT_CANCELED){
+				setTitle("取消");
+			}
+			else if(resCode == RESULT_OK){
+				Bundle extra = mIntent.getExtras();
+				if(extra != null){
+					param = extra.getString("intentParm");
+				}
+				setTitle(param);
+			}
+		}
 	}
 }
