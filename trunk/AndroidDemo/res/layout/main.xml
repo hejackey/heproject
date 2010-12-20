@@ -121,5 +121,21 @@
 	<Button android:id="@+id/listVBt3"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="testListViewActivity3" />
+		
+	<Button android:id="@+id/diagBt1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testDialog1" />
+		
+	<Button android:id="@+id/diagBt2"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testDialog2" />
+		
+	<Button android:id="@+id/diagBt3"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testDialog3" />
+		
+	<Button android:id="@+id/diagBt4"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="testDialog4" />		
 </LinearLayout>
 </ScrollView>

@@ -1,14 +1,22 @@
 package com.he.android.demo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ActivityMain extends Activity {
 	OnClickListener listen0;
@@ -231,6 +239,35 @@ public class ActivityMain extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		////////////////////dialog测试//////////////////////////////////////////
+		Button diagBt1 = (Button)findViewById(R.id.diagBt1);
+		diagBt1.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				showDialog(1);
+			}
+		});
+		
+		Button diagBt2 = (Button)findViewById(R.id.diagBt2);
+		diagBt2.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				showDialog(2);
+			}
+		});
+		
+		Button diagBt3 = (Button)findViewById(R.id.diagBt3);
+		diagBt3.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				showDialog(3);
+			}
+		});
+		
+		Button diagBt4 = (Button)findViewById(R.id.diagBt4);
+		diagBt4.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				showDialog(4);
+			}
+		});
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu){
@@ -285,6 +322,126 @@ public class ActivityMain extends Activity {
 				}
 				setTitle(param);
 			}
+		}
+	}
+	
+	//显示dialog回调函数
+	protected Dialog onCreateDialog(int id){
+		switch (id){
+			case 1:
+			return builderDialog1(ActivityMain.this);
+			case 2:
+				return buildDialog2(ActivityMain.this);
+			case 3:
+				return buildDialog3(ActivityMain.this);
+			case 4:
+				return buildDialog4(ActivityMain.this);
+		}
+		
+		return null;
+	}
+	
+	public Dialog builderDialog1(Context context){
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setIcon(R.drawable.alert_dialog_icon);
+		builder.setTitle(R.string.alert_dialog_two_buttons_title);
+		builder.setPositiveButton(R.string.alert_dialog_ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						setTitle("点击了对话框上的确定按钮");
+					}
+				});
+		builder.setNegativeButton(R.string.alert_dialog_cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						setTitle("点击了对话框上的取消按钮");
+					}
+				});
+		return builder.create();
+	}
+	
+	private Dialog buildDialog2(Context context) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setIcon(R.drawable.alert_dialog_icon);
+		builder.setTitle(R.string.alert_dialog_two_buttons_msg);
+		builder.setMessage(R.string.alert_dialog_two_buttons2_msg);
+		builder.setPositiveButton(R.string.alert_dialog_ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						setTitle("点击了对话框上的确定按钮");
+					}
+				});
+		builder.setNeutralButton(R.string.alert_dialog_something,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						setTitle("点击了对话框上的进入详细按钮");
+					}
+				});
+		builder.setNegativeButton(R.string.alert_dialog_cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						setTitle("点击了对话框上的取消按钮");
+					}
+				});
+		return builder.create();
+	}
+
+	private Dialog buildDialog3(Context context) {
+		LayoutInflater inflater = LayoutInflater.from(this);
+		final View textEntryView = inflater.inflate(
+				R.layout.alert_dialog_text_entry, null);
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setIcon(R.drawable.alert_dialog_icon);
+		builder.setTitle(R.string.alert_dialog_text_entry);
+		builder.setView(textEntryView);
+		builder.setPositiveButton(R.string.alert_dialog_ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						EditText ed = (EditText)textEntryView.findViewById(R.id.username_view);
+						
+						
+						EditText pwd = (EditText)textEntryView.findViewById(R.id.password_view);
+						String str = "用户名是："+ed.getText()+",密码是："+pwd.getText();
+						setTitle(str);
+						//如何取对话框值
+						Toast.makeText(ActivityMain.this, str,
+						         Toast.LENGTH_LONG).show();
+					}
+				});
+		builder.setNeutralButton(R.string.alert_dialog_something,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						setTitle("点击了对话框上的进入详细按钮");
+					}
+				});
+		
+		builder.setNegativeButton(R.string.alert_dialog_cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						setTitle("点击了对话框上的取消按钮");
+					}
+				});
+		return builder.create();
+	}
+	
+
+	private Dialog buildDialog4(Context context) {
+		ProgressDialog dialog = new ProgressDialog(context);
+		dialog.setTitle("正在下载歌曲");
+		dialog.setMessage("请稍候……");
+		return  dialog;
+	}
+	
+	protected void onPrepareDialog(int id,Dialog dialog){
+		if(id==1){
+			setTitle("测试，预加载");
+			dialog.setTitle("测试，预加载");
 		}
 	}
 }
