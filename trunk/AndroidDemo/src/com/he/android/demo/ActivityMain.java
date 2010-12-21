@@ -244,7 +244,7 @@ public class ActivityMain extends Activity {
 		Button diagBt1 = (Button)findViewById(R.id.diagBt1);
 		diagBt1.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				showDialog(1);
+				showDialog(1);//显示对话框，回调onCreateDialog函数创建Dialog
 			}
 		});
 		
@@ -266,6 +266,25 @@ public class ActivityMain extends Activity {
 		diagBt4.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				showDialog(4);
+			}
+		});
+		
+		////////////////////////////Toast and notification////////////////////
+		Button toastBt1 = (Button)findViewById(R.id.toastBt1);
+		toastBt1.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				setTitle("学习toast");
+				Intent intent = new Intent(ActivityMain.this,ToastActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button notifiBt1 = (Button)findViewById(R.id.notifiBt1);
+		notifiBt1.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				setTitle("学习notification");
+				Intent intent = new Intent(ActivityMain.this,NotificationActivity.class);
+				startActivity(intent);
 			}
 		});
 	}
@@ -391,9 +410,10 @@ public class ActivityMain extends Activity {
 		return builder.create();
 	}
 
+	private View textEntryView;
 	private Dialog buildDialog3(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(this);
-		final View textEntryView = inflater.inflate(
+		textEntryView = inflater.inflate(
 				R.layout.alert_dialog_text_entry, null);
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setIcon(R.drawable.alert_dialog_icon);
@@ -402,13 +422,14 @@ public class ActivityMain extends Activity {
 		builder.setPositiveButton(R.string.alert_dialog_ok,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						EditText ed = (EditText)textEntryView.findViewById(R.id.username_view);
+						System.out.println(textEntryView);
+						EditText ed = (EditText)textEntryView.findViewById(R.id.username_edit);
 						
 						
-						EditText pwd = (EditText)textEntryView.findViewById(R.id.password_view);
+						EditText pwd = (EditText)textEntryView.findViewById(R.id.password_edit);
 						String str = "用户名是："+ed.getText()+",密码是："+pwd.getText();
 						setTitle(str);
-						//如何取对话框值
+						
 						Toast.makeText(ActivityMain.this, str,
 						         Toast.LENGTH_LONG).show();
 					}
