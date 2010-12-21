@@ -93,5 +93,13 @@
 		<activity android:name=".ListViewActivity3"
 			android:label="简单的listview3">
 		</activity>
+		
+		<activity android:name=".ToastActivity"
+			android:label="简单的Toast">
+		</activity>
+		
+		<activity android:name=".NotificationActivity"
+			android:label="简单的notification">
+		</activity>
 	</application>
 </manifest>
