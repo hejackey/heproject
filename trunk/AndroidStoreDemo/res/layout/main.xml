@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/hello"
+    />
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tv_um" android:text="用户名"></TextView>
+<EditText android:layout_height="wrap_content" android:id="@+id/ed_um" android:layout_width="fill_parent"></EditText>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tv_pwd" android:text="密码："></TextView>
+<EditText android:layout_height="wrap_content" android:id="@+id/ed_pwd" android:layout_width="fill_parent"></EditText>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/bt01" android:text="演示插入sqlite"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/bt02" android:text="演示sqlite查询"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="测试sqlite删除" android:id="@+id/bt03"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/bt4" android:text="测试删除表"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/bt05" android:text="测试新建表"></Button>
+
+</LinearLayout>
