@@ -20,6 +20,7 @@ public class DiaryListActivity extends ListActivity {
     public void onCreate(Bundle bundle){
 		super.onCreate(bundle);
 		
+		setTitle("兔仔记事本");
 		dbHelper = new DataBaseHelper(DiaryListActivity.this);
 		/*SQLiteDatabase db = dbHelper.getWritableDatabase();
 		dbHelper.onCreate(db);*/
@@ -29,17 +30,11 @@ public class DiaryListActivity extends ListActivity {
     
     private void refreshDiaryList(){
     	cursor = dbHelper.queryDiary(dbHelper);
-		int count = cursor.getCount();
 		
-		if(count==0){
-			setContentView(R.layout.main);
-			
-			TextView tv = (TextView)findViewById(R.id.tvmain);
-			tv.setText("您还没有添加日志");
-			
-			return;
-		}
-		else{
+		setContentView(R.layout.main);
+		TextView tv = (TextView)findViewById(android.R.id.empty);
+		tv.setText("点击'menu'开始添加日志");
+		
 			/*ListView lv = new ListView(this);
 			cursor.moveToFirst();
 			String[] data = new String[count];
@@ -55,42 +50,62 @@ public class DiaryListActivity extends ListActivity {
 
 			setContentView(lv);*/
 			
-			startManagingCursor(cursor);
-			String[] from = new String[] { dbHelper.TITLE,dbHelper.CREATETIME};
-			int[] to = new int[] { R.id.tv01, R.id.tv02 };
-			SimpleCursorAdapter diarys = new SimpleCursorAdapter(this,
-					R.layout.list, cursor, from, to);
-			setListAdapter(diarys);
-		}
+		startManagingCursor(cursor);
+		String[] from = new String[] { dbHelper.TITLE,dbHelper.CREATETIME};
+		int[] to = new int[] { R.id.tv01, R.id.tv02 };
+		SimpleCursorAdapter diarys = new SimpleCursorAdapter(this,
+				R.layout.list, cursor, from, to);
+		setListAdapter(diarys);
     }
     
     private static final int item0=0;
-    private int item1=1;
+    private static final int item1=1;
     public boolean onCreateOptionsMenu(Menu menu){
 		super.onCreateOptionsMenu(menu);
 		
-		menu.add(Menu.NONE, item0, Menu.NONE, "添加日志").setIcon(R.drawable.icon);
+		//menu.add(Menu.NONE, item0, Menu.NONE, "添加日志").setIcon(R.drawable.icon);
+		menu.add(Menu.NONE, item0, Menu.NONE, "添加日志");
 		menu.add(Menu.NONE, item1, Menu.NONE, "删除日志");
 		
 		return true;
 	}  
     
-    public boolean onOptionsItemSelected(MenuItem item){
+    /*public boolean onOptionsItemSelected(MenuItem item){
 		switch (item.getItemId()){
 		case item0:
 			showInsertDiary();
 			break;
-		/*case item1:
-			showMenuBut2();
-			break;*/
+		case item1:
+			showDelDiary();
+			break;
 		}
 		
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
+
+    public boolean onMenuItemSelected (int featureId, MenuItem item){
+    	switch (item.getItemId()){
+		case item0:
+			showInsertDiary();
+			return true;
+		case item1:
+			showDelDiary();
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+    }
+
     
     public void showInsertDiary(){
     	Intent intent = new Intent(DiaryListActivity.this,AddDiaryActivity.class);
-    	startActivity(intent);
+    	startActivityForResult(intent, 0);
+    }
+    
+    public void showDelDiary(){
+    	long id = getListView().getSelectedItemId();
+    	dbHelper.delDiary(dbHelper, id);
+    	refreshDiaryList();
     }
     
     @Override
@@ -107,7 +122,7 @@ public class DiaryListActivity extends ListActivity {
 		i.putExtra(dbHelper.CONTENT, c.getString(c.getColumnIndexOrThrow(dbHelper.CONTENT)));
 		startActivityForResult(i, 0);
 	}
-
+    
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
