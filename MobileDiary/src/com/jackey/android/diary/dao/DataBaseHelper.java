@@ -78,6 +78,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		db.execSQL(sql);*/
 	}
 	
+	public void delDiary(DataBaseHelper dbHelper,long id){
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		db.delete(TABLENAME, ID+"="+id, null);
+	}
+	
 	public void delTable(DataBaseHelper dbHelper){
 		String sql = "drop table diary";
 		SQLiteDatabase db = dbHelper.getWritableDatabase();

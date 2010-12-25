@@ -19,6 +19,7 @@ public class AddDiaryActivity extends Activity {
 		super.onCreate(bundle);
 		setContentView(R.layout.add);
 		dbHelper=new DataBaseHelper(this);
+		setTitle("ÍÃ×Ð¼ÇÊÂ±¾");
 		
 		et1 = (EditText)findViewById(R.id.et_title);
 		et2 = (EditText)findViewById(R.id.et_content);
