@@ -210,7 +210,7 @@ public class DiaryListActivity extends ListActivity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setIcon(android.R.drawable.ic_menu_directions);
 		builder.setTitle("可选操作");
-		
+		Log.i("selectedid===", String.valueOf(getListView().getSelectedItemId()));
 		/*List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("operate", "添加");
