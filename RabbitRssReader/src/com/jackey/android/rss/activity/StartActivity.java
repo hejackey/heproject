@@ -46,7 +46,6 @@ public class StartActivity extends TabActivity implements OnItemClickListener{
 	private RabbitRSSFeed feed;
 	private TabHost tab;
 	private List<RssSite> list  = new ArrayList<RssSite>();
-	private String SETTING_INFOS="rssSite_db";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
