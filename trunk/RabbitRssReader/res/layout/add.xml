@@ -1,0 +1,6 @@
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tv01" android:text="title"></TextView>
+<EditText android:layout_height="wrap_content" android:id="@+id/et01" android:layout_width="fill_parent"></EditText>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tv02" android:text="RSS站点url"></TextView>
+<EditText android:id="@+id/et02" android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/bt01" android:text="保存"></Button>
+</LinearLayout>
