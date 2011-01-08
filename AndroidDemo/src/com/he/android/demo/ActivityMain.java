@@ -7,7 +7,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -287,6 +289,17 @@ public class ActivityMain extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		//////////////////¥Úø™‰Ø¿¿∆˜///////////////////////////////////
+		Button btBrower = (Button)findViewById(R.id.btBrower);
+		btBrower.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View view) {
+				openBrower("http://www.8f8pay.com");
+			}
+			
+		});
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu){
@@ -464,5 +477,14 @@ public class ActivityMain extends Activity {
 			setTitle("≤‚ ‘£¨‘§º”‘ÿ");
 			dialog.setTitle("≤‚ ‘£¨‘§º”‘ÿ");
 		}
+	}
+	
+	private void openBrower(String url){
+		Log
+		.i(this.getClass().getName(), "about to launch browser, url: "
+				+ url);
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(url));
+		startActivity(i);
 	}
 }
