@@ -144,6 +144,10 @@
 		
 	<Button android:id="@+id/notifiBt1"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="testNotification" />			
+		android:layout_height="wrap_content" android:text="testNotification" />
+		
+	<Button android:id="@+id/btBrower"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="打开浏览器" />					
 </LinearLayout>
 </ScrollView>
