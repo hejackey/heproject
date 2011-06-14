@@ -7,14 +7,14 @@
     <constant name="struts.i18n.reload" value="false" />
     <constant name="struts.configuration.xml.reload" value="true" />
     <constant name="struts.custom.i18n.resources" value="globalMessages" />
-    <constant name="struts.action.extension" value="action" />
+    <!-- support multi ext name -->
+    <constant name="struts.action.extension" value="action,do" />
     <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
     <constant name="struts.devMode" value="false"/>
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.freemarker.manager.classname" value="org.apache.struts2.views.freemarker.FreemarkerManager"/>
-   <!--  <constant name="struts.action.excludePattern" value="/dwr/.*,/dwr/test/.*,/jcaptcha" />
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
-     -->
+    
 
     <include file="struts-test.xml"/>
    
