@@ -16,9 +16,25 @@
         </tx:attributes>
     </tx:advice>
      -->
+    <!-- 事物控制 -->
+	<aop:config>
+		<aop:advisor pointcut="execution(* *..manager..*.*(..))"
+			advice-ref="txAdvice" />
+	</aop:config>
+	<tx:advice id="txAdvice">
+		<tx:attributes>
+			<tx:method name="insert*" />
+			<tx:method name="update*" />
+			<tx:method name="delete*" />
+			<tx:method name="save*" />
+			<tx:method name="add*" />
+			<tx:method name="del*" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
      
 	<bean id="testHelloWorldManager" class="com.bfb.portal.manager.impl.TestHelloWorldManagerImpl">
-       
+       <property name="helloWorldDao" ref="helloWorldDao"/>
     </bean>
 	
 </beans>

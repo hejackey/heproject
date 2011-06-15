@@ -13,9 +13,9 @@ public class TestHelloWorldAction<T> extends BaseAction<T> {
 	private TestHelloWorldManager testHelloWorldManager;
 	
 	public String helloWorld(){
-		model.setStr("test struts,hello world!!"); 
-		model.setParam(testHelloWorldManager.sayHello("start call service layer method"));
-		
+		//model.setStr("test struts,hello world!!"); 
+		//model.setParam(testHelloWorldManager.sayHello("start call service layer method"));
+		model = testHelloWorldManager.getHelloWorld(1);
 		return SUCCESS;
 	}
 	public T getModel() {
