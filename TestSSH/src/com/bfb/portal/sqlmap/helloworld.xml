@@ -6,7 +6,7 @@
  
 	<typeAlias alias="helloWorld" type="com.bfb.portal.model.HelloWorld"/>
 	
-	<select id="getHelloWorld" parameterClass="string" resultClass="helloWorld">
+	<select id="getHelloWorld" parameterClass="int" resultClass="helloWorld">
     <![CDATA[       
 		select * from hellworld
 		where id=#value#
