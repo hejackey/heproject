@@ -12,7 +12,7 @@ public class TestHelloWorldManagerImpl implements TestHelloWorldManager {
 	}
 
 	public HelloWorld getHelloWorld(int id) {
-		return null;
+		return helloWorldDao.getHelloWorld(id);
 	}
 
 	public HelloWorldDao getHelloWorldDao() {

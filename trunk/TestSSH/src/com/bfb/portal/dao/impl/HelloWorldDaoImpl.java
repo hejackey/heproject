@@ -9,7 +9,14 @@ public class HelloWorldDaoImpl extends SqlMapClientDaoSupport implements
 		HelloWorldDao {
 
 	public HelloWorld getHelloWorld(int id) {
-		return (HelloWorld)this.getSqlMapClientTemplate().queryForObject("HelloWorld.getHelloWorld",id);
+		try{
+			System.out.print(id);
+			return (HelloWorld)this.getSqlMapClientTemplate().queryForObject("HelloWorld.getHelloWorld",id);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
