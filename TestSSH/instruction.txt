@@ -1,0 +1,2 @@
+spring3.1.0的core包里不包含aopalliance的东西，需要单独下载aopalliance.jar
+但是在配置aop拦截器时一直报错，aopalliance类型没加载对，最后删除aopalliance.jar，添加spring.jar2.5的包就ok了

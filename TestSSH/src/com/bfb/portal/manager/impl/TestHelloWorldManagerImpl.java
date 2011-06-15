@@ -1,11 +1,26 @@
 package com.bfb.portal.manager.impl;
 
+import com.bfb.portal.dao.HelloWorldDao;
 import com.bfb.portal.manager.TestHelloWorldManager;
+import com.bfb.portal.model.HelloWorld;
 
 public class TestHelloWorldManagerImpl implements TestHelloWorldManager {
-
+	private HelloWorldDao helloWorldDao;
+	
 	public String sayHello(String arg) {
 		return "I'm from service layer,say hello to"+arg;
+	}
+
+	public HelloWorld getHelloWorld(int id) {
+		return null;
+	}
+
+	public HelloWorldDao getHelloWorldDao() {
+		return helloWorldDao;
+	}
+
+	public void setHelloWorldDao(HelloWorldDao helloWorldDao) {
+		this.helloWorldDao = helloWorldDao;
 	}
 
 }
