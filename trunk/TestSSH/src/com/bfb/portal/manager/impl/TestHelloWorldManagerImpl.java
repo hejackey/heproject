@@ -23,4 +23,8 @@ public class TestHelloWorldManagerImpl implements TestHelloWorldManager {
 		this.helloWorldDao = helloWorldDao;
 	}
 
+	public void saveHelloWorld(HelloWorld helloWorld) {
+		helloWorldDao.saveHelloWorld(helloWorld);
+	}
+
 }

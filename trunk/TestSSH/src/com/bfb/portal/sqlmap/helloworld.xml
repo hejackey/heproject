@@ -12,4 +12,10 @@
 		where id=#value#
     ]]>
     </select>
+    
+    <insert id="saveHelloWorld" parameterClass="helloWorld">
+    <![CDATA[       
+		insert into hellworld values(#id#,#str#,#param#);
+    ]]>
+    </insert>
 </sqlMap>
