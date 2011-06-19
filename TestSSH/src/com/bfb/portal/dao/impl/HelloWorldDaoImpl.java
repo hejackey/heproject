@@ -19,4 +19,8 @@ public class HelloWorldDaoImpl extends SqlMapClientDaoSupport implements
 		}
 	}
 
+	public void saveHelloWorld(HelloWorld helloWorld) {
+		this.getSqlMapClientTemplate().insert("HelloWorld.saveHelloWorld",helloWorld);
+	}
+
 }
