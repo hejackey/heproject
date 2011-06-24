@@ -7,8 +7,12 @@
    
 
 	<!-- SqlMap setup for iBATIS Database Layer -->
-	<bean id="helloWorldDao" class="com.bfb.portal.dao.impl.HelloWorldDaoImpl">
+	<!--<bean id="helloWorldDao" class="com.bfb.portal.dao.impl.HelloWorldDaoImpl">
 		<property name="sqlMapClient" ref="sqlMapClient" />
-	</bean>
+	</bean>	
+	-->
 	
+	<bean id="helloWorldDao" class="com.bfb.portal.dao.impl.HelloWorldDaoImpl">
+		<property name="sqlSession" ref="sqlSession" />
+	</bean>
 </beans>
