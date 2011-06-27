@@ -6,7 +6,7 @@
  	<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-config.dtd">
 	<configuration>
-		<!-- 配置数据源相关的信息 -->
+		<!-- 配置数据源相关的信息 
 		<environments default="dataSource">
 			<environment id="dataSource">
 				<transactionManager type="JDBC" />
@@ -18,9 +18,15 @@
 				</dataSource>
 			</environment>
 		</environments>
+		-->
+		
+		<!-- 每个配置文件中的typealias都必须要移到这个文件中，同时必须在mappers标签前面 -->
+		<typeAliases>
+			<typeAlias alias="helloWorld" type="com.bfb.portal.model.HelloWorld" />
+		</typeAliases>
 		
 		<!-- 列出映射文件 -->
 		<mappers>
-			<mapper resource="com/bfb/portal/sqlmap/helloworld.xml" />
+			<mapper resource="com/bfb/portal/sqlmap/helloworld3.xml" />
 		</mappers>
 	</configuration> 

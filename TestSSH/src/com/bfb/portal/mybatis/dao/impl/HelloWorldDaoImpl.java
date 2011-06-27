@@ -7,7 +7,7 @@ import com.bfb.portal.model.HelloWorld;
 public class HelloWorldDaoImpl extends BaseDao implements HelloWorldDao {
 
 	public HelloWorld getHelloWorld(int id) {
-		return (HelloWorld)this.getSqlSession().selectOne(String.valueOf(id));
+		return (HelloWorld)this.getSqlSession().selectOne("getHelloWorld",String.valueOf(id));
 	}
 
 	public void saveHelloWorld(HelloWorld helloWorld) {
