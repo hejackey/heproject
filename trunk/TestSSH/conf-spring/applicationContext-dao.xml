@@ -12,7 +12,7 @@
 	</bean>	
 	-->
 	
-	<bean id="helloWorldDao" class="com.bfb.portal.dao.impl.HelloWorldDaoImpl">
-		<property name="sqlSession" ref="sqlSession" />
+	<bean id="helloWorldDao" class="com.bfb.portal.mybatis.dao.impl.HelloWorldDaoImpl">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 </beans>
