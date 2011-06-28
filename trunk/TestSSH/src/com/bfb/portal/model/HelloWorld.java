@@ -36,5 +36,4 @@ public class HelloWorld extends BaseModel implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	
 }

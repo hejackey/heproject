@@ -14,7 +14,7 @@
     <![CDATA[       
 		SELECT * FROM hellworld 
 		ORDER BY id DESC
-		LIMIT (#{rows})*(#{page}-1),(#{rows})*(#{page})
+		LIMIT ${pageLimit}
     ]]>
 	</select>
 	

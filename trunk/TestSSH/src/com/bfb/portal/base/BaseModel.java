@@ -14,6 +14,7 @@ public class BaseModel implements Serializable {
 	
 	private int rows;	//每页记录数
 	private int page;	//当前页码
+	private String pageLimit;	//分页表达式
 	
 	public PageInfo getPageInfo(){
 		return pageInfo;
@@ -61,5 +62,13 @@ public class BaseModel implements Serializable {
 
 	public void setPage(int page) {
 		this.page = page;
+	}
+
+	public String getPageLimit() {
+		return rows*(page-1)+","+rows*page;
+	}
+
+	public void setPageLimit(String pageLimit) {
+		this.pageLimit = pageLimit;
 	}
 }
