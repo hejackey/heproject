@@ -1,5 +1,7 @@
 package com.bfb.portal.dao.impl;
 
+import java.util.List;
+
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import com.bfb.portal.dao.HelloWorldDao;
@@ -21,6 +23,14 @@ public class HelloWorldDaoImpl extends SqlMapClientDaoSupport implements
 
 	public void saveHelloWorld(HelloWorld helloWorld) {
 		this.getSqlMapClientTemplate().insert("HelloWorld.saveHelloWorld",helloWorld);
+	}
+
+	public int getHelloWorldCount(HelloWorld model) {
+		return 0;
+	}
+
+	public List<HelloWorld> getHelloWorldList(HelloWorld model) {
+		return null;
 	}
 
 }

@@ -9,4 +9,18 @@
 		where id=#{userid} 
     ]]>
 	</select>
+	
+	<select id="getHelloWorldList" parameterType="helloWorld" resultType="helloWorld">
+    <![CDATA[       
+		SELECT * FROM hellworld 
+		ORDER BY id DESC
+		LIMIT (#{rows})*(#{page}-1),(#{rows})*(#{page})
+    ]]>
+	</select>
+	
+	<select id="getHelloWorldCount" parameterType="helloWorld" resultType="int">
+    <![CDATA[       
+		select count(1) from hellworld
+    ]]>
+	</select>
 </mapper> 
