@@ -22,6 +22,9 @@ public class TestHelloWorldAction<T> extends BaseAction<T> {
 		testHelloWorldManager.saveHelloWorld(hello);*/
 		
 		model = testHelloWorldManager.getHelloWorld(3);
+		if(model==null)
+			model = new HelloWorld();
+		
 		return SUCCESS;
 	}
 	public T getModel() {
