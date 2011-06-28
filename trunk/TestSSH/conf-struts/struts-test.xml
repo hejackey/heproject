@@ -7,5 +7,9 @@
 		<action name="helloWorld" class="com.bfb.portal.action.TestHelloWorldAction" method="helloWorld">
 			<result name="success" type="freemarker">/WEB-INF/pages/test/test.ftl</result>
 		</action>
+		
+		<action name="formValid" class="com.bfb.portal.action.TestHelloWorldAction">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/form-valid.ftl</result>
+		</action>
 	</package>
 </struts>
