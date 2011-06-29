@@ -65,7 +65,7 @@ public class BaseModel implements Serializable {
 	}
 
 	public String getPageLimit() {
-		return rows*(page-1)+","+rows*page;
+		return rows*(page-1)+","+rows;
 	}
 
 	public void setPageLimit(String pageLimit) {
