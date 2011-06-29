@@ -13,7 +13,7 @@
 				title:'helloWorld测试easyui datagrid控件',
 				iconCls:'icon-save',
 				width:650,
-				height:350,
+				height:450,
 				nowrap: false,
 				striped: true,
 				collapsible:true,
