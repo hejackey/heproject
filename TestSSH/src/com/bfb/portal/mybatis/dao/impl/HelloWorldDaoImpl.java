@@ -12,8 +12,9 @@ public class HelloWorldDaoImpl extends BaseMybatisDao implements HelloWorldDao {
 		return (HelloWorld)this.getSqlSession().selectOne("getHelloWorld",String.valueOf(id));
 	}
 
-	public void saveHelloWorld(HelloWorld helloWorld) {
+	public HelloWorld saveHelloWorld(HelloWorld helloWorld) {
 		this.getSqlSession().insert("HelloWorld.saveHelloWorld",helloWorld);
+		return helloWorld;
 	}
 
 	public int getHelloWorldCount(HelloWorld model) {

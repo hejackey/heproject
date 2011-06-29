@@ -3,12 +3,17 @@ package com.bfb.portal.action;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bfb.portal.base.BaseAction;
 import com.bfb.portal.base.BaseDataGridJson;
 import com.bfb.portal.base.util.ResponseUtil;
 import com.bfb.portal.manager.TestHelloWorldManager;
 import com.bfb.portal.model.HelloWorld;
+import com.bfb.portal.validator.BaseValidator;
+import com.bfb.portal.validator.HelloWorldValidator;
 import com.google.gson.reflect.TypeToken;
+import com.bfb.portal.base.util.StringUtil;
 
 public class TestHelloWorldAction extends BaseAction {
 	/**
@@ -17,17 +22,9 @@ public class TestHelloWorldAction extends BaseAction {
 	private static final long serialVersionUID = -5783052855929964194L;
 	public HelloWorld model = new HelloWorld();
 	private TestHelloWorldManager testHelloWorldManager;
-	
+	private BaseValidator valid = new HelloWorldValidator();
 	
 	public String helloWorld(){
-		//model.setStr("test struts,hello world!!"); 
-		//model.setParam(testHelloWorldManager.sayHello("start call service layer method"));
-		/*HelloWorld hello = new HelloWorld();
-		hello.setId(3);
-		hello.setStr("狗日的");
-		hello.setParam("window控制台下还是乱码");
-		testHelloWorldManager.saveHelloWorld(hello);*/
-		
 		model = testHelloWorldManager.getHelloWorld(3);
 		if(model==null)
 			model = new HelloWorld();
@@ -48,6 +45,26 @@ public class TestHelloWorldAction extends BaseAction {
 		
 		Type type = new TypeToken<BaseDataGridJson<HelloWorld>>() { }.getType();
 		ResponseUtil.printJson(json, this.getResponse(), type);
+	}
+	
+	public String saveHelloWorld(){
+		try{
+			String res = valid.validForm(model);
+			if(!StringUtil.isEmpty(res)){
+				this.addFieldError("formErr", res);
+				return INPUT;
+			}
+			
+			testHelloWorldManager.saveHelloWorld(model);
+			
+			return SUCCESS;
+		}catch(Exception e){
+			e.printStackTrace();
+			this.addFieldError("formErr", "保存出错!");
+			
+			return INPUT;
+		}
+		
 	}
 	
 	public HelloWorld getModel() {

@@ -18,5 +18,15 @@
 		
 		<action name="getListToJson" class="com.bfb.portal.action.TestHelloWorldAction" method="getListToJson">
 		</action>
+		
+		<action name="add" class="com.bfb.portal.action.TestHelloWorldAction">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/add.ftl</result>
+		</action>
+		
+		<action name="saveHelloWorld" class="com.bfb.portal.action.TestHelloWorldAction" method="saveHelloWorld">
+			<result name="success" type="redirect">list.do</result>
+			<result name="input" type="freemarker">/WEB-INF/pages/test/add.ftl</result>
+		</action>
+		
 	</package>
 </struts>

@@ -24,4 +24,16 @@
 		select count(1) from hellworld
     ]]>
 	</select>
+	
+	<insert id="saveHelloWorld" 
+			parameterType="helloWorld" 
+			flushCache="true"
+			statementType="PREPARED"
+			keyProperty="id"
+			useGeneratedKeys="true"
+			timeout="20000">
+    <![CDATA[       
+		insert into hellworld (str,param) values(#{str},#{param});
+    ]]>
+    </insert>
 </mapper> 

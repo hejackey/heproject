@@ -20,8 +20,9 @@ public class HelloWorldDaoImpl extends BaseIbatisDao implements
 		}
 	}
 
-	public void saveHelloWorld(HelloWorld helloWorld) {
+	public HelloWorld saveHelloWorld(HelloWorld helloWorld) {
 		this.getSqlMapClientTemplate().insert("HelloWorld.saveHelloWorld",helloWorld);
+		return helloWorld;
 	}
 
 	public int getHelloWorldCount(HelloWorld model) {

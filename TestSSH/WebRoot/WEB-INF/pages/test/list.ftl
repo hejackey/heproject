@@ -106,7 +106,7 @@
 		function getSelected(){
 			var selected = $('#test').datagrid('getSelected');
 			if (selected){
-				alert(selected.code+":"+selected.name+":"+selected.addr+":"+selected.col4);
+				alert(selected.str+":"+selected.param);
 			}
 		}
 		function getSelections(){
