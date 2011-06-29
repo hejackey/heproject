@@ -28,5 +28,8 @@
 			<result name="input" type="freemarker">/WEB-INF/pages/test/add.ftl</result>
 		</action>
 		
+		<action name="layout" class="com.bfb.portal.action.TestHelloWorldAction">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/layout.ftl</result>
+		</action>
 	</package>
 </struts>
