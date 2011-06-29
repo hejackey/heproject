@@ -25,8 +25,8 @@ public class TestHelloWorldManagerImpl implements TestHelloWorldManager {
 		this.helloWorldDao = helloWorldDao;
 	}
 
-	public void saveHelloWorld(HelloWorld helloWorld) {
-		helloWorldDao.saveHelloWorld(helloWorld);
+	public HelloWorld saveHelloWorld(HelloWorld helloWorld) {
+		return helloWorldDao.saveHelloWorld(helloWorld);
 	}
 
 	public int getHelloWorldCount(HelloWorld model) {
