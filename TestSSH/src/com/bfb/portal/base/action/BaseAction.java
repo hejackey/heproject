@@ -1,4 +1,4 @@
-package com.bfb.portal.base;
+package com.bfb.portal.base.action;
 
 import java.util.Map;
 

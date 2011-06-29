@@ -2,7 +2,7 @@ package com.bfb.portal.model;
 
 import java.io.Serializable;
 
-import com.bfb.portal.base.BaseModel;
+import com.bfb.portal.base.model.BaseModel;
 
 public class HelloWorld extends BaseModel implements Serializable{
 	/**

@@ -1,4 +1,4 @@
-package com.bfb.portal.base;
+package com.bfb.portal.base.model;
 
 import java.util.List;
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.bfb.portal.base.BaseAction;
-import com.bfb.portal.base.BaseDataGridJson;
+import com.bfb.portal.base.action.BaseAction;
+import com.bfb.portal.base.model.BaseDataGridJson;
 import com.bfb.portal.base.util.ResponseUtil;
 import com.bfb.portal.manager.TestHelloWorldManager;
 import com.bfb.portal.model.HelloWorld;
