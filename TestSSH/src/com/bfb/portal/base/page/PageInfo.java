@@ -2,7 +2,11 @@ package com.bfb.portal.base.page;
 
 import java.io.Serializable;
 
-
+/**
+ * 自定义分页
+ * @author Administrator
+ *
+ */
 public class PageInfo implements Serializable {
 	/**
 	 * 

@@ -4,16 +4,20 @@ import java.io.Serializable;
 
 import com.bfb.portal.base.page.PageInfo;
 
-
+/**
+ * model基础类
+ * @author Administrator
+ *
+ */
 public class BaseModel implements Serializable {
 	private static final long serialVersionUID = -5337484404562836810L;
 	PageInfo pageInfo = new PageInfo(1,20,5);
 	String context;
 	String result;
 	
-	private int rows;	//每页记录数
-	private int page;	//当前页码
-	private String pageLimit;	//分页表达式
+	private int rows;	//每页记录数，适用easyui分页控件
+	private int page;	//当前页码，适用easyui分页控件
+	private String pageLimit;	//分页表达式，适用mysql数据库
 	
 	public PageInfo getPageInfo(){
 		return pageInfo;

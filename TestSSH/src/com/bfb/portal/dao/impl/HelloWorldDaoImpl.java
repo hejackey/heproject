@@ -2,12 +2,11 @@ package com.bfb.portal.dao.impl;
 
 import java.util.List;
 
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
-
+import com.bfb.portal.base.dao.BaseIbatisDao;
 import com.bfb.portal.dao.HelloWorldDao;
 import com.bfb.portal.model.HelloWorld;
 
-public class HelloWorldDaoImpl extends SqlMapClientDaoSupport implements
+public class HelloWorldDaoImpl extends BaseIbatisDao implements
 		HelloWorldDao {
 
 	public HelloWorld getHelloWorld(int id) {
