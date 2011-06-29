@@ -2,6 +2,12 @@ package com.bfb.portal.base;
 
 import java.util.List;
 
+/**
+ * easyui datagrid定制json对象
+ * @author Administrator
+ *
+ * @param <T>
+ */
 public class BaseDataGridJson<T> {
 	private int total;
 	private List<T> rows;

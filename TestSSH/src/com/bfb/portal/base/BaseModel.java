@@ -9,7 +9,6 @@ public class BaseModel implements Serializable {
 	private static final long serialVersionUID = -5337484404562836810L;
 	PageInfo pageInfo = new PageInfo(1,20,5);
 	String context;
-	//String page;
 	String result;
 	
 	private int rows;	//每页记录数
@@ -31,15 +30,6 @@ public class BaseModel implements Serializable {
 	public void setContext(String context){
 		this.context = context;
 	}
-	
-	/*public String getPage(){
-		return page;
-	}
-	
-	public void setPage(String page){
-		this.page = page;
-	}*/
-	
 	public String getResult(){
 		return result;
 	}
