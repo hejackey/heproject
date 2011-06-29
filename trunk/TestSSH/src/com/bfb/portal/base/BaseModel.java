@@ -49,6 +49,9 @@ public class BaseModel implements Serializable {
 	}
 
 	public int getRows() {
+		if(rows == 0)
+			rows = 10;
+		
 		return rows;
 	}
 
@@ -57,6 +60,9 @@ public class BaseModel implements Serializable {
 	}
 
 	public int getPage() {
+		if(page == 0)
+			page = 1;
+		
 		return page;
 	}
 
