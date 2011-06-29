@@ -4,7 +4,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 
 import javax.servlet.http.HttpServletResponse;
-import com.bfb.portal.base.BaseDataGridJson;
+
+import com.bfb.portal.base.model.BaseDataGridJson;
 
 /**
  * 输出json串工具类
