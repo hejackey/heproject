@@ -10,6 +10,7 @@
 		var tt = $('#self_tab_contain');  
 	    if (tt.tabs('exists', title)){  
 	    	tt.tabs('select', title);  
+	    	refreshTab(); 
 	    }
 	    else {  
 	   		 if (href){  
@@ -25,6 +26,15 @@
 	   		 });  
 	    }  
 	}
+	
+	function refreshTab(){  
+	    var refresh_tab = $('#self_tab_contain').tabs('getSelected');  
+	    if(refresh_tab && refresh_tab.find('iframe').length > 0){  
+		    var _refresh_ifram = refresh_tab.find('iframe')[0];  
+	    
+	 	   _refresh_ifram.contentWindow.location.href=_refresh_ifram.src;  
+	    }  
+	}  
 	</script>
 </head>
 <body class="easyui-layout">
