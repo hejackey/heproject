@@ -12,7 +12,7 @@
 			<result name="success" type="freemarker">/WEB-INF/pages/test/form-valid.ftl</result>
 		</action>
 		
-		<action name="list" class="com.bfb.portal.action.TestHelloWorldAction" method="list">
+		<action name="list" class="com.bfb.portal.action.TestHelloWorldAction">
 			<result name="success" type="freemarker">/WEB-INF/pages/test/list.ftl</result>
 		</action>
 		
