@@ -20,6 +20,16 @@
 		</environments>
 		-->
 		
+		<settings>
+			<setting name="cacheEnabled" value="true"/>
+			<setting name="lazyLoadingEnabled" value="true"/>
+			<setting name="multipleResultSetsEnabled" value="true"/>
+			<setting name="useColumnLabel" value="true"/>
+			<setting name="useGeneratedKeys" value="false"/>
+			<setting name="defaultExecutorType" value="SIMPLE"/>
+			<setting name="defaultStatementTimeout" value="25000"/>
+		</settings>
+		
 		<!-- 每个配置文件中的typealias都必须要移到这个文件中，同时必须在mappers标签前面 -->
 		<typeAliases>
 			<typeAlias alias="helloWorld" type="com.bfb.portal.model.HelloWorld" />
