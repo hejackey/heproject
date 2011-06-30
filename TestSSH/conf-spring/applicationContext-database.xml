@@ -16,7 +16,7 @@
 		name="password"><value>zhuozhuo</value></property> </bean>
 	-->
 
-	<!-- 必须要加入更多weblogic的jar包
+	<!-- 必须要加入更多weblogic的jar包-->
 	<bean id="dataSource" class="com.bfb.portal.base.util.EncypDataSource">
 	</bean>
 	<bean id="master"
@@ -39,7 +39,7 @@
 		<property name="username"><value>root</value></property> <property
 		name="password"><value>112071774b69038ed905498d2e632cb2</value></property>
 	</bean>
-	-->
+	<!-- 
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
 			<value>slave_test</value>
@@ -56,6 +56,7 @@
 			<value>slave_test</value>
 		</property>
 	</bean>
+	-->
 
 	<!-- SqlMap setup for iBATIS Database Layer -->
 	<!--
