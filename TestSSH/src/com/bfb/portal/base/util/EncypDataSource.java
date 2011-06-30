@@ -15,10 +15,7 @@ public class EncypDataSource extends DriverManagerDataSource {
 	
 	public void setPassword(String password) {
 		try {
-			System.out.println("src pwd======"+password);
 			this.password = SecurityUtil.decrypt(password);
-			
-			System.out.println("decrypt pwd======"+this.password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
