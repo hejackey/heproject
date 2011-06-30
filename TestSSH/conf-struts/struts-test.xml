@@ -25,7 +25,9 @@
 		</action>
 		
 		<action name="saveHelloWorld" class="com.bfb.portal.action.TestHelloWorldAction" method="saveHelloWorld">
-			<result name="success" type="redirect">list.do</result>
+			<!--<result name="success" type="redirect">list.do</result>
+			-->
+			<result name="success" type="freemarker">/WEB-INF/pages/test/succ.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/pages/test/add.ftl</result>
 		</action>
 		

@@ -16,6 +16,7 @@ public class DataSourceAdvice implements MethodBeforeAdvice, AfterReturningAdvic
 		
 		log.info("切入点: " + target.getClass().getName() + "类中" + method.getName() + "方法");
 		if(method.getName().startsWith("insert") 
+			|| method.getName().startsWith("add") 
 			|| method.getName().startsWith("create")
 			|| method.getName().startsWith("save")
 			|| method.getName().startsWith("edit")

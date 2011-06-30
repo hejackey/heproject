@@ -34,7 +34,7 @@
 	</tx:advice>
      
     <bean id="dataSourceAdvice" class="com.bfb.portal.base.db.DataSourceAdvice" /> 
-	<aop:config proxy-target-class="true">
+	<aop:config>
 		<aop:advisor pointcut="execution(* *..dao..*.*(..))" advice-ref="dataSourceAdvice"/>
 	</aop:config>
 	
