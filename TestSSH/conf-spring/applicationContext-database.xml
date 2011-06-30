@@ -13,8 +13,18 @@
     </bean>  
     -->
      <bean id="dataSource" class="com.bfb.portal.base.util.EncypDataSource">
+		 
+    </bean>  
+    
+     <bean id="master" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		 <property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
-        <property name="url"><value>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
+        <property name="url"><value>jdbc:mysql://localhost:3306/master_test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
+        <property name="username"><value>root</value></property>
+        <property name="password"><value>112071774b69038ed905498d2e632cb2</value></property>
+    </bean>  
+    <bean id="slave" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		 <property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+        <property name="url"><value>jdbc:mysql://localhost:3306/slave_test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
         <property name="username"><value>root</value></property>
         <property name="password"><value>112071774b69038ed905498d2e632cb2</value></property>
     </bean>  
