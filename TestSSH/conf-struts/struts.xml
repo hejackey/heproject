@@ -28,8 +28,8 @@
 			</interceptor-stack>
 		</interceptors>
 		
-		<!-- 默认全局拦截器,多全局拦截器要级联引用 -->
-		<default-interceptor-ref name="multiInterceptorStack"></default-interceptor-ref>
+		<!-- 默认全局拦截器,多全局拦截器要级联引用 
+		<default-interceptor-ref name="multiInterceptorStack"></default-interceptor-ref>-->
 		
 	</package>
 	
