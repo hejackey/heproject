@@ -14,7 +14,8 @@ public class DataSourceSwitcher {
 	}
 
 	public static void setMaster(){
-		clearDataSource();
+		//clearDataSource();
+		setDataSource("master");
     }
 	
 	public static void setSlave() {
@@ -22,7 +23,10 @@ public class DataSourceSwitcher {
 	}
 	
 	public static String getDataSource() {
-		return (String) contextHolder.get();
+		Object o = contextHolder.get();
+		if(o==null)
+			return "slave";
+		return (String) o;
 	}
 
 	public static void clearDataSource() {

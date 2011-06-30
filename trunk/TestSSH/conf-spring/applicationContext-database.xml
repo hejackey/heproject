@@ -16,16 +16,16 @@
 		name="password"><value>zhuozhuo</value></property> </bean>
 	-->
 
-	<!-- 必须要加入更多weblogic的jar包
+	<!-- 必须要加入更多weblogic的jar包112071774b69038ed905498d2e632cb2
 	<bean id="dataSource" class="com.bfb.portal.base.util.EncypDataSource">
 	</bean>-->
 	<bean id="dataSource" class="com.bfb.portal.base.db.DynamicDataSource">
 		 <property name="targetDataSources">  
 	         <map key-type="java.lang.String">  
-	             <entry key="master" value-ref="master" />  
+	             <entry key="slave" value-ref="slave" />  
 	         </map>  
 	     </property>  
-   		 <property name="defaultTargetDataSource" ref="slave" />  
+   		 <property name="defaultTargetDataSource" ref="master" />  
 	</bean>
 	
 	<bean id="master"
@@ -36,7 +36,7 @@
 		<property name="url">
 			<value>jdbc:mysql://localhost:3306/master_test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
 		<property name="username"><value>root</value></property> <property
-		name="password"><value>112071774b69038ed905498d2e632cb2</value></property>
+		name="password"><value>zhuozhuo</value></property>
 	</bean> 
 	
 	<bean id="slave"
@@ -46,7 +46,7 @@
 		<property
 		name="url"><value>jdbc:mysql://localhost:3306/slave_test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
 		<property name="username"><value>root</value></property> <property
-		name="password"><value>112071774b69038ed905498d2e632cb2</value></property>
+		name="password"><value>zhuozhuo</value></property>
 	</bean>
 	<!-- 
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
