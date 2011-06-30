@@ -33,6 +33,11 @@
 		</tx:attributes>
 	</tx:advice>
      
+    <bean id="dataSourceAdvice" class="com.bfb.portal.base.db.DataSourceAdvice" /> 
+	<aop:config proxy-target-class="true">
+		<aop:advisor pointcut="execution(* *..dao..*.*(..))" advice-ref="dataSourceAdvice"/>
+	</aop:config>
+	
 	<bean id="testHelloWorldManager" class="com.bfb.portal.manager.impl.TestHelloWorldManagerImpl">
        <property name="helloWorldDao" ref="helloWorldDao"/>
     </bean>

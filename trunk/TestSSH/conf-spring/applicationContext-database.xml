@@ -16,9 +16,18 @@
 		name="password"><value>zhuozhuo</value></property> </bean>
 	-->
 
-	<!-- 必须要加入更多weblogic的jar包-->
+	<!-- 必须要加入更多weblogic的jar包
 	<bean id="dataSource" class="com.bfb.portal.base.util.EncypDataSource">
+	</bean>-->
+	<bean id="dataSource" class="com.bfb.portal.base.db.DynamicDataSource">
+		 <property name="targetDataSources">  
+	         <map key-type="java.lang.String">  
+	             <entry key="master" value-ref="master" />  
+	         </map>  
+	     </property>  
+   		 <property name="defaultTargetDataSource" ref="slave" />  
 	</bean>
+	
 	<bean id="master"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName">
