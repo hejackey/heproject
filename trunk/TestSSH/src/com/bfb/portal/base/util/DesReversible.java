@@ -168,7 +168,7 @@ public class DesReversible {
 	 */
 	public static void main(String[] args) {
 		try {
-			String test = "zhuozhuo";
+			String test = "frouser";
 			DesReversible des = new DesReversible();
 			System.out.println("加密前的字符：" + test);
 			System.out.println("加密后的字符：" + des.encrypt(test));
