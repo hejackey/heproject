@@ -3,7 +3,36 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-
+	<package name="interceptor-default" extends="struts-default">
+		<interceptors>
+			<!-- 全局拦截器 -->
+			<interceptor name="daynamicDataSource" class="com.bfb.portal.interceptor.DaynamicDataSourceInterceptor"/>
+			<interceptor-stack name="daynamicDataSourceStack">
+				<interceptor-ref name="daynamicDataSource"/>
+				<!-- 必须加 -->
+				<interceptor-ref name="defaultStack"/> 
+			</interceptor-stack>
+			
+			<!-- 级联全局拦截器 -->
+			<interceptor name="multiInterceptor" class="com.bfb.portal.interceptor.MultiInterceptor"/>
+			<interceptor-stack name="multiInterceptorStack">
+				<interceptor-ref name="daynamicDataSourceStack"/> 
+				<interceptor-ref name="multiInterceptor"/>
+			</interceptor-stack>
+			
+			<!-- 局部拦截器 -->
+			<interceptor name="localInterceptor" class="com.bfb.portal.interceptor.LocalInterceptor"/>
+			<interceptor-stack name="localInterceptorStack">
+				<interceptor-ref name="localInterceptor"/> 
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		
+		<!-- 默认全局拦截器,多全局拦截器要级联引用 -->
+		<default-interceptor-ref name="multiInterceptorStack"></default-interceptor-ref>
+		
+	</package>
+	
     <constant name="struts.i18n.reload" value="false" />
     <constant name="struts.configuration.xml.reload" value="true" />
     <constant name="struts.custom.i18n.resources" value="globalMessages" />
@@ -15,8 +44,6 @@
     <constant name="struts.freemarker.manager.classname" value="org.apache.struts2.views.freemarker.FreemarkerManager"/>
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     
-
-    <include file="struts-test.xml"/>
-   
     <!-- Add addition packages and configuration here. -->
+    <include file="struts-test.xml"/>
 </struts>
