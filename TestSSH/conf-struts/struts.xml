@@ -6,9 +6,9 @@
 	<package name="interceptor-default" extends="struts-default">
 		<interceptors>
 			<!-- 全局拦截器 -->
-			<interceptor name="daynamicDataSource" class="com.bfb.portal.interceptor.DaynamicDataSourceInterceptor"/>
-			<interceptor-stack name="daynamicDataSourceStack">
-				<interceptor-ref name="daynamicDataSource"/>
+			<interceptor name="dynamicDataSource" class="com.bfb.portal.interceptor.DynamicDataSourceInterceptor"/>
+			<interceptor-stack name="dynamicDataSourceStack">
+				<interceptor-ref name="dynamicDataSource"/>
 				<!-- 必须加 -->
 				<interceptor-ref name="defaultStack"/> 
 			</interceptor-stack>
@@ -16,7 +16,7 @@
 			<!-- 级联全局拦截器 -->
 			<interceptor name="multiInterceptor" class="com.bfb.portal.interceptor.MultiInterceptor"/>
 			<interceptor-stack name="multiInterceptorStack">
-				<interceptor-ref name="daynamicDataSourceStack"/> 
+				<interceptor-ref name="dynamicDataSourceStack"/> 
 				<interceptor-ref name="multiInterceptor"/>
 			</interceptor-stack>
 			
