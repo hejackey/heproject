@@ -13,7 +13,10 @@ public class HelloWorldDaoImpl extends BaseMybatisDao implements HelloWorldDao {
 	}
 
 	public HelloWorld saveHelloWorld(HelloWorld helloWorld) {
-		this.getSqlSession().insert("HelloWorld.saveHelloWorld",helloWorld);
+		helloWorld.setId(this.createHellWorldSeq());
+		//this.getSqlSession().insert("HelloWorld.saveHelloWorld",helloWorld);
+		this.getSqlSession().insert("HelloWorld.saveHelloWorldAll",helloWorld);
+		
 		return helloWorld;
 	}
 
@@ -23,6 +26,10 @@ public class HelloWorldDaoImpl extends BaseMybatisDao implements HelloWorldDao {
 
 	public List<HelloWorld> getHelloWorldList(HelloWorld model) {
 		return this.getSqlSession().selectList("HelloWorld.getHelloWorldList",model);
+	}
+
+	public int createHellWorldSeq() {
+		return Integer.valueOf(this.getSqlSession().selectOne("HelloWorld.getHellWorldSeq").toString());
 	}
 
 }

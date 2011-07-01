@@ -16,18 +16,21 @@
 		name="password"><value>zhuozhuo</value></property> </bean>
 	-->
 
-	<!-- 必须要加入更多weblogic的jar包112071774b69038ed905498d2e632cb2
-	<bean id="dataSource" class="com.bfb.portal.base.util.EncypDataSource">
-	</bean>-->
+	<!-- 必须要加入更多weblogic的jar包112071774b69038ed905498d2e632cb2-->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	</bean>
+	
+	<!--
 	<bean id="dataSource" class="com.bfb.portal.base.db.DynamicDataSource">
 		 <property name="targetDataSources">  
 	         <map key-type="java.lang.String">  
-	             <entry key="slave" value-ref="slave" />  
+	             <entry key="slave" value-ref="slave" />
+	             <entry key="master" value-ref="master" />    
 	         </map>  
 	     </property>  
    		 <property name="defaultTargetDataSource" ref="master" />  
 	</bean>
-	
+	-->
 	<bean id="master"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName">
@@ -48,7 +51,8 @@
 		<property name="username"><value>root</value></property> <property
 		name="password"><value>zhuozhuo</value></property>
 	</bean>
-	<!-- 
+	
+	<!--
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
 			<value>slave_test</value>
@@ -66,7 +70,6 @@
 		</property>
 	</bean>
 	-->
-
 	<!-- SqlMap setup for iBATIS Database Layer -->
 	<!--
 		<bean id="sqlMapClient"

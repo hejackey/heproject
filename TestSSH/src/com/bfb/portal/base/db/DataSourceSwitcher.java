@@ -14,8 +14,8 @@ public class DataSourceSwitcher {
 	}
 
 	public static void setMaster(){
-		//clearDataSource();
-		setDataSource("master");
+		clearDataSource();
+		//setDataSource("master");
     }
 	
 	public static void setSlave() {
