@@ -25,6 +25,7 @@
     ]]>
 	</select>
 	
+	<!-- use auto generate key -->
 	<insert id="saveHelloWorld" 
 			parameterType="helloWorld" 
 			flushCache="true"
@@ -36,4 +37,19 @@
 		insert into hellworld (str,param) values(#{str},#{param});
     ]]>
     </insert>
+    
+    <insert id="saveHelloWorldAll" 
+			parameterType="helloWorld" 
+			flushCache="true"
+			timeout="20000">
+    <![CDATA[       
+		insert into hellworld (id,str,param) values(#{id},#{str},#{param});
+    ]]>
+    </insert>
+    
+    <select id="getHellWorldSeq" resultType="int">
+    <![CDATA[       
+		SELECT seq('hellworld_seq') as id;
+    ]]>
+	</select>
 </mapper> 

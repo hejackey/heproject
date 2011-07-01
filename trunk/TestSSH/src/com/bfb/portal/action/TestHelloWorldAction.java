@@ -3,8 +3,6 @@ package com.bfb.portal.action;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.bfb.portal.base.action.BaseAction;
 import com.bfb.portal.base.model.BaseDataGridJson;
 import com.bfb.portal.base.util.ResponseUtil;
@@ -36,15 +34,19 @@ public class TestHelloWorldAction extends BaseAction {
 	 * 获取table内容
 	 */
 	public void getListToJson(){
-		int count = testHelloWorldManager.getHelloWorldCount(model);
-		List<HelloWorld> list = testHelloWorldManager.getHelloWorldList(model);
-		
-		BaseDataGridJson<HelloWorld> json = new BaseDataGridJson<HelloWorld>();
-		json.setTotal(count);
-		json.setRows(list);
-		
-		Type type = new TypeToken<BaseDataGridJson<HelloWorld>>() { }.getType();
-		ResponseUtil.printJson(json, this.getResponse(), type);
+		try{
+			int count = testHelloWorldManager.getHelloWorldCount(model);
+			List<HelloWorld> list = testHelloWorldManager.getHelloWorldList(model);
+			
+			BaseDataGridJson<HelloWorld> json = new BaseDataGridJson<HelloWorld>();
+			json.setTotal(count);
+			json.setRows(list);
+			
+			Type type = new TypeToken<BaseDataGridJson<HelloWorld>>() { }.getType();
+			ResponseUtil.printJson(json, this.getResponse(), type);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public String saveHelloWorld(){
