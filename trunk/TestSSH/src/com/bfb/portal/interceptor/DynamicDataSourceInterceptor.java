@@ -11,13 +11,13 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
-public class DaynamicDataSourceInterceptor implements Interceptor {
+public class DynamicDataSourceInterceptor implements Interceptor {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2355843001322874514L;
-	private static Logger log = Logger.getLogger(DaynamicDataSourceInterceptor.class);
+	private static Logger log = Logger.getLogger(DynamicDataSourceInterceptor.class);
 	
 	public void destroy() {
 
