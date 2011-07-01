@@ -11,6 +11,11 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
+/**
+ *拦截器方式动态更新数据源 
+ * @author Administrator
+ *
+ */
 public class DynamicDataSourceInterceptor implements Interceptor {
 
 	/**

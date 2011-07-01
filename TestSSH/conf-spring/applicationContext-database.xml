@@ -18,6 +18,12 @@
 
 	<!-- 必须要加入更多weblogic的jar包112071774b69038ed905498d2e632cb2-->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property
+			name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+		<property
+			name="url"><value>jdbc:mysql://localhost:3306/slave_test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
+		<property name="username"><value>root</value></property> 
+		<property name="password"><value>zhuozhuo</value></property>
 	</bean>
 	
 	<!--
@@ -38,18 +44,18 @@
 		</property>
 		<property name="url">
 			<value>jdbc:mysql://localhost:3306/master_test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
-		<property name="username"><value>root</value></property> <property
-		name="password"><value>zhuozhuo</value></property>
+		<property name="username"><value>root</value></property> 
+		<property name="password"><value>zhuozhuo</value></property>
 	</bean> 
 	
 	<bean id="slave"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property
-		name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+			name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
 		<property
-		name="url"><value>jdbc:mysql://localhost:3306/slave_test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
-		<property name="username"><value>root</value></property> <property
-		name="password"><value>zhuozhuo</value></property>
+			name="url"><value>jdbc:mysql://localhost:3306/slave_test?useUnicode=true&amp;characterEncoding=utf-8</value></property>
+		<property name="username"><value>root</value></property> 
+		<property name="password"><value>zhuozhuo</value></property>
 	</bean>
 	
 	<!--
