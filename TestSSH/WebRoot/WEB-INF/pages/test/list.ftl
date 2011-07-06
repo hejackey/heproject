@@ -17,7 +17,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible:true,
-				url:'getListToJson.do',
+				url:'getListToJson.do?str='+encodeURI($("#str").val())+"&param="+encodeURI($("#param").val()),
 				sortName: 'code',
 				sortOrder: 'desc',
 				remoteSort: false,
@@ -151,8 +151,15 @@
 		<a href="#" onclick="unselectRow()">unselectRow</a>
 		<a href="#" onclick="mergeCells()">mergeCells</a>
 	</div>
+	<form name="form1" method="post" method="action" action="list.do">
+	<div>
+	str:<input type="text" name="str" id="str" value="${model.str?if_exists}">
+	param:<input type="text" name="param" id="param" value="${model.param?if_exists}">
+	<input type="submit" value="查询">
+	
+	</div>
 	
 	<table id="test"></table>
-	
+	<form>
 </body>
 </html>

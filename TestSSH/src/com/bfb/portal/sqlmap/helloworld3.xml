@@ -12,17 +12,33 @@
 	</select>
 	
 	<select id="getHelloWorldList" parameterType="helloWorld" resultType="helloWorld">
-    <![CDATA[       
+          
 		SELECT * FROM hellworld 
+		<where>
+			<if test="str != null and str != '' ">
+				and str like concat('%',#{str},'%')
+			</if>
+			<if test="param != null and param != '' ">
+				and param like concat('%',#{param},'%')
+			</if>		
+		</where>
 		ORDER BY id DESC
 		LIMIT ${pageLimit}
-    ]]>
+   
 	</select>
 	
 	<select id="getHelloWorldCount" parameterType="helloWorld" resultType="int">
-    <![CDATA[       
+         
 		select count(1) from hellworld
-    ]]>
+		<where>
+			<if test="str != null and str != '' ">
+				and str like concat('%',#{str},'%')
+			</if>
+			<if test="param != null and param != '' ">
+				and param like concat('%',#{param},'%')
+			</if>		
+		</where>
+   
 	</select>
 	
 	<!-- use auto generate key -->
