@@ -49,6 +49,9 @@ public class TestHelloWorldAction extends BaseAction {
 		}
 	}
 	
+	/**
+	 * 添加记录
+	 */
 	public String saveHelloWorld(){
 		try{
 			String res = valid.validForm(model);
