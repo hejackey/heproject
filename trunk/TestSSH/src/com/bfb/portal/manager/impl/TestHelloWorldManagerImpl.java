@@ -37,4 +37,8 @@ public class TestHelloWorldManagerImpl implements TestHelloWorldManager {
 		return helloWorldDao.getHelloWorldList(model);
 	}
 
+	public int updateHellworld(HelloWorld model) {
+		return helloWorldDao.updateHellworld(model);
+	}
+
 }
