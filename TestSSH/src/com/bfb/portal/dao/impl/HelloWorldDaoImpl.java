@@ -38,4 +38,9 @@ public class HelloWorldDaoImpl extends BaseIbatisDao implements
 		return 0;
 	}
 
+	public int updateHellworld(HelloWorld model) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

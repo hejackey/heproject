@@ -53,8 +53,13 @@
 			<div class="easyui-accordion" fit="true" border="false">
 				<div title="父级菜单一" style="overflow:auto;" selected="true">
 					 <div class="nav-item">  
-		                <a href="javascript:addTab('子菜单一','list.do')">  
-		                    <span>子菜单一  </span>  
+		                <a href="javascript:addTab('base datagrid','list1.do')">  
+		                    <span>base datagrid  </span>  
+		                </a> 
+		            </div>  
+		             <div class="nav-item">  
+		                <a href="javascript:addTab('datagrid2','list.do')">  
+		                    <span>datagrid2  </span>  
 		                </a> 
 		            </div>  
 		            <div class="nav-item">  

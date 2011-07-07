@@ -11,6 +11,13 @@
     ]]>
 	</select>
 	
+	<update id="updateHellworld" parameterType="helloWorld">
+		update hellworld
+		   set str = #{str},
+			   param = #{param}
+		 where id= #{id}
+	</update>
+	
 	<select id="getHelloWorldList" parameterType="helloWorld" resultType="helloWorld">
           
 		SELECT * FROM hellworld 

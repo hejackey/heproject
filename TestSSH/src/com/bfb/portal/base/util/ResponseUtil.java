@@ -42,4 +42,23 @@ public class ResponseUtil {
 			writer = null;
 		}
 	}
+	
+	public static void printStr(String res,HttpServletResponse response){
+		PrintWriter writer = null;
+		try {
+			response.setCharacterEncoding("utf-8");
+			writer = response.getWriter();
+			//writer.write(res);
+			
+			writer.print(res);
+			writer.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		finally{
+			writer.close();
+			writer = null;
+		}
+	}
 }

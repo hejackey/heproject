@@ -10,4 +10,6 @@ public interface TestHelloWorldManager {
 	public HelloWorld saveHelloWorld(HelloWorld helloWorld);
 	public List<HelloWorld> getHelloWorldList(HelloWorld model);
 	public int getHelloWorldCount(HelloWorld model);
+	
+	public int updateHellworld(HelloWorld model);
 }

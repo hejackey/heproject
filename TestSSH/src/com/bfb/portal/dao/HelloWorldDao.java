@@ -10,4 +10,5 @@ public interface HelloWorldDao {
 	public List<HelloWorld> getHelloWorldList(HelloWorld model);
 	public int getHelloWorldCount(HelloWorld model);
 	public int createHellWorldSeq();
+	public int updateHellworld(HelloWorld model);
 }

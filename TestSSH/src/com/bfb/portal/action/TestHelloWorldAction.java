@@ -35,6 +35,12 @@ public class TestHelloWorldAction extends BaseAction {
 	 */
 	public void getListToJson(){
 		try{
+			if(model.getRows()==0)
+				model.setRows(10);
+			if(model.getPage()==0)
+				model.setPage(1);
+			model.setPageLimit(model.getRows()*(model.getPage()-1)+","+model.getPage());
+			
 			int count = testHelloWorldManager.getHelloWorldCount(model);
 			List<HelloWorld> list = testHelloWorldManager.getHelloWorldList(model);
 			
@@ -72,6 +78,24 @@ public class TestHelloWorldAction extends BaseAction {
 		
 	}
 	
+	public void saveHelloWorldAjax(){
+		try{
+			String res = valid.validForm(model);
+			if(!StringUtil.isEmpty(res)){
+				this.addFieldError("formErr", res);
+				ResponseUtil.printStr("", this.getResponse());
+			}
+			
+			testHelloWorldManager.updateHellworld(model);
+			ResponseUtil.printStr("{'success':'true'}", this.getResponse());
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			this.addFieldError("formErr", "保存出错!");
+			ResponseUtil.printStr("", this.getResponse());
+			
+		}
+	}
 	public HelloWorld getModel() {
 		return model;
 	}
@@ -82,5 +106,9 @@ public class TestHelloWorldAction extends BaseAction {
 	
 	public void setTestHelloWorldManager(TestHelloWorldManager testHelloWorldManager) {
 		this.testHelloWorldManager = testHelloWorldManager;
+	}
+
+	public void setModel(HelloWorld model) {
+		this.model = model;
 	}
 }
