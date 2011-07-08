@@ -11,7 +11,7 @@ public class HelloWorld extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 8501562069162474242L;
 	private String str;
 	private String param;
-	private int id;
+	private String id;
 	
 	public String getStr() {
 		return str;
@@ -29,11 +29,11 @@ public class HelloWorld extends BaseModel implements Serializable{
 		this.param = param;
 	}
 
-	public int getId() {
-		return id;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public String getId() {
+		return id;
 	}
 }

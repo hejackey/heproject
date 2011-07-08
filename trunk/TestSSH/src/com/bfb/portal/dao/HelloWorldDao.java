@@ -11,5 +11,5 @@ public interface HelloWorldDao {
 	public int getHelloWorldCount(HelloWorld model);
 	public int createHellWorldSeq();
 	public int updateHellworld(HelloWorld model);
-	public int delHelloWorld(int id);
+	public int delHelloWorld(String id);
 }

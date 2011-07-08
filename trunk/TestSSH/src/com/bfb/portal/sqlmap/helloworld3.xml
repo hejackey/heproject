@@ -76,7 +76,10 @@
     ]]>
 	</select>
 	
-	<delete id="delHelloWorld" parameterType="int">
-		delete from hellworld where id=#{id}
+	<delete id="delHelloWorld">
+		delete from hellworld where id in
+		<foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
 	</delete>
 </mapper> 

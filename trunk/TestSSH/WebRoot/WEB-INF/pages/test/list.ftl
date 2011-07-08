@@ -18,10 +18,10 @@
 				striped: true,
 				collapsible:true,
 				url:'getListToJson.do?str='+encodeURI($("#str").val())+"&param="+encodeURI($("#param").val()),
-				sortName: 'code',
+				sortName: 'id',
 				sortOrder: 'desc',
 				remoteSort: false,
-				idField:'code',
+				idField:'id',
 				frozenColumns:[[
 	                {field:'ck',checkbox:true},
 	                {title:'id',field:'id',width:80,sortable:true,
@@ -49,7 +49,7 @@
 				rownumbers:true,
 				toolbar:[{
 					id:'btnadd',
-					text:'Add',
+					text:'添加',
 					iconCls:'icon-add',
 					handler:function(){
 						$('#dlg').dialog('open').dialog('setTitle','New User');  
@@ -59,7 +59,7 @@
 					}
 				},{
 					id:'btncut',
-					text:'Cut',
+					text:'删除',
 					iconCls:'icon-cut',
 					handler:function(){
 						removeUser();
@@ -113,12 +113,23 @@
 				alert(selected.id+":"+selected.str+":"+selected.param);
 			}
 		}
+		
+		function getSelections(){
+			var ids = [];
+			var rows = $('#test').datagrid('getSelections');
+			
+			for(var i=0;i<rows.length;i++){
+				ids.push(rows[i].id);
+			}
+			
+		}
 	</script>
 </head>
 <body>
 	<h1>DataGrid</h1>
 	<div style="margin-bottom:10px;">
 		<a href="#" onclick="getSelected()">getSelected</a>
+		<a href="#" onclick="getSelections()">getSelections</a>
 	</div>
 	<form name="form1" method="post" method="action" action="list.do">
 	<div>
@@ -200,11 +211,18 @@
     }
     
     function removeUser(){  
-        var row = $('#test').datagrid('getSelected');  
+        //var row = $('#test').datagrid('getSelected');
+        var ids=[];  
+        var row = $('#test').datagrid('getSelections');
+			
+		for(var i=0;i<row.length;i++){
+			ids.push(row[i].id);
+		}
+		
         if (row){  
             $.messager.confirm('Confirm','确认删除本条记录?',function(r){  
                 if (r){  
-                    $.post('delHelloWorldAjax.do',{id:row.id},function(result){  
+                    $.post('delHelloWorldAjax.do',{id:ids.join(",")},function(result){  
                     	
                         if (result.success){  
                             $('#test').datagrid('reload');    // reload the user data  
