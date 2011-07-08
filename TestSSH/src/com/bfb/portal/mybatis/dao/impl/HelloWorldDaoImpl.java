@@ -36,4 +36,8 @@ public class HelloWorldDaoImpl extends BaseMybatisDao implements HelloWorldDao {
 		return this.getSqlSession().update("HelloWorld.updateHellworld",model);
 	}
 
+	public int delHelloWorld(int id) {
+		return this.getSqlSession().delete("HelloWorld.delHelloWorld", id);
+	}
+
 }

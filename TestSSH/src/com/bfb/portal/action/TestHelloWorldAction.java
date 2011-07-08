@@ -74,27 +74,10 @@ public class TestHelloWorldAction extends BaseAction {
 		}
 		
 	}
-	
-	public void updateHelloWorldAjax(){
-		try{
-			String res = valid.validForm(model);
-			if(!StringUtil.isEmpty(res)){
-				this.addFieldError("formErr", res);
-				ResponseUtil.printStr("", this.getResponse());
-				return;
-			}
-			
-			testHelloWorldManager.updateHellworld(model);
-			ResponseUtil.printStr("{'success':'true'}", this.getResponse());
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			this.addFieldError("formErr", "异常!");
-			ResponseUtil.printStr("", this.getResponse());
-			
-		}
-	}
-	
+
+	/**
+	 * 保存记录
+	 */
 	public void saveHelloWorldAjax(){
 		try{
 			String res = valid.validForm(model);
@@ -106,6 +89,45 @@ public class TestHelloWorldAction extends BaseAction {
 			
 			testHelloWorldManager.saveHelloWorld(model);
 			ResponseUtil.printStr("{'success':'true'}", this.getResponse());
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			this.addFieldError("formErr", "异常!");
+			ResponseUtil.printStr("", this.getResponse());
+			
+		}
+	}
+	
+	/**
+	 * 更新记录
+	 */
+	public void updateHelloWorldAjax(){
+		try{
+			String res = valid.validForm(model);
+			if(!StringUtil.isEmpty(res)){
+				this.addFieldError("formErr", res);
+				ResponseUtil.printStr("", this.getResponse());
+				return;
+			}
+			
+			testHelloWorldManager.updateHellworld(model);
+			ResponseUtil.printStr("{\"success\":\"true\"}", this.getResponse());
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			this.addFieldError("formErr", "异常!");
+			ResponseUtil.printStr("", this.getResponse());
+			
+		}
+	}
+	
+	/**
+	 * 删除记录
+	 */
+	public void delHelloWorldAjax(){
+		try{
+			testHelloWorldManager.delHelloWorld(model.getId());
+			ResponseUtil.printStr("{\"success\":\"true\"}", this.getResponse());
 			
 		}catch(Exception e){
 			e.printStackTrace();

@@ -116,6 +116,27 @@
             }  
         }); 
     }
+    
+    function removeUser(){  
+        var row = $('#dg').datagrid('getSelected');  
+        if (row){  
+            $.messager.confirm('Confirm','确认删除本条记录?',function(r){  
+                if (r){  
+                    $.post('delHelloWorldAjax.do',{id:row.id},function(result){  
+                    	
+                        if (result.success){  
+                            $('#dg').datagrid('reload');    // reload the user data  
+                        } else {  
+                            $.messager.show({   // show error message  
+                                title: 'Error',  
+                                msg: result.msg  
+                            });  
+                        }  
+                    },'json');  
+                }  
+            });  
+        }  
+    }  
     </script>
 </body>
 </html>
