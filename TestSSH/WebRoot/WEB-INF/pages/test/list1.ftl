@@ -7,10 +7,10 @@
 	<link rel="stylesheet" type="text/css" href="${base}/web/css/easyui/icon.css">
 	<script type="text/javascript" src="${base}/web/js/easyui/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript" src="${base}/web/js/easyui/jquery.easyui.min.js"></script>
+	
 </head>
 <body>	    
-    <table id="dg" title="My Users" class="easyui-datagrid" style="width:650px;height:450px"  
-            url="getListToJson.do"  
+    <table id="dg" title="My Users" class="easyui-datagrid" style="width:650px;height:450px"  url="getListToJson.do"
             toolbar="#toolbar"  
             rownumbers="true" fitColumns="true" singleSelect="true">  
         <thead>  
@@ -22,6 +22,7 @@
             </tr>  
         </thead>  
     </table>  
+    
     <div id="toolbar">  
         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New</a>  
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit</a>  
