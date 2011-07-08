@@ -12,4 +12,5 @@ public interface TestHelloWorldManager {
 	public int getHelloWorldCount(HelloWorld model);
 	
 	public int updateHellworld(HelloWorld model);
+	public int delHelloWorld(int id);
 }
