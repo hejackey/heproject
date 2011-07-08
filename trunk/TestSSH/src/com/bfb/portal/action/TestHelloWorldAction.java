@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.bfb.portal.base.action.BaseAction;
 import com.bfb.portal.base.model.BaseDataGridJson;
-import com.bfb.portal.base.util.IpUtil;
 import com.bfb.portal.base.util.ResponseUtil;
 import com.bfb.portal.manager.TestHelloWorldManager;
 import com.bfb.portal.model.HelloWorld;
@@ -36,14 +35,9 @@ public class TestHelloWorldAction extends BaseAction {
 	 */
 	public void getListToJson(){
 		try{
-			System.out.println(IpUtil.getClientAddress(this.getRequest()));
-			
-			if(model.getRows()==0)
-				model.setRows(10);
-			if(model.getPage()==0)
-				model.setPage(1);
-			model.setPageLimit(model.getRows()*(model.getPage()-1)+","+model.getPage());
-			
+			model.getRows();
+			model.getPage();
+			model.getPageLimit();
 			int count = testHelloWorldManager.getHelloWorldCount(model);
 			List<HelloWorld> list = testHelloWorldManager.getHelloWorldList(model);
 			
@@ -81,12 +75,13 @@ public class TestHelloWorldAction extends BaseAction {
 		
 	}
 	
-	public void saveHelloWorldAjax(){
+	public void updateHelloWorldAjax(){
 		try{
 			String res = valid.validForm(model);
 			if(!StringUtil.isEmpty(res)){
 				this.addFieldError("formErr", res);
 				ResponseUtil.printStr("", this.getResponse());
+				return;
 			}
 			
 			testHelloWorldManager.updateHellworld(model);
@@ -94,11 +89,32 @@ public class TestHelloWorldAction extends BaseAction {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			this.addFieldError("formErr", "保存出错!");
+			this.addFieldError("formErr", "异常!");
 			ResponseUtil.printStr("", this.getResponse());
 			
 		}
 	}
+	
+	public void saveHelloWorldAjax(){
+		try{
+			String res = valid.validForm(model);
+			if(!StringUtil.isEmpty(res)){
+				this.addFieldError("formErr", res);
+				ResponseUtil.printStr("", this.getResponse());
+				return;
+			}
+			
+			testHelloWorldManager.saveHelloWorld(model);
+			ResponseUtil.printStr("{'success':'true'}", this.getResponse());
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			this.addFieldError("formErr", "异常!");
+			ResponseUtil.printStr("", this.getResponse());
+			
+		}
+	}
+	
 	public HelloWorld getModel() {
 		return model;
 	}
@@ -109,9 +125,5 @@ public class TestHelloWorldAction extends BaseAction {
 	
 	public void setTestHelloWorldManager(TestHelloWorldManager testHelloWorldManager) {
 		this.testHelloWorldManager = testHelloWorldManager;
-	}
-
-	public void setModel(HelloWorld model) {
-		this.model = model;
 	}
 }
