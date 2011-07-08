@@ -24,17 +24,23 @@
 				idField:'code',
 				frozenColumns:[[
 	                {field:'ck',checkbox:true},
-	                {title:'id',field:'id',width:80,sortable:true}
+	                {title:'id',field:'id',width:80,sortable:true,
+	                	formatter:function(value,rowData,rowIndex){
+                            //function里面的三个参数代表当前字段值，当前行数据对象，行号（行号从0开始）
+                            return "<a href='#' onclick='openWindow()'>"+value+"</a>";  
+
+                       }
+	                }
 				]],
 				columns:[[
 			        {title:'Base Information',colspan:2},
 			       // {title:'Another Information',colspan:2},
-					{title:'str',field:'str',width:130,align:'center', rowspan:2
+					{title:'str1',field:'str',width:130,align:'center', rowspan:2
 					},
-					{title:'param',field:'param',width:130,align:'center',rowspan:2}
+					{title:'param1',field:'param',width:130,align:'center',rowspan:2}
 				],[
-					{field:'str',title:'Name',width:130},
-					{field:'param',title:'Address',width:130,rowspan:2,sortable:true,
+					{title:'Name2',field:'str',width:130},
+					{title:'Address2',field:'param',width:130,rowspan:2,sortable:true,
 						sorter:function(a,b){
 							return (a>b?1:-1);
 						}
@@ -65,7 +71,18 @@
 						$('#btnsave').linkbutton('enable');
 						alert('cut')
 					}
-				},'-',{
+				},
+				{
+					id:'btnUpdate',
+					text:'修改',
+					iconCls:'icon-cut',
+					handler:function(){
+						var selected = $('#test').datagrid('getSelected');
+						
+						alert('要修改的记录ID：'+selected.id);
+					}
+				},
+				'-',{
 					id:'btnsave',
 					text:'Save',
 					disabled:true,
@@ -105,8 +122,9 @@
 		}
 		function getSelected(){
 			var selected = $('#test').datagrid('getSelected');
+			
 			if (selected){
-				alert(selected.str+":"+selected.param);
+				alert(selected.id+":"+selected.str+":"+selected.param);
 			}
 		}
 		function getSelections(){
@@ -137,6 +155,11 @@
 				colspan:2
 			});
 		}
+		
+		function openWindow(){
+			$("#w").window('open');		
+		}
+		
 	</script>
 </head>
 <body>
@@ -160,6 +183,33 @@
 	</div>
 	
 	<table id="test"></table>
-	<form>
+	</form>
+	<form name="formadd" method="post" action="saveHelloWorld.do">
+	    <div id="win" iconCls="icon-save" title="My Window">  
+      Window Content  
+    	id:id
+				<br/>
+			
+				str:<input type="text" name="str" id="str1" value="${model.str?if_exists}">
+	param:<input type="text" name="param" id="param1" value="${model.param?if_exists}">
+				<br/>
+				<input type="button" onclick="saveHw()" value="保存"/>
+		</div>  
+			
+	</form>
+	<script>
+	$('#win').window({  
+	    width:650,  
+	    height:300, 
+	    title:"test window",
+	    modal:false
+	});  
+
+	function saveHw(){
+		
+		//document.formadd.action="saveHelloWorld.do?str="+$("#str1").val();
+		document.formadd.submit();
+	}
+	</script>
 </body>
 </html>

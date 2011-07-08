@@ -36,6 +36,9 @@
 		<action name="saveHelloWorldAjax" class="com.bfb.portal.action.TestHelloWorldAction" method="saveHelloWorldAjax">
 		</action>
 		
+		<action name="updateHelloWorldAjax" class="com.bfb.portal.action.TestHelloWorldAction" method="updateHelloWorldAjax">
+		</action>
+		
 		<action name="layout" class="com.bfb.portal.action.TestHelloWorldAction">
 			<result name="success" type="freemarker">/WEB-INF/pages/test/layout.ftl</result>
 		</action>
