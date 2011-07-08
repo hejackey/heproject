@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.bfb.portal.base.action.BaseAction;
 import com.bfb.portal.base.model.BaseDataGridJson;
+import com.bfb.portal.base.util.IpUtil;
 import com.bfb.portal.base.util.ResponseUtil;
 import com.bfb.portal.manager.TestHelloWorldManager;
 import com.bfb.portal.model.HelloWorld;
@@ -35,6 +36,8 @@ public class TestHelloWorldAction extends BaseAction {
 	 */
 	public void getListToJson(){
 		try{
+			System.out.println(IpUtil.getClientAddress(this.getRequest()));
+			
 			if(model.getRows()==0)
 				model.setRows(10);
 			if(model.getPage()==0)
