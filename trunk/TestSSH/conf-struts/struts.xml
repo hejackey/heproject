@@ -46,4 +46,5 @@
     
     <!-- Add addition packages and configuration here. -->
     <include file="struts-test.xml"/>
+    <include file="struts-editor.xml"/>
 </struts>

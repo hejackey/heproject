@@ -5,7 +5,7 @@
 	<title>jQuery EasyUI</title>
 	<link rel="stylesheet" type="text/css" href="${base}/web/css/easyui/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${base}/web/css/easyui/icon.css">
-	<script type="text/javascript" src="${base}/web/js/easyui/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="${base}/web/js/jquery/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript" src="${base}/web/js/easyui/jquery.easyui.min.js"></script>
 	<script>
 		$(function(){
