@@ -17,6 +17,7 @@
     </tx:advice>
      -->
     <!-- 事物控制 -->
+    <!--
 	<aop:config>
 		<aop:advisor pointcut="execution(* *..manager..*.*(..))"
 			advice-ref="txAdvice" />
@@ -32,6 +33,17 @@
 			<tx:method name="*" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
+	  -->
+	<aop:config proxy-target-class="true">
+        <aop:advisor pointcut="execution(* *..manager..*.*(..))" advice-ref="txAdvice"/>
+    </aop:config>
+    
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+         <tx:attributes>
+             <tx:method name="get*" read-only="true"/>
+             <tx:method name="*" rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
      
     <!--  
     <bean id="dataSourceAdvice" class="com.bfb.portal.base.db.DataSourceAdvice" /> 
