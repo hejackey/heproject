@@ -43,4 +43,7 @@
        <property name="helloWorldDao" ref="helloWorldDao"/>
     </bean>
 	
+	<bean id="contableManager" class="com.bfb.portal.manager.impl.ContableManagerImpl">
+		<property name="contableDao" ref="contableDao" />
+	</bean>
 </beans>

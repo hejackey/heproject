@@ -8,5 +8,12 @@
 			<result name="success" type="freemarker">/WEB-INF/pages/editor/xheditor.ftl</result>
 		</action>
 		
+		<action name="saveXheditor" class="com.bfb.portal.action.XheditorAction" method="saveXheditor">
+			<result name="success" type="freemarker">/WEB-INF/pages/editor/edit.ftl</result>
+		</action>
+		
+		<action name="list" class="com.bfb.portal.action.XheditorAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/pages/editor/list.ftl</result>
+		</action>
 	</package>
 </struts>

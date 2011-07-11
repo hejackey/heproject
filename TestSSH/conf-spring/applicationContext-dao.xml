@@ -15,4 +15,8 @@
 	<bean id="helloWorldDao" class="com.bfb.portal.mybatis.dao.impl.HelloWorldDaoImpl">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
+	
+	<bean id="contableDao" class="com.bfb.portal.mybatis.dao.impl.ContableDaoImpl">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 </beans>
