@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>jQuery EasyUI</title>
 	<link rel="stylesheet" type="text/css" href="${base}/web/css/easyui/default/easyui.css">
-	<script type="text/javascript" src="${base}/web/js/easyui/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="${base}/web/js/jquery/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript" src="${base}/web/js/easyui/jquery.easyui.min.js"></script>
 	<script>
 	function addTab(title,href){
@@ -57,9 +57,14 @@
 		                    <span>base datagrid  </span>  
 		                </a> 
 		            </div>  
-		             <div class="nav-item">  
+		            <div class="nav-item">  
 		                <a href="javascript:addTab('datagrid2','list.do')">  
 		                    <span>datagrid2  </span>  
+		                </a> 
+		            </div>  
+		            <div class="nav-item">  
+		                <a href="javascript:addTab('xheditor演示','${base}/editor/xheditor.do')">  
+		                    <span>xheditor演示</span>  
 		                </a> 
 		            </div>  
 		            <div class="nav-item">  
