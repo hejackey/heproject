@@ -33,10 +33,12 @@
 		<!-- 每个配置文件中的typealias都必须要移到这个文件中，同时必须在mappers标签前面 -->
 		<typeAliases>
 			<typeAlias alias="helloWorld" type="com.bfb.portal.model.HelloWorld" />
+			<typeAlias alias="contable" type="com.bfb.portal.model.XeditorModel" />
 		</typeAliases>
 		
 		<!-- 列出映射文件 -->
 		<mappers>
 			<mapper resource="com/bfb/portal/sqlmap/helloworld3.xml" />
+			<mapper resource="com/bfb/portal/sqlmap/contable.xml" />
 		</mappers>
 	</configuration> 

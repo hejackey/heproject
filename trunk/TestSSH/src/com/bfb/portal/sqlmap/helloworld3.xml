@@ -7,7 +7,7 @@
 	<select id="getHelloWorld" parameterType="string" resultType="helloWorld">
     <![CDATA[       
 		select * from hellworld
-		where id=#{userid} 
+		where id=#{id} 
     ]]>
 	</select>
 	
