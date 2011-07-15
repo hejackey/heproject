@@ -1,4 +1,4 @@
-package com.bfb.portal.base.db;
+/*package com.bfb.portal.base.db;
 
 
 import java.lang.reflect.Method;
@@ -43,3 +43,4 @@ public class DataSourceAdvice implements MethodBeforeAdvice, AfterReturningAdvic
 	}
 
 }
+*/

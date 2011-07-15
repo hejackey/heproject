@@ -2,6 +2,8 @@ package com.bfb.portal.manager.impl;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.bfb.portal.dao.HelloWorldDao;
 import com.bfb.portal.manager.TestHelloWorldManager;
 import com.bfb.portal.model.HelloWorld;
@@ -25,10 +27,17 @@ public class TestHelloWorldManagerImpl implements TestHelloWorldManager {
 		this.helloWorldDao = helloWorldDao;
 	}
 
-	public HelloWorld saveHelloWorld(HelloWorld helloWorld) {
-		 helloWorldDao.saveHelloWorld(helloWorld);
-		 Integer.valueOf("ab");
-		 return helloWorld;
+	@Transactional
+	public HelloWorld saveHelloWorld(HelloWorld helloWorld) throws Exception {
+		try{
+			 helloWorldDao.saveHelloWorld(helloWorld);
+			
+			 return helloWorld;
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new Exception();
+			//return null;
+		}
 	}
 
 	public int getHelloWorldCount(HelloWorld model) {

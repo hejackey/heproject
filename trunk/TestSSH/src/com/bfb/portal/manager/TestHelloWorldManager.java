@@ -7,7 +7,7 @@ import com.bfb.portal.model.HelloWorld;
 public interface TestHelloWorldManager {
 	public String sayHello(String arg);
 	public HelloWorld getHelloWorld(int id);
-	public HelloWorld saveHelloWorld(HelloWorld helloWorld);
+	public HelloWorld saveHelloWorld(HelloWorld helloWorld)throws Exception;
 	public List<HelloWorld> getHelloWorldList(HelloWorld model);
 	public int getHelloWorldCount(HelloWorld model);
 	
