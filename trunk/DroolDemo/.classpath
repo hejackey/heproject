@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="drools-core-5.2.0.Final.jar"/>
+	<classpathentry kind="lib" path="drools-compiler-5.2.0.Final.jar"/>
+	<classpathentry kind="lib" path="knowledge-api-5.2.0.Final.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="org.eclipse.jdt.core_3.4.4.v_894_R34x.jar"/>
+	<classpathentry kind="lib" path="antlr-runtime-3.3.jar"/>
+	<classpathentry kind="lib" path="mvel2-2.1.0.drools2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
