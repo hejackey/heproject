@@ -1,0 +1,23 @@
+package com.bfb.drool.drl
+import com.bfb.drool.model.*
+
+rule "age less 18"
+	when 
+		$a : Application( age < 18 )
+	then
+		$a.setValid( false );
+end
+	
+rule "age greater 18"	
+	when 
+		$b : Application( age >= 18 )
+	then
+		$b.setValid( true );	
+end
+
+rule "date greater 2011-08-19"	
+	when 
+		$b : Applicant( date >= "19-°ËÔÂ-2011" )
+	then
+		$b.setValid( true );	
+end
