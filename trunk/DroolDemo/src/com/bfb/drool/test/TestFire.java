@@ -1,17 +1,14 @@
 package com.bfb.drool.test;
 
 import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
-import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
 import com.bfb.drool.model.stateful.Alarm;
 import com.bfb.drool.model.stateful.Fire;
 import com.bfb.drool.model.stateful.Room;
 import com.bfb.drool.model.stateful.Sprinkler;
+import com.bfb.drool.util.DroolUtil;
 
 public class TestFire {
 
@@ -19,15 +16,8 @@ public class TestFire {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		kbuilder.add( ResourceFactory.newClassPathResource( "stateful.drl", TestFire.class ),
-				ResourceType.DRL );
-		if ( kbuilder.hasErrors() ) {
-			System.err.println( kbuilder.getErrors().toString() );
-		}
-		
-		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-		kbase.addKnowledgePackages( kbuilder.getKnowledgePackages() );
+		KnowledgeBuilder kbuilder = DroolUtil.getKnowlegeBuilder("stateful.drl", new TestFire());
+		KnowledgeBase kbase = DroolUtil.getKnowledgeBase(kbuilder);
 		StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 		
 		StatefulKnowledgeSession ksession2 = kbase.newStatefulKnowledgeSession();

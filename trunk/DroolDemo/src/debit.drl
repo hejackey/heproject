@@ -1,0 +1,13 @@
+rule "decrease balance for debits"
+when
+	ap : AccountPeriod()
+	acc : Account( $accountNo :
+	accountNo )
+	CashFlow( type == DEBIT,
+	accountNo == $accountNo,
+	date >= ap.start && <=
+	ap.end,
+	$amount : amount )
+then
+	acc.balance -= $amount;
+end

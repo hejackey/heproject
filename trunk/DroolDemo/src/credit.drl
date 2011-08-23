@@ -1,0 +1,14 @@
+package com.bfb.drool
+import com.bfb.drool.model.mix.*
+
+rule "increase balance for credits"
+when
+	ap : AccountPeriod()
+	acc : Account( $accountNo : accountNo )
+	CashFlow( type == 2,
+				accountNo == $accountNo,
+				date >= ap.start && <= ap.end,
+				$amount : amount )
+then
+	acc.balance += $amount;
+end
