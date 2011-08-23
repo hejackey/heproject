@@ -26,7 +26,13 @@ public class TestCashFlow {
 		ap.setEnd(new Date());
 		
 		Account ac = new Account(1l);
-		CashFlow cf = new CashFlow(2,11,new Date(),12.5);
+		/*CashFlow cf = new CashFlow();
+		cf.setType(2);
+		cf.setAccountNo(1l);
+		cf.setDate(new Date());
+		cf.setAmount(20.34);*/
+		CashFlow cf = new CashFlow(2,1l,new Date(),20.18);
+		
 		ksession.insert(ap);
 		ksession.insert(ac);
 		ksession.insert(cf);
