@@ -21,7 +21,13 @@ public class TestHelloWorldAction extends BaseAction {
 	public HelloWorld model = new HelloWorld();
 	private TestHelloWorldManager testHelloWorldManager;
 	private BaseValidator valid = new HelloWorldValidator();
+	private int unsafeParam;	//类变量多线程下是安全的
 	
+	public String layout(){
+		unsafeParam=2;
+		System.out.println("layout==========="+unsafeParam);
+		return SUCCESS;
+	}
 	public String helloWorld(){
 		model = testHelloWorldManager.getHelloWorld(3);
 		if(model==null)
@@ -47,6 +53,8 @@ public class TestHelloWorldAction extends BaseAction {
 			
 			Type type = new TypeToken<BaseDataGridJson<HelloWorld>>() { }.getType();
 			ResponseUtil.printJson(json, this.getResponse(), type);
+			
+			System.out.println("getListToJson==========="+unsafeParam);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

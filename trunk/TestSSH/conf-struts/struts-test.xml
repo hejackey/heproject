@@ -42,7 +42,7 @@
 		<action name="delHelloWorldAjax" class="com.bfb.portal.action.TestHelloWorldAction" method="delHelloWorldAjax">
 		</action>
 		
-		<action name="layout" class="com.bfb.portal.action.TestHelloWorldAction">
+		<action name="layout" class="com.bfb.portal.action.TestHelloWorldAction" method="layout">
 			<result name="success" type="freemarker">/WEB-INF/pages/test/layout.ftl</result>
 		</action>
 		
