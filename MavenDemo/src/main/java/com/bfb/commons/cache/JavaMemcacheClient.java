@@ -1,5 +1,6 @@
 package com.bfb.commons.cache;
 
+import com.bfb.commons.properties.PropertiesUtil;
 import com.danga.MemCached.MemCachedClient;
 import com.danga.MemCached.SockIOPool;
 
@@ -7,7 +8,7 @@ public class JavaMemcacheClient {
 	protected static final MemCachedClient mcc = new MemCachedClient();
 
 	static {
-		String serversV = "10.10.1.206:11211";	//使用magent的代理缓存服务器地址
+		String serversV = PropertiesUtil.getValueFromPropertyByKey("config.properties", "MEMCACHE_SERVER");	//使用magent的代理缓存服务器地址
 		String weightsV = "1";
 
 		String[] servers = serversV.split(",");
@@ -60,36 +61,10 @@ public class JavaMemcacheClient {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/*MemCachedClient mcc = JavaMemcacheClient.getmcc();
-		
-		int i;
-		long time1 = System.currentTimeMillis();
-		for(i=500;i<1500;i++){
-			mcc.set("javamemcache_"+i, "Hello,xmemcached_"+i);
-			//mcc.delete("javamemcache_"+i);
-		}
-		long time2 = System.currentTimeMillis();
-		System.out.println("总缓存数500，耗时："+(time2-time1));*/
-		
-		
 		MemCachedClient memcachedClient = JavaMemcacheClient.getmcc();
 		for(int i=0;i<100;i++){
 			memcachedClient.set("mobile_"+i,"12345");
 		}
-		
-		/*for(int j=0;j<100;j++){
-			System.out.println(memcachedClient.get("mobile_"+j));
-		}
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-		/*for(int i=0;i<50;i++){
-			new JavaMemcacheThread(memcachedClient).start();
-		}
-		long time2= System.currentTimeMillis();
-		System.out.println("线程数10，耗时："+(time2-time1));*/
 	}
 	
 	static class JavaMemcacheThread extends Thread{
