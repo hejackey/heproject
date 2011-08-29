@@ -71,7 +71,6 @@ public class JavaMemcacheClient {
 		long time2 = System.currentTimeMillis();
 		System.out.println("总缓存数500，耗时："+(time2-time1));*/
 		
-		long time1= System.currentTimeMillis();
 		
 		MemCachedClient memcachedClient = JavaMemcacheClient.getmcc();
 		for(int i=0;i<100;i++){
