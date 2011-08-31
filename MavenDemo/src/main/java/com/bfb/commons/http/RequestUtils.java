@@ -355,4 +355,28 @@ public class RequestUtils{
             return defaultNum;
         }
     }
+    
+	/**
+	 * 根据requst请求获取域名
+	 * @param request	httpservletrequest
+	 * @return	返回域名
+	 */
+	public static String getDomain(HttpServletRequest request) {
+		try {
+
+			String url = request.getHeader("Referer");
+			// 去掉请求头
+			url = url.replaceAll("http://", "");
+
+			// 获取请求地址中第一个“/”的位置
+			int index = url.indexOf("/");
+
+			// 如果有“/”,那么将“/”和“/”后面的字符串省略掉。
+			if (index != -1)
+				url = url.substring(0, index);
+			return url;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }
