@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  *
  */
 
-public class Money implements Comparable, Serializable {
+public class Money implements Comparable<Object>, Serializable {
 	/**
 	 * 
 	 */
