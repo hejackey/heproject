@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="test-default" extends="interceptor-default" namespace="/test">
+		<action name="helloWorld" class="com.bfb.portal.action.TestHelloWorldAction" method="helloWorld">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/test.ftl</result>
+		</action>
+		
+		<action name="formValid" class="com.bfb.portal.action.TestHelloWorldAction">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/form-valid.ftl</result>
+		</action>
+		
+		<action name="list" class="com.bfb.portal.action.TestHelloWorldAction">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/list.ftl</result>
+		</action>
+		
+		<action name="list1" class="com.bfb.portal.action.TestHelloWorldAction">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/list1.ftl</result>
+		</action>
+		
+		<action name="getListToJson" class="com.bfb.portal.action.TestHelloWorldAction" method="getListToJson">
+			<interceptor-ref name="localInterceptorStack"/>
+		</action>
+		
+		<action name="add" class="com.bfb.portal.action.TestHelloWorldAction">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/add.ftl</result>
+		</action>
+		
+		<action name="saveHelloWorld" class="com.bfb.portal.action.TestHelloWorldAction" method="saveHelloWorld">
+			<result name="success" type="redirect">list.do</result>
+			<result name="input" type="freemarker">/WEB-INF/pages/test/add.ftl</result>
+		</action>
+		
+		<action name="saveHelloWorldAjax" class="com.bfb.portal.action.TestHelloWorldAction" method="saveHelloWorldAjax">
+		</action>
+		
+		<action name="updateHelloWorldAjax" class="com.bfb.portal.action.TestHelloWorldAction" method="updateHelloWorldAjax">
+		</action>
+		
+		<action name="delHelloWorldAjax" class="com.bfb.portal.action.TestHelloWorldAction" method="delHelloWorldAjax">
+		</action>
+		
+		<action name="layout" class="com.bfb.portal.action.TestHelloWorldAction" method="layout">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/layout.ftl</result>
+		</action>
+		
+		<action name="queryHelloWorld" class="com.bfb.portal.action.TestHelloWorldAction" method="queryHelloWorld">
+			<result name="success" type="freemarker">/WEB-INF/pages/test/list.ftl</result>
+		</action>
+		
+	</package>
+</struts>

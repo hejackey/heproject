@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="contable">
+	<cache/>
+	
+	<resultMap type="com.bfb.portal.model.XeditorModel" id="conTableResMap">
+		<id property="id" column="id"/>
+		<result property="conValue" column="con_value"/>
+		<association property="hellWorld" column="h_id" javaType="helloWorld">
+			<id property="id" column="id"/>
+			<result property="str" column="str"/>
+			<result property="param" column="param"/>
+		</association>
+	</resultMap>
+	
+	<!-- use auto generate key -->
+	<insert id="saveContable" 
+			parameterType="contable" 
+			flushCache="true"
+			statementType="PREPARED"
+			keyProperty="eid"
+			useGeneratedKeys="true"
+			timeout="20000">
+    <![CDATA[       
+		insert into contable (h_id,con_value) values(#{hellWorld.id},#{conValue});
+    ]]>
+    </insert>
+    
+    <select id="getContableList" resultMap="conTableResMap">
+    	SELECT h.id ,h.`str`,h.`param`,
+		c.`id`,c.`h_id`,c.`con_value`
+		 FROM hellworld h,contable c
+		WHERE h.id = c.h_id
+
+    </select>
+    
+</mapper> 

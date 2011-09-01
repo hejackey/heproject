@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HelloWorld">
+	<cache/>
+	
+	<select id="getHelloWorld" parameterType="string" resultType="helloWorld">
+    <![CDATA[       
+		select * from hellworld
+		where id=#{id} 
+    ]]>
+	</select>
+	
+	<update id="updateHellworld" parameterType="helloWorld">
+		update hellworld
+		   set str = #{str},
+			   param = #{param}
+		 where id= #{id}
+	</update>
+	
+	<select id="getHelloWorldList" parameterType="helloWorld" resultType="helloWorld">
+          
+		SELECT * FROM hellworld 
+		<where>
+			<if test="str != null and str != '' ">
+				and str like concat('%',#{str},'%')
+			</if>
+			<if test="param != null and param != '' ">
+				and param like concat('%',#{param},'%')
+			</if>		
+		</where>
+		ORDER BY id DESC
+		LIMIT ${pageLimit}
+   
+	</select>
+	
+	<select id="getHelloWorldCount" parameterType="helloWorld" resultType="int">
+         
+		select count(1) from hellworld
+		<where>
+			<if test="str != null and str != '' ">
+				and str like concat('%',#{str},'%')
+			</if>
+			<if test="param != null and param != '' ">
+				and param like concat('%',#{param},'%')
+			</if>		
+		</where>
+   
+	</select>
+	
+	<!-- use auto generate key -->
+	<insert id="saveHelloWorld" 
+			parameterType="helloWorld" 
+			flushCache="true"
+			statementType="PREPARED"
+			keyProperty="id"
+			useGeneratedKeys="true"
+			timeout="20000">
+    <![CDATA[       
+		insert into hellworld (str,param) values(#{str},#{param});
+    ]]>
+    </insert>
+    
+    <insert id="saveHelloWorldAll" 
+			parameterType="helloWorld" 
+			flushCache="true"
+			timeout="20000">
+    <![CDATA[       
+		insert into hellworld (id,str,param) values(#{id},#{str},#{param});
+    ]]>
+    </insert>
+    
+    <select id="getHellWorldSeq" resultType="int">
+    <![CDATA[       
+		SELECT seq('hellworld_seq') as id;
+    ]]>
+	</select>
+	
+	<delete id="delHelloWorld">
+		delete from hellworld where id in
+		<foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper> 
