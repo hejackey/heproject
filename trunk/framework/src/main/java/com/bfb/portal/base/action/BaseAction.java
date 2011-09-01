@@ -16,7 +16,7 @@ import com.opensymphony.xwork2.ModelDriven;
  * @author Administrator
  *
  */
-public abstract class BaseAction extends ActionSupport implements ModelDriven {
+public abstract class BaseAction extends ActionSupport implements ModelDriven<Object> {
 
 	/**
 	 * 
@@ -35,7 +35,7 @@ public abstract class BaseAction extends ActionSupport implements ModelDriven {
 		return ServletActionContext.getResponse();
 	}
 
-	public Map getSessionMap() {
+	public Map<?, ?> getSessionMap() {
 		return ServletActionContext.getContext().getSession();
 	}
 
