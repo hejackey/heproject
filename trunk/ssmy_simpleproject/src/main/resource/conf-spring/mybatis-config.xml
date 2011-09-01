@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!--
+		iBatis 和 MyBatis 的全局配置文件使用不同的 DTD 约束，在将应用由 iBatis 升级至 MyBatis
+		时需要注意（两者的映射文件 DTD 约束也不相同）
+	--> 
+ 	<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+	<configuration>
+		<!-- 配置数据源相关的信息 
+		<environments default="dataSource">
+			<environment id="dataSource">
+				<transactionManager type="JDBC" />
+				<dataSource type="POOLED">
+					<property name="driver" value="com.mysql.jdbc.Driver" />
+					<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8" />
+					<property name="username" value="root" />
+					<property name="password" value="zhuozhuo" />
+				</dataSource>
+			</environment>
+		</environments>
+		-->
+		
+		<settings>
+			<setting name="cacheEnabled" value="true"/>
+			<setting name="lazyLoadingEnabled" value="true"/>
+			<setting name="multipleResultSetsEnabled" value="true"/>
+			<setting name="useColumnLabel" value="true"/>
+			<setting name="useGeneratedKeys" value="false"/>
+			<setting name="defaultExecutorType" value="SIMPLE"/>
+			<setting name="defaultStatementTimeout" value="25000"/>
+		</settings>
+		
+		<!-- 每个配置文件中的typealias都必须要移到这个文件中，同时必须在mappers标签前面 -->
+		<typeAliases>
+			<typeAlias alias="helloWorld" type="com.bfb.portal.model.HelloWorld" />
+			<typeAlias alias="contable" type="com.bfb.portal.model.XeditorModel" />
+		</typeAliases>
+		
+		<!-- 列出映射文件 -->
+		<mappers>
+			<mapper resource="com/bfb/portal/sqlmap/helloworld3.xml" />
+			<mapper resource="com/bfb/portal/sqlmap/contable.xml" />
+		</mappers>
+	</configuration> 

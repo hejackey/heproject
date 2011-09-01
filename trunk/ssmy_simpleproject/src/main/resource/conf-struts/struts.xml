@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="interceptor-default" extends="struts-default">
+		<interceptors>
+			<!-- 全局拦截器 -->
+			<interceptor name="dynamicDataSource" class="com.bfb.portal.interceptor.DynamicDataSourceInterceptor"/>
+			<interceptor-stack name="dynamicDataSourceStack">
+				<interceptor-ref name="dynamicDataSource"/>
+				<!-- 必须加 -->
+				<interceptor-ref name="defaultStack"/> 
+			</interceptor-stack>
+			
+			<!-- 级联全局拦截器 -->
+			<interceptor name="multiInterceptor" class="com.bfb.portal.interceptor.MultiInterceptor"/>
+			<interceptor-stack name="multiInterceptorStack">
+				<interceptor-ref name="dynamicDataSourceStack"/> 
+				<interceptor-ref name="multiInterceptor"/>
+			</interceptor-stack>
+			
+			<!-- 局部拦截器 -->
+			<interceptor name="localInterceptor" class="com.bfb.portal.interceptor.LocalInterceptor"/>
+			<interceptor-stack name="localInterceptorStack">
+				<interceptor-ref name="localInterceptor"/> 
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		
+		<!-- 默认全局拦截器,多全局拦截器要级联引用 
+		<default-interceptor-ref name="multiInterceptorStack"></default-interceptor-ref>-->
+		
+	</package>
+	
+    <constant name="struts.i18n.reload" value="false" />
+    <constant name="struts.configuration.xml.reload" value="true" />
+    <constant name="struts.custom.i18n.resources" value="globalMessages" />
+    <!-- support multi ext name -->
+    <constant name="struts.action.extension" value="action,do" />
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.freemarker.manager.classname" value="org.apache.struts2.views.freemarker.FreemarkerManager"/>
+    <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+    
+    <!-- Add addition packages and configuration here. -->
+    <include file="struts-test.xml"/>
+    <include file="struts-editor.xml"/>
+</struts>
