@@ -74,7 +74,7 @@ public class MyEclipseGen {
 	}  
 	public static void main(String[] args) {  
 	   try {  
-	    System.out.println("please input register name:");  
+	 /*   System.out.println("please input register name:");  
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(  
 	      System.in));  
 	    String userId = null;  
@@ -82,8 +82,19 @@ public class MyEclipseGen {
 	    MyEclipseGen myeclipsegen = new MyEclipseGen();  
 	    String res = myeclipsegen.getSerial(userId, "5");  
 	    System.out.println("Serial:" + res);  
-	    reader.readLine();  
-	   } catch (IOException ex) {  
+	    reader.readLine();  */
+		   
+		
+		for(int i=1 ;i <20;i++){
+			long time = System.currentTimeMillis();
+			System.out.println(String.valueOf(time).hashCode()%10);
+			Thread.sleep(1000);
+		}
+		return;
+	   } catch (Exception ex) {  
 	   }  
+	   finally{
+		   System.out.println("finally");
+	   }
 	}   
 }
