@@ -16,7 +16,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 /**
- * ²»Ö§³ÖÖÐÎÄµÄ¶þÎ¬ÂëÉú³É
+ * ï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄ¶ï¿½Î¬ï¿½ï¿½ï¿½ï¿½ï¿½
  * @author Administrator
  *
  */
@@ -29,7 +29,7 @@ public class BarCodeServlet extends HttpServlet {
 	private static DefaultConfiguration cfg;  
 	
 	/** 
-     * ¶þÎ¬Âë²ÎÊý 
+     * ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½ï¿½ 
      */  
     private static final String FORMAT = MimeTypes.MIME_JPEG;  
     private static final int ORIENTATION = 0;  
@@ -98,7 +98,7 @@ public class BarCodeServlet extends HttpServlet {
     public void generate(OutputStream outputStream) {
         try {
             BitMatrix matrix = new MultiFormatWriter().encode
-            ("123123asdfds",BarcodeFormat.QR_CODE, width, height);
+            (new String("1231gsdåœ°æ–¹sdfds".getBytes("utf-8"),"iso8859-1"),BarcodeFormat.QR_CODE, width, height);
             
 
             MatrixToImageWriter.writeToStream(matrix, "png", outputStream);
