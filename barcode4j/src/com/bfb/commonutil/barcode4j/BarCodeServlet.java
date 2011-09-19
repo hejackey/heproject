@@ -1,6 +1,7 @@
 package com.bfb.commonutil.barcode4j;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -9,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import org.krysalis.barcode4j.BarcodeGenerator;
+import org.krysalis.barcode4j.BarcodeUtil;
+import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.tools.MimeTypes;
 
 import com.google.zxing.BarcodeFormat;
@@ -16,7 +20,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 /**
- * ��֧�����ĵĶ�ά�����
+ * 生成二维码
  * @author Administrator
  *
  */
@@ -29,15 +33,49 @@ public class BarCodeServlet extends HttpServlet {
 	private static DefaultConfiguration cfg;  
 	
 	/** 
-     * ��ά����� 
+     * 
      */  
+     
+	public void doGet(HttpServletRequest req,HttpServletResponse res){
+		try {
+			generateQrcode(res.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void doPost(HttpServletRequest req,HttpServletResponse res){
+		doGet(req,res);
+	} 
+	
+	private static final int width = 200;
+	private static final int height = 200;  
+	/**
+	 * qrcode二维码
+	 * @param outputStream
+	 */
+    public void generateQrcode(OutputStream outputStream) {
+        try {
+            BitMatrix matrix = new MultiFormatWriter().encode
+            (new String("1231gsd地方sdfds".getBytes("utf-8"),"iso8859-1"),BarcodeFormat.QR_CODE, width, height);
+            
+
+            MatrixToImageWriter.writeToStream(matrix, "png", outputStream);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     private static final String FORMAT = MimeTypes.MIME_JPEG;  
     private static final int ORIENTATION = 0;  
     private static final int RESOLUTION = 300;  
     private static final String BARCODE_TYPE = "datamatrix";  
-	 
-	public void doGet(HttpServletRequest req,HttpServletResponse res){
-		/*cfg = new DefaultConfiguration("barcode");  
+    /**
+	 * dataMatirx二维码
+	 * @param outputStream
+	 */
+    public void generateDateMatirx(HttpServletRequest req,HttpServletResponse res) {
+    	cfg = new DefaultConfiguration("barcode");  
         DefaultConfiguration child = new DefaultConfiguration(BARCODE_TYPE );  
   
         cfg.addChild(child);  
@@ -80,31 +118,7 @@ public class BarCodeServlet extends HttpServlet {
                 bitmap = null;  
             } catch (Exception e) {  
             }  
-        }  */
-		
-		try {
-			generate(res.getOutputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void doPost(HttpServletRequest req,HttpServletResponse res){
-		doGet(req,res);
-	} 
-	
-	private static final int width = 200;
-	private static final int height = 200;  
-    public void generate(OutputStream outputStream) {
-        try {
-            BitMatrix matrix = new MultiFormatWriter().encode
-            (new String("1231gsd地方sdfds".getBytes("utf-8"),"iso8859-1"),BarcodeFormat.QR_CODE, width, height);
-            
-
-            MatrixToImageWriter.writeToStream(matrix, "png", outputStream);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        }  
     }
 
 }
