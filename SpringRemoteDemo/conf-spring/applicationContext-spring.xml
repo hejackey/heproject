@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            ">
+    <!-- -->
+	<bean id="accountService" class="com.bfb.commonservice.service.impl.AccountServiceImpl">
+	</bean>
+	
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<!-- does not necessarily have to be the same name as the bean to be exported -->
+		<property name="serviceName"><value>AccountService</value></property>
+		<property name="service"><ref bean="accountService"/></property>
+		<property name="serviceInterface"><value>com.bfb.commonservice.service.AccountService</value></property>
+		<!-- defaults to 1099 -->
+		<property name="registryPort"><value>1199</value></property>
+	</bean>
+</beans>

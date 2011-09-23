@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="SpringRemoteDemo"
+  id="myeclipse.1316756703468"
+  context-root="/SpringRemoteDemo"
+  j2ee-spec="5.0"
+  archive="SpringRemoteDemo.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
