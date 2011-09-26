@@ -21,9 +21,14 @@
 	</bean>
 	
 	<bean id="actService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
-		<property name="serviceUrl"><value>rmi://10.10.223.218:1199/AccountService</value></property>
+		<property name="serviceUrl"><value>rmi://127.0.0.1:1199/AccountService</value></property>
 		<property name="serviceInterface"><value>com.bfb.commonservice.service.AccountService</value></property>
+		<property name="registryClientSocketFactory" ref="rmiClientSocketFactory"></property>
 	</bean>
+	
+	<bean id="rmiClientSocketFactory" class="com.bfb.commonservice.client.util.RMICustomClientSocketFactory">  
+        <property name="timeout" value="2000"></property>  
+    </bean>
 	<!-- rmi example end-->
 
 	<!-- hessian example start-->
@@ -31,7 +36,7 @@
 		<property name="hesActService"><ref bean="hesActService"/></property>
 	</bean>
 	<bean id="hesActService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
-		<property name="serviceUrl"><value>http://10.10.223.218:80/SpringRemoteDemo/hessian/AccountService</value></property>
+		<property name="serviceUrl"><value>http://127.0.0.1:80/SpringRemoteDemo/hessian/AccountService</value></property>
 		<property name="ServiceInterface"><value>com.bfb.commonservice.service.AccountService</value></property>
 	</bean>
 	<!-- hessian example end-->
