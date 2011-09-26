@@ -21,12 +21,22 @@ public class TestServlet extends HttpServlet {
 		WebApplicationContext wac = WebApplicationContextUtils.
 		getRequiredWebApplicationContext(this.getServletContext());
 
-		SimpleObject so = (SimpleObject)wac.getBean("sobject");
+		String uri = req.getRequestURI();
 		
-		Account account = new Account();
-		account.setName("hello spring rmi!");
-		System.out.println(so.getActService().insertAccount(account));
-
+		if(uri.toLowerCase().indexOf("rmi")!=-1){
+			SimpleObject so = (SimpleObject)wac.getBean("sobject");
+			
+			Account account = new Account();
+			account.setName("hello spring rmi!");
+			System.out.println(so.getActService().insertAccount(account));
+		}
+		else if(uri.toLowerCase().indexOf("hes")!=-1){
+			SimpleObject so = (SimpleObject)wac.getBean("hesobject");
+			
+			Account account = new Account();
+			account.setName("hello spring hessian!");
+			System.out.println(so.getHesActService().insertAccount(account));
+		}
 	}
 	
 	public void doPost(HttpServletRequest req,HttpServletResponse res){

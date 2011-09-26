@@ -3,7 +3,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
             ">
-    <!-- -->
+    <!-- rmi example start-->
     <bean id="accountService" class="com.bfb.commonservice.service.impl.AccountServiceImpl">
 	</bean>
 	
@@ -24,5 +24,16 @@
 		<property name="serviceUrl"><value>rmi://10.10.223.218:1199/AccountService</value></property>
 		<property name="serviceInterface"><value>com.bfb.commonservice.service.AccountService</value></property>
 	</bean>
+	<!-- rmi example end-->
+
+	<!-- hessian example start-->
+	<bean id="hesobject" class="com.bfb.commonservice.client.SimpleObject">
+		<property name="hesActService"><ref bean="hesActService"/></property>
+	</bean>
+	<bean id="hesActService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+		<property name="serviceUrl"><value>http://10.10.223.218:80/SpringRemoteDemo/hessian/AccountService</value></property>
+		<property name="ServiceInterface"><value>com.bfb.commonservice.service.AccountService</value></property>
+	</bean>
+	<!-- hessian example end-->
 		
 </beans>
