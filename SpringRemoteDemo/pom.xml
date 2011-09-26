@@ -58,5 +58,10 @@
 		<artifactId>spring-web</artifactId>
 		<version>3.0.5.RELEASE</version>
 	</dependency>
+	<dependency>
+	  <groupId>8f8_jar</groupId>
+	  <artifactId>hessian</artifactId>
+	  <version>4.0.7</version>
+	</dependency>
   </dependencies>
 </project>
