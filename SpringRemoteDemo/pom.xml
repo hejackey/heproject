@@ -49,9 +49,9 @@
 	    <version>3.0.5.RELEASE</version>
 	</dependency>
 	<dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-web</artifactId>
-	    <version>3.0.5.RELEASE</version>
+	  <groupId>8f8_jar</groupId>
+	  <artifactId>org.springframework.web.servlet</artifactId>
+	  <version>3.0.5.RELEASE</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>

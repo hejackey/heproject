@@ -15,15 +15,17 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public int insertAccount(Account account) {
 		System.out.println(account.getName());
-		try {
-			Thread.sleep(10000);
+		
+		System.out.println(account.getAge());
+		System.out.println(account.getUser().getPaypwd());
+		/*try {
+			Thread.sleep(6000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		System.out.println("==============");
-		return 1;
+		return 2;
 	}
 
 }
