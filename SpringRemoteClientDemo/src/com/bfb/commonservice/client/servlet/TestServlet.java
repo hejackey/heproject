@@ -9,6 +9,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.bfb.commonservice.client.SimpleObject;
 import com.bfb.commonservice.model.Account;
+import com.bfb.commonservice.model.User;
 
 public class TestServlet extends HttpServlet {
 
@@ -22,18 +23,23 @@ public class TestServlet extends HttpServlet {
 		getRequiredWebApplicationContext(this.getServletContext());
 
 		String uri = req.getRequestURI();
+		Account account = new Account();
+		User user = new User();
+		user.setPaypwd("123");
+		user.setPwd("456");
+		account.setUser(user);
 		
 		if(uri.toLowerCase().indexOf("rmi")!=-1){
 			SimpleObject so = (SimpleObject)wac.getBean("sobject");
 			
-			Account account = new Account();
+			account.setAge(15);
 			account.setName("hello spring rmi!");
+			
 			System.out.println(so.getActService().insertAccount(account));
 		}
 		else if(uri.toLowerCase().indexOf("hes")!=-1){
 			SimpleObject so = (SimpleObject)wac.getBean("hesobject");
 			
-			Account account = new Account();
 			account.setName("hello spring hessian!");
 			System.out.println(so.getHesActService().insertAccount(account));
 		}
