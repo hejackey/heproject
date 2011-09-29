@@ -1,0 +1,118 @@
+XML Schema 是基于 XML 的 DTD 替代者。
+XML Schema 描述 XML 文档的结构。
+XML Schema 语言也称作 XML Schema 定义（XML Schema Definition，XSD）。
+
+
+XML Schema 最重要的能力之一就是对数据类型的支持。
+通过对数据类型的支持：
+
+    可更容易地描述允许的文档内容
+    可更容易地验证数据的正确性
+    可更容易地与来自数据库的数据一并工作
+    可更容易地定义数据约束（data facets）
+    可更容易地定义数据模型（或称数据格式）
+    可更容易地在不同的数据类型间转换数据
+
+对 XML Schema 的引用
+
+此文件包含对 XML Schema 的引用：
+
+<?xml version="1.0"?>
+<note
+	xmlns="http://www.w3school.com.cn"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3school.com.cn note.xsd">
+	
+	<to>George</to>
+	<from>John</from>
+	<heading>Reminder</heading>
+	<body>Don't forget the meeting!</body>
+</note>
+
+======================xml schema文件结构====================
+1、<schema> 元素
+	<schema> 元素是每一个 XML Schema 的根元素：
+	<?xml version="1.0"?>
+	<xs:schema>
+	</xs:schema>
+	
+2、什么是简易元素？
+
+	简易元素指那些仅包含文本的元素。它不会包含任何其他的元素或属性。，简易元素可定义默认值和固定值
+	
+	定义简易元素的语法：
+	<xs:element name="xxx" type="yyy" default="" fixed=""/>
+
+3、什么是属性？
+	简易元素无法拥有属性。假如某个元素拥有属性，它就会被当作某种复合类型。但是属性本身总是作为简易类型被声明的。
+	
+	定义属性的语法是：
+	<xs:attribute name="xxx" type="yyy"/>
+	
+	属性的默认值和固定值
+	<xs:attribute name="xxx" type="yyy" default="" fixed=""/>
+	
+	可选的和必需的属性
+	<xs:attribute name="lang" type="xs:string" use="required"/>
+	
+4、限定（restriction）用于为 XML 元素或者属性定义可接受的值。对 XML 元素的限定被称为 facet。
+	
+	范围值的限定
+	下面的例子定义了带有一个限定且名为 "age" 的元素。age 的值不能低于 0 或者高于 120：
+	<xs:element name="age">
+		<xs:simpleType>
+		  <xs:restriction base="xs:integer">
+		    <xs:minInclusive value="0"/>
+		    <xs:maxInclusive value="120"/>
+		  </xs:restriction>
+		</xs:simpleType>
+	</xs:element> 	
+	
+	固定枚举值限定
+	把 XML 元素的内容限制为一组可接受的值，我们要使用枚举约束
+	<xs:element name="car">
+		<xs:simpleType>
+		  <xs:restriction base="xs:string">
+		    <xs:enumeration value="Audi"/>
+		    <xs:enumeration value="Golf"/>
+		    <xs:enumeration value="BMW"/>
+		  </xs:restriction>
+		</xs:simpleType>
+	</xs:element> 
+    
+	对一系列值的限定
+	把 XML 元素的内容限制定义为一系列可使用的数字或字母，我们要使用模式约束
+	<xs:element name="letter">
+		<xs:simpleType>
+		  <xs:restriction base="xs:string">
+		    <xs:pattern value="[a-z]"/>
+		  </xs:restriction>
+		</xs:simpleType>
+	</xs:element> 
+	一个[]代表一个值，如有多个值，需用多个[]；若零个或多个字母，可用"([a-z])*"
+	([a-z][A-Z])+两个字符重复匹配，可选的方式male|female，8位任意字符数字[a-zA-Z0-9]{8}
+	
+	对长度的限定
+	<xs:element name="password">
+		<xs:simpleType>
+		  <xs:restriction base="xs:string">
+		    <xs:length value="8"/>
+		  </xs:restriction>
+		</xs:simpleType>
+	</xs:element> 
+	
+	数据类型的限定
+	限定 			描述
+	enumeration 	定义可接受值的一个列表
+	fractionDigits 	定义所允许的最大的小数位数。必须大于等于0。
+	length 			定义所允许的字符或者列表项目的精确数目。必须大于或等于0。
+	maxExclusive 	定义数值的上限。所允许的值必须小于此值。
+	maxInclusive 	定义数值的上限。所允许的值必须小于或等于此值。
+	maxLength 		定义所允许的字符或者列表项目的最大数目。必须大于或等于0。
+	minExclusive 	定义数值的下限。所允许的值必需大于此值。
+	minInclusive 	定义数值的下限。所允许的值必需大于或等于此值。
+	minLength 		定义所允许的字符或者列表项目的最小数目。必须大于或等于0。
+	pattern 		定义可接受的字符的精确序列。
+	totalDigits 	定义所允许的阿拉伯数字的精确位数。必须大于0。
+	whiteSpace 		定义空白字符（换行、回车、空格以及制表符）的处理方式。
+	
