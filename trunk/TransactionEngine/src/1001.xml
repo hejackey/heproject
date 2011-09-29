@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<tracsaction>
+	<typeAlias name="" class="com.bfb.transaction.engine.service.AccountNoService"/>
+	
+	<process name="checkAmt" class="com.bfb.transaction.engine.service.AccountNoService" ref="" method="checkAmt">
+		<property in="userid" ></property>
+		<property out="amount" ></property>
+		<result value="0" ref=""></result>
+		<result value="1" ref="payOrder"></result>
+	</process>
+	
+	<process name="payOrder" class="com.bfb.transaction.engine.service.AccountNoService" ref="" method="payOrder">
+		<property in="userid" ></property>
+		<property out="amount" ></property>
+		<result value="0" ref=""></result>
+	</process>
+</tracsaction>
