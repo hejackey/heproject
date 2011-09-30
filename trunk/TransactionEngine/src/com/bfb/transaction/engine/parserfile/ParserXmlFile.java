@@ -15,7 +15,7 @@ import com.bfb.transaction.engine.util.ExecProcessUtil;
 
 public class ParserXmlFile extends BaseParserFile {
 
-	public void parserFile(String filePath) {
+	public void parserFile(String filePath,Map<Object,Object> para) {
 		try {
 			Document document = saxReader.read(new File(filePath));
 			Element root = document.getRootElement();
@@ -32,9 +32,6 @@ public class ParserXmlFile extends BaseParserFile {
 			
 			//执行process中方法
 			for(Map<String,String> atrMap : procAtrList){
-				Map<Object,Object> para = new HashMap<Object,Object>();
-				para.put("userid", "123");
-				
 				ExecProcessUtil.excuteProcess(atrMap, para);
 			}
 			

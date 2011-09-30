@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.bfb.transaction.engine.parserfile.ParserXmlFile;
 
@@ -23,8 +25,17 @@ public class TEngineTest {
 			URL url = ClassLoader.getSystemResource(cmd+".xml");
 			String filePath = url.getFile();
 			
+			long time1 = System.currentTimeMillis();
+			
 			ParserXmlFile parserFile = new ParserXmlFile();
-			parserFile.parserFile(filePath);
+			Map<Object,Object> para = new HashMap<Object,Object>();
+			para.put("userid", "123");
+			
+			parserFile.parserFile(filePath,para);
+			
+			long time2 = System.currentTimeMillis();
+			
+			System.out.println(time2-time1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

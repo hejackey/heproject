@@ -34,7 +34,7 @@ public abstract class BaseParserFile {
 	 * 解析文件
 	 * @param filePath	文件路径
 	 */
-	protected abstract void parserFile(String filePath);
+	protected abstract void parserFile(String filePath,Map<Object,Object> para);
 	
 	/**
 	 * 获取一个节点的所有属性，key-value结构
