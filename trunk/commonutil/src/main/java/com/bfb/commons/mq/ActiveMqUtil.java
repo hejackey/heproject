@@ -18,6 +18,7 @@ public class ActiveMqUtil {
 		ConnectionFactory cf = new ActiveMQConnectionFactory();
 		try {
 			con = cf.createConnection();
+			con.start();
 			session = con.createSession(Boolean.TRUE,Session.AUTO_ACKNOWLEDGE);
 			destination = session.createQueue(queueName);
 		} catch (JMSException e) {
