@@ -17,6 +17,9 @@ public class TestWActiveMq {
 		msg.setText("测试activemq");
 		msgp.send(msg);
 		
+		util.session.commit();
+		util.destoryConnection();
+		util.destorySession();
 	}
 
 }
