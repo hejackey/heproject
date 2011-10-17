@@ -121,5 +121,17 @@
 	    <artifactId>javaee-api</artifactId>
 	    <version>6.0</version>
 	</dependency>
+	
+	<dependency>
+	  <groupId>8f8_jar</groupId>
+	  <artifactId>activemq-pool</artifactId>
+	  <version>5.5.0</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>8f8_jar</groupId>
+	  <artifactId>commons-pool</artifactId>
+	  <version>1.5.4</version>
+	</dependency>
   </dependencies>
 </project>
