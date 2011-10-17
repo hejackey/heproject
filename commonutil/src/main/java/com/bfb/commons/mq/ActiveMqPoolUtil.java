@@ -1,53 +1,41 @@
 package com.bfb.commons.mq;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.ActiveMQConnection;
+import org.apache.activemq.pool.PooledConnection;
+import org.apache.activemq.pool.PooledConnectionFactory;
 
-public class ActiveMqUtil {
-	private Connection con;
-	public Session session;
-	private Destination destination;
+
+public class ActiveMqPoolUtil {
+	private static final int MAX_POOL_CONNECTION=10;
+	private  PooledConnectionFactory poolConFact = new PooledConnectionFactory();
+	private  ActiveMQConnection con ;
+	public  Session session;
+	private  Destination destination ;
 	
-	/**
-	 * 初始化消息队列连接、会话、目标队列等信息
-	 * @param queueName 创建的队列名
-	 */
-	public ActiveMqUtil(String queueName){
-		ConnectionFactory cf = new ActiveMQConnectionFactory();
+	public ActiveMqPoolUtil(String queueName){
+		poolConFact.setMaxConnections(MAX_POOL_CONNECTION);
+		
 		try {
-			con = cf.createConnection();
+			PooledConnection pcon = (PooledConnection)poolConFact.createConnection();
+			con = pcon.getConnection();
 			con.start();
 			session = con.createSession(Boolean.TRUE,Session.AUTO_ACKNOWLEDGE);
 			destination = session.createQueue(queueName);
+			
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
-	/**
-	 * 获取消息生产者
-	 * @return	消息生产者
-	 */
-	protected MessageProducer getAcmqMsgProducer(){
+	public MessageProducer getMsgProducer(){
 		try {
 			return session.createProducer(destination);
-		} catch (JMSException e) {
-			e.printStackTrace();
-			
-			return null;
-		}
-	}
-	
-	protected MessageConsumer getAcmqMsgConsuer(){
-		try {
-			return session.createConsumer(destination);
 		} catch (JMSException e) {
 			e.printStackTrace();
 			return null;
@@ -77,4 +65,4 @@ public class ActiveMqUtil {
 				e.printStackTrace();
 			}
 	}
-}	
+}

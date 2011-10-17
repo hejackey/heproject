@@ -14,12 +14,14 @@ public class TestWActiveMq {
 		ActiveMqUtil util = new ActiveMqUtil("test_mq");
 		MessageProducer msgp = util.getAcmqMsgProducer();
 		TextMessage msg = util.session.createTextMessage();
-		msg.setText("测试activemq");
+		msg.setText("已经测试成功，测试activemq");
 		msgp.send(msg);
 		
 		util.session.commit();
 		util.destoryConnection();
 		util.destorySession();
+		
+		
 	}
 
 }
