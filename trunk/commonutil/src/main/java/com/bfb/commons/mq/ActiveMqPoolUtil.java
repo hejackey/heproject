@@ -45,7 +45,7 @@ public class ActiveMqPoolUtil {
 	/**
 	 * 关闭消息队列连接
 	 */
-	protected void destoryConnection(){
+	public void destoryConnection(){
 		if(con != null)
 			try {
 				con.close();
@@ -57,7 +57,7 @@ public class ActiveMqPoolUtil {
 	/**
 	 * 关闭消息队列会话
 	 */
-	protected void destorySession(){
+	public void destorySession(){
 		if(session != null)
 			try {
 				session.close();

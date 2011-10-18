@@ -1,9 +1,11 @@
-package com.bfb.commons.mq;
+package com.bfb.commons.test.mq;
 
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
+
+import com.bfb.commons.mq.ActiveMqPoolUtil;
 
 public class TestPoolWmq {
 
