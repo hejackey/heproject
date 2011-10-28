@@ -9,8 +9,10 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
+import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQTextMessage;
 
 public class TestActiveMq {
 
@@ -28,8 +30,18 @@ public class TestActiveMq {
 	    connection.start();  
 	  
 	    Session session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);  
-	    Destination destination = session.createQueue("test_queue_5");  
-	  
+	   
+	    //createQueue(session);
+	    createTopic(session);
+	    
+	    session.commit();  
+	    session.close();  
+	    connection.close();  
+	}
+	
+	public static void createQueue(Session session) throws JMSException{
+		Destination destination = session.createQueue("test_queue_5");  
+		  
 	    MessageProducer producer = session.createProducer(destination);  
 	    for(int i=900; i<1000; i++) {  
 	        MapMessage message = session.createMapMessage();  
@@ -39,9 +51,18 @@ public class TestActiveMq {
 	        //通过消息生产者发出消息  
 	        producer.send(message);  
 	    }  
-	    session.commit();  
-	    session.close();  
-	    connection.close();  
+	}
+	
+	public static void createTopic(Session session) throws JMSException{
+		Topic topic = session.createTopic("mq_topic_1");
+		MessageProducer mp = session.createProducer(topic);
+		ActiveMQTextMessage tm = new ActiveMQTextMessage();
+		
+		for(int i=0;i<5;i++){
+			tm.setText("测试主题发布_"+i);
+			
+			mp.send(tm);
+		}
 	}
 
 }

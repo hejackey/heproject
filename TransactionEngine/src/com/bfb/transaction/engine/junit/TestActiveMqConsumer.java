@@ -11,6 +11,8 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -27,13 +29,20 @@ public class TestActiveMqConsumer {
 		    connection.start();  
 		  
 		    final Session session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);  
-		    Destination destination = session.createQueue("test_queue_5");  
+		   /* Destination destination = session.createQueue("test_queue_5");  
 		  
 		    MessageConsumer consumer = session.createConsumer(destination); 
 		    
 		    MessageConsumer consumer2 = session.createConsumer(destination);
+		    */
+		    Topic topic = session.createTopic("mq_topic_1");  
+			  
+		    MessageConsumer consumer = session.createConsumer(topic); 
+		    
+		    MessageConsumer consumer2 = session.createConsumer(topic);
+		    
 		   //listener 方式 
-		    consumer.setMessageListener(new MessageListener() { 
+		   /* consumer.setMessageListener(new MessageListener() { 
 		 
 		        public void onMessage(Message msg) { 
 		            MapMessage message = (MapMessage) msg; 
@@ -54,6 +63,35 @@ public class TestActiveMqConsumer {
 		            MapMessage message = (MapMessage) msg; 
 		            try {
 						System.out.println("消费者2-收到消息：" + new Date(message.getLong("count"))+"==="+message.getString("url"));
+						session.commit(); 
+					} catch (JMSException e) {
+						e.printStackTrace();
+					} 
+		            
+		        } 
+		 
+		    }); */
+		    consumer.setMessageListener(new MessageListener() { 
+				 
+		        public void onMessage(Message msg) { 
+		        	TextMessage message = (TextMessage) msg; 
+		            try {
+						System.out.println("消费者1-收到消息：" + message.getText());
+						session.commit(); 
+					} catch (JMSException e) {
+						e.printStackTrace();
+					}
+		            
+		        } 
+		 
+		    }); 
+		    
+		    consumer2.setMessageListener(new MessageListener() { 
+				 
+		        public void onMessage(Message msg) { 
+		        	TextMessage message = (TextMessage) msg; 
+		            try {
+						System.out.println("消费者2-收到消息：" + message.getText());
 						session.commit(); 
 					} catch (JMSException e) {
 						e.printStackTrace();

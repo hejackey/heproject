@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-api-1.5.11.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-log4j12-1.5.11.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/kahadb-5.5.0.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
