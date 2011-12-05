@@ -149,6 +149,54 @@ public class ExcelUtil {
 		return allSheetContent;
 	}
 	
+	/**
+	 * 读取excel文件内容
+	 * @param fileName	文件路径
+	 * @return	返回所有sheet中内容组成的string数组
+	 */
+	public static List<String[][]> readXsl(File file){
+		Workbook workbook = null;
+		List<String[][]> allSheetContent = new ArrayList<String[][]>();
+		try {
+			workbook = Workbook.getWorkbook(file);
+			Sheet[] sheets = workbook.getSheets();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh24:mm:ss");
+			
+			for(Sheet sheet : sheets){
+				Cell cell = null;
+				int columnCount=sheet.getColumns();
+				int rowCount=sheet.getRows();
+				String[][] contents = new String[rowCount][columnCount];
+				for (int i = 0; i <rowCount; i++) {
+				   for (int j = 0; j <columnCount; j++) {
+				       cell=sheet.getCell(j, i);
+				       if(cell.getType()==CellType.NUMBER){
+				    	   contents[i][j] = String.valueOf(((NumberCell)cell).getValue());
+				       }
+				       else if(cell.getType()==CellType.DATE){
+				    	   contents[i][j] = sdf.format(((DateCell)cell).getDate());
+				       }
+				       else{
+				    	   contents[i][j] = cell.getContents();
+				       }
+				   }
+				}
+				
+				if(rowCount>0)
+					allSheetContent.add(contents);
+			}
+			
+		} catch (BiffException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally{
+			workbook.close();	
+		}
+		
+		return allSheetContent;
+	}
 	
 	public static void main(String[] args){
 		readXsl("d:\\test.xls");
