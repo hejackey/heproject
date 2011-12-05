@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.bfb.commons.string.StringUtil;
 
 public class ValidatorUtil {
@@ -227,11 +226,28 @@ public class ValidatorUtil {
 	}
 	
 	/**
+	 * 验证是否全中文字符串
+	 * @param str 待验证字符串
+	 * @return	全中文返回true，否则false
+	 * @throws UnsupportedEncodingException
+	 */
+	public static boolean validChineseStr(String str) throws UnsupportedEncodingException{
+		if(StringUtil.isEmpty(str))
+			return false;
+		
+		String pattern="^[\u4e00-\u9fa5]+$";  
+        Pattern p=Pattern.compile(pattern);  
+        Matcher result=p.matcher(str); 
+        
+        return result.matches();
+	}
+	
+	/**
 	 * @param args
 	 * @throws UnsupportedEncodingException 
 	 */
 	public static void main(String[] args) throws UnsupportedEncodingException {
-		System.out.println(checkMobile("32213123123"));
+		/*System.out.println(checkMobile("32213123123"));
 		System.out.println(checkMobile("18322112","^1[3,4,5,8]\\d{6}+$"));//13,14,15,18开头都符合
 		System.out.println(checkPhone("321-1313123"));
 		System.out.println(checkCode("32131"));
@@ -241,8 +257,8 @@ public class ValidatorUtil {
 		System.out.println(isLessLen("assd",4));
 		
 		System.out.println(isNumAndChar("asdsf"));
-		System.out.println(ValidateIDCard.validate("321231298209011214"));
-		System.out.println(isInteger("0"));
+		System.out.println(ValidateIDCard.validate("321231298209011214"));*/
+		System.out.println(validChineseStr("速阿斯蒂芬度"));
 	}
 
 }
