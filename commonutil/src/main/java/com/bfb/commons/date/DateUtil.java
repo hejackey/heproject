@@ -157,6 +157,19 @@ public class DateUtil {
 	
 	/**
 	 * 获取当前月的第一天
+	 * @param String	string型日期yyyy-MM-dd
+	 * @return	返回当前月第一天的日期
+	 */
+	public static String getFirstDayStrOfMonth(Date date){
+		Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DATE,calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        
+        return formatDate2Str(calendar.getTime());
+	}
+	
+	/**
+	 * 获取当前月的第一天
 	 * @param date	date型日期
 	 * @return	返回当前月第一天的日期
 	 */
@@ -211,7 +224,7 @@ public class DateUtil {
 	 * @throws ParseException 
 	 */
 	public static void main(String[] args) throws ParseException {
-		System.out.println(compDate("2011-08-29","2012-08-26"));
+		/*System.out.println(compDate("2011-08-29","2012-08-26"));
 		System.out.println(formatDate2Str(new Date(),"yyyy-MM-dd HH:mm:ss"));
 		System.out.println(formatDateTime2Str(new Date()));
 		System.out.println(formatDate2Str(new Date()));
@@ -229,8 +242,8 @@ public class DateUtil {
 		
 		System.out.println(formatDateTime2Str(addMinDay(new Date(),-31)));
 		System.out.println(formatDateTime2Str(getLastDayOfMonth(formatStr2Date("2011-02-01","yyyy-MM-dd"))));
-		System.out.println(formatDateTime2Str(getFirstDayOfMonth(formatStr2Date("2011-08-26","yyyy-MM-dd"))));
-		
+		System.out.println(formatDateTime2Str(getFirstDayOfMonth(formatStr2Date("2011-08-26","yyyy-MM-dd"))));*/
+		System.out.println(getFirstDayStrOfMonth(new Date()));
 	}
 
 }
