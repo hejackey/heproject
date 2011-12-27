@@ -379,4 +379,24 @@ public class RequestUtils{
 			return null;
 		}
 	}
+	
+	/**
+	 * 获取请求的域名和根目录
+	 * @param req
+	 * @return
+	 */
+	public String getApplicationBaseUrl(HttpServletRequest req){
+		StringBuilder sb = new StringBuilder();
+		String url =  req.getRequestURL().toString();
+		url = url.replace("//", "#");
+		String domain = url.substring(0,url.indexOf("/"));
+		domain = domain.replace("#","//");
+		String appRoot = req.getContextPath();
+		
+		sb.append(domain);
+		sb.append(appRoot);
+		
+		return sb.toString();
+	}
+	
 }
