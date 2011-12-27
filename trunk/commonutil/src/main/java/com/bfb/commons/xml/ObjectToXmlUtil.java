@@ -53,4 +53,8 @@ public class ObjectToXmlUtil {
 	public static Object xml2Bean(String xml,XStream xsm){
 		return xsm.fromXML(xml);
 	}
+	
+	public static void main(String[] arsg){
+		xml2Bean("<?xml version=\"1.0\" encoding=\"GBK\" standalone=\"no\"?><com.bang.entity.UserAccountVO>  <userAccountid>MBUSER_A11011081112211118yqJ2109</userAccountid>  <id>mbuser_l11410111140040413fsk8140</id>  <operator>12312312</operator>  <bankCode>001</bankCode>  <remark></remark>  <applySum>123</applySum>  <transId>trtorder20110111595907701YNd9983</transId>  <callCode>004</callCode>  <result>sys_001</result></com.bang.entity.UserAccountVO>");
+	}
 }

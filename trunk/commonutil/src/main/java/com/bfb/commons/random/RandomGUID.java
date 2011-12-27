@@ -215,11 +215,12 @@ public class RandomGUID extends Object {
      * Demonstraton and self test of class
      */
     public static void main(String args[]) {
-        for (int i=0; i< 2; i++) {
+        /*for (int i=0; i< 2; i++) {
             RandomGUID myGUID = new RandomGUID(false);
             System.out.println("Seeding String=" + myGUID.valueBeforeMD5);
             System.out.println("rawGUID=" + myGUID.valueAfterMD5);
             System.out.println("RandomGUID=" + myGUID.toString());
-        }
+        }*/
+    	System.out.println(RandomUtil.generateNumString(10));
     }
 }
