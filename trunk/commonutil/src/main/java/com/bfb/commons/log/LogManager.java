@@ -6,8 +6,6 @@ import java.util.logging.Formatter;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import com.bfb.commons.properties.PropertiesUtil;
-
 /**
  * jdk自带写日志类
  * @author Administrator
@@ -68,55 +66,36 @@ public class LogManager {
 		return null;
 	}
 	
-	public static Logger getLogger(String logName,String FileName){
-		Logger log = Logger.getLogger(logName);
+	/**
+	 * 获取日志对象
+	 * @param clazz	记录日志的类
+	 * @param FileName	日志文件名
+	 * @return
+	 */
+	public static Logger getLogger(Class<?> clazz,String FileName){
+		Logger log = Logger.getLogger(clazz.getName());
 		log.addHandler(getFileHandler(FileName));
 		
 		return log;
 	}
 	
 	/**
-	 * 获取处理商户的log
-	 * @param log
+	 * 获取日志对象
+	 * @param clazz	记录日志的类
 	 * @return
 	 */
-	public static Logger getMerchantLogger(Logger log){
-		try{
-			log.addHandler(getFileHandler(PropertiesUtil.getValueFromPropertyByKey("custom_log.properties", "MERCHANT_FILE_NAME")));
-			
-			return log;
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			System.out.println("请配置日志文件名custom_log.properties");
-			return null;
-		}
-	}
-	
-	/**
-	 * 获取处理银行的log
-	 * @param log
-	 * @return
-	 */
-	public static Logger getBankLogger(Logger log){
-		try{
-			log.addHandler(getFileHandler(PropertiesUtil.getValueFromPropertyByKey("custom_log.properties", "BANK_FILE_NAME")));
-			
-			return log;
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			System.out.println("请配置日志文件名custom_log.properties");
-			return null;
-		}
-	}
-	
+	public static Logger getLogger(Class<?> clazz) {  
+        Logger logger = Logger  
+                .getLogger(clazz.getName());  
+        return logger;  
+    }  
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
-			Logger log = getLogger("merchant_msg_log","d:\\mer_msg%u.%g.log");
+			Logger log = getLogger(LogManager.class,"d:\\mer_msg%u.%g.log");
 
 			log.info("java自带日志");
 			log.info("日志格式不爽");
