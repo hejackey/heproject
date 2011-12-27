@@ -36,7 +36,7 @@ public class PropertiesUtil {
 			InputStream in = null;
 
 			try {
-				in = PropertiesUtil.class.getResourceAsStream(fileName);
+				in = PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName);
 				initProps.load(in);
 				theValue = initProps.getProperty(keyName);
 			} catch (Exception e) {
