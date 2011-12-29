@@ -117,7 +117,26 @@ public class StringUtil {
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 	
+	/**
+	 * 字符串拼接函数
+	 * @param splitStr	字符拼接分隔符
+	 * @param strAry	待拼接的变长字符串
+	 * @return 返回拼接后的字符串
+	 */
+	public static String concatStr(String splitStr,String... strAry){
+		StringBuffer sb = new StringBuffer();
+		int len = strAry.length;
+		for(int i=0;i<len;i++){
+			
+			sb.append(strAry[i]);
+			if(i<len-1)
+				sb.append(splitStr);
+		}
+		return sb.toString();
+	}
+	
 	public static void main(String[] args){
 		System.out.println(getStrByUpperFirstChar("ab速度cdef"));
+		System.out.println(concatStr("#",Thread.currentThread().getName(),"test thread pool"));
 	}
 }
