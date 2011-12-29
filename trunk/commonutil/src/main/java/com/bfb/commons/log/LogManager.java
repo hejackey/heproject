@@ -13,7 +13,7 @@ import java.util.logging.SimpleFormatter;
  * @date 2011-12-26
  */
 public class LogManager {
-	private static final int LIMIT=10000;
+	private static final int LIMIT=100*1024;//100k
 	private static final int COUNT=5;
 	private static final boolean APPEND=true;
 	
@@ -72,22 +72,45 @@ public class LogManager {
 	 * @param FileName	日志文件名
 	 * @return
 	 */
-	public static Logger getLogger(Class<?> clazz,String FileName){
+	public  Logger getLogger(Class<?> clazz,String FileName){
 		Logger log = Logger.getLogger(clazz.getName());
 		log.addHandler(getFileHandler(FileName));
 		
 		return log;
 	}
 	
+	private static LogManager logManager=null;
+	private static FileHandler fh = null;
+	
+	private LogManager(){
+		
+	}
+	
+	public static synchronized LogManager getInstantce(){
+		if(logManager == null){
+			logManager = new LogManager();
+		}
+		
+		return logManager;
+	}
 	/**
 	 * 获取日志对象
 	 * @param clazz	记录日志的类
 	 * @return
 	 */
-	public static Logger getLogger(Class<?> clazz) {  
-        Logger logger = Logger  
-                .getLogger(clazz.getName());  
-        return logger;  
+	public Logger getLogger(Class<?> clazz) {  
+       Logger logger = Logger.getLogger(clazz.getName());
+       try {
+    	   fh = new FileHandler("d:\\syn_msg.log",LIMIT,COUNT,APPEND);
+    	   fh.setFormatter(new BfbLogFormatter());
+    	   logger.addHandler(fh);
+       } catch (SecurityException e) {
+    	   e.printStackTrace();
+       } catch (IOException e) {
+    	   e.printStackTrace();
+       }
+       
+       return logger;
     }  
 
 	/**
@@ -95,10 +118,12 @@ public class LogManager {
 	 */
 	public static void main(String[] args) {
 		try {
-			Logger log = getLogger(LogManager.class,"d:\\mer_msg%u.%g.log");
+			LogManager lm = new LogManager();
+			lm.getLogger(LogManager.class);
+			/*Logger log = getLogger(LogManager.class,"d:\\mer_msg%u.%g.log");
 
 			log.info("java自带日志");
-			log.info("日志格式不爽");
+			log.info("日志格式不爽");*/
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		}

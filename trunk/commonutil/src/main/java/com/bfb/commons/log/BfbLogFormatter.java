@@ -11,7 +11,7 @@ public class BfbLogFormatter extends Formatter{
 	@Override
 	public String format(LogRecord record) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(DateUtil.formatDate2Str(new Date(), "yyyy-MM-dd hh:mm:ss"));
+		sb.append(DateUtil.formatDate2Str(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		sb.append(" ");
 		sb.append(record.getLevel());
 		sb.append(" ");
