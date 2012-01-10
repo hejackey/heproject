@@ -3,7 +3,9 @@ package com.bfb.commons.http;
 import java.io.IOException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 
@@ -58,5 +60,22 @@ public class HttpClientUtil {
 		finally{
 			postMethod.releaseConnection();
 		}
+	}
+	
+	public static void main(String[] args){
+	    MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();  
+	    HttpClient client = new HttpClient(connectionManager);// 在某个线程中。  
+	    GetMethod get = new GetMethod("http://jakarta.apache.org/");  
+	    try {  
+	    	client.executeMethod(get);
+	    	System.out.println(get.getResponseBodyAsStream());  
+	    } catch (HttpException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {  
+	    	get.releaseConnection();  
+	    }  
+		//System.out.println(httpClientPostMethod("https://www.8f8.com"));
 	}
 }
