@@ -1,10 +1,11 @@
-package com.bfb.commons.http;
+package com.bfb.commons.ocr;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 
 import org.apache.commons.io.FileUtils;
+
 
 /**
  * 控制台模拟form表单登录，需要手工输入验证码

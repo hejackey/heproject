@@ -25,7 +25,7 @@
  *
  */
 
-package com.bfb.commons.http;
+package com.bfb.commons.ocr;
 
 import java.net.URI;
 import java.net.URISyntaxException;
