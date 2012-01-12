@@ -1,4 +1,4 @@
-package com.bfb.commons.http;
+package com.bfb.commons.ocr;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
