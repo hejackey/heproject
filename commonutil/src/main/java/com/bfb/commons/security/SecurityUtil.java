@@ -15,24 +15,24 @@ public class SecurityUtil {
 	 *            待加密串
 	 * @return 返回加密的串
 	 * @throws Exception
-	 */
+	 *//*
 	public static String encrypt(String src) throws Exception {
 		DesUtil des = new DesUtil();
-		return des.encrypt(src);
+		return byteArr2HexStr(des.encrypt(src.getBytes()));
 	}
 
-	/**
+	*//**
 	 * DES解密方法,与encrypt互逆
 	 * 
 	 * @param target
 	 *            待解密串
 	 * @return 返回解密的串
 	 * @throws Exception
-	 */
+	 *//*
 	public static String decrypt(String target) throws Exception {
 		DesUtil des = new DesUtil();
 		return des.decrypt(target);
-	}
+	}*/
 
 	/**
 	 * 将byte数组转换为表示16进制值的字符串， 如：byte[]{8,18}转换为：0813， 和public static byte[]
@@ -78,8 +78,6 @@ public class SecurityUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(SecurityUtil.encrypt("zhuozhuo"));
-		System.out.println(SecurityUtil.decrypt(SecurityUtil
-				.encrypt("zhuozhuo")));
+		
 	}
 }

@@ -1,6 +1,7 @@
 package com.bfb.commons.security;
 
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 
 import javax.crypto.Cipher;
@@ -25,7 +26,7 @@ public class DesUtil {
 	 *            指定的密钥
 	 * @throws Exception
 	 */
-	public DesUtil(String strKey) throws Exception {
+	private DesUtil(String strKey) throws Exception {
 		Security.addProvider(new com.sun.crypto.provider.SunJCE());
 		Key key = getKey(strKey.getBytes());
 
@@ -44,22 +45,29 @@ public class DesUtil {
 	 * @return 加密后的字节数组
 	 * @throws Exception
 	 */
-	public byte[] encrypt(byte[] arrB) throws Exception {
+	private static byte[] encrypt(byte[] arrB) throws Exception {
+		Cipher encryptCipher = null;
+		Key key = getKey(strDefaultKey.getBytes());
+
+		encryptCipher = Cipher.getInstance("DES");
+		encryptCipher.init(Cipher.ENCRYPT_MODE, key);
+
 		return encryptCipher.doFinal(arrB);
 	}
 
 	/**
 	 * 加密字符串
-	 * 
-	 * @param strIn
-	 *            需加密的字符串
-	 * @return 加密后的字符串
+	 * @param strIn 待加密字符串
+	 * @return	数组，下标0是加密后的密码、密码长度144位，下标1是随机salt
 	 * @throws Exception
 	 */
-	public String encrypt(String strIn) throws Exception {
-		return SecurityUtil.byteArr2HexStr(encrypt(strIn.getBytes()));
+	public static String[] encrypt(String strIn) throws Exception {
+		String salt = Sha2Util.genSalt();
+		String passwd = SecurityUtil.byteArr2HexStr(encrypt(Sha2Util.sha2(strIn, salt).getBytes()));
+		
+		return new String[]{passwd,salt};
 	}
-
+	
 	/**
 	 * 解密字节数组
 	 * 
@@ -68,7 +76,13 @@ public class DesUtil {
 	 * @return 解密后的字节数组
 	 * @throws Exception
 	 */
-	public byte[] decrypt(byte[] arrB) throws Exception {
+	private static byte[] decrypt(byte[] arrB) throws Exception {
+		Cipher decryptCipher = null;
+		Key key = getKey(strDefaultKey.getBytes());
+
+		decryptCipher = Cipher.getInstance("DES");
+		decryptCipher.init(Cipher.DECRYPT_MODE, key);
+		
 		return decryptCipher.doFinal(arrB);
 	}
 
@@ -80,14 +94,10 @@ public class DesUtil {
 	 * @return 解密后的字符串
 	 * @throws Exception
 	 */
-	public String decrypt(String strIn) throws Exception {
+	private static String decrypt(String strIn) throws Exception {
 		return new String(decrypt(SecurityUtil.hexStr2ByteArr(strIn)));
 	}
 
-	public String encryptPasswd(String strIn) throws Exception {
-		return encrypt(Md5Util.MD5(strIn,""));
-	}
-	
 	/**
 	 * 从指定字符串生成密钥，密钥所需的字节数组长度为8位 不足8位时后面补0，超出8位只取前8位
 	 * 
@@ -96,7 +106,7 @@ public class DesUtil {
 	 * @return 生成的密钥
 	 * @throws java.lang.Exception
 	 */
-	private Key getKey(byte[] arrBTmp) throws Exception {
+	private static Key getKey(byte[] arrBTmp) throws Exception {
 		// 创建一个空的8位字节数组（默认值为0）
 		byte[] arrB = new byte[8];
 
@@ -110,24 +120,25 @@ public class DesUtil {
 
 		return key;
 	}
-
-	public DesUtil() throws Exception {
-		this(strDefaultKey);
-	}
 	
-
 	/**
-	 * @param args
+	 * 比较密码是否正确
+	 * @param passwd	明文密码
+	 * @param salt	随机salt
+	 * @param encryptPwd	加密后的密码
+	 * @return
 	 */
-	public static void main(String[] args) {
+	public static boolean comparePass(String passwd,String salt,String encryptPwd) {
 		try {
-			String test = "froussdfadsfdsfer";
-			DesUtil des = new DesUtil();
-			System.out.println("加密前的字符：" + test);
-			System.out.println("加密后的字符：" + des.encrypt(test));
-			System.out.println("解密后的字符：" + des.decrypt(des.encrypt(test)));
+			return DesUtil.decrypt(encryptPwd).equals(Sha2Util.sha2(passwd, salt));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+			return false;
 		}
 	}
 }
