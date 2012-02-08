@@ -1,5 +1,9 @@
 package com.bfb.commons.security;
 
+import java.security.NoSuchAlgorithmException;
+
+import com.bfb.commons.random.RandomUtil;
+
 
 /**
  * 安全工具类
@@ -8,31 +12,17 @@ package com.bfb.commons.security;
  * 
  */
 public class SecurityUtil {
+	private static final int SALT_LENGHT = 8;
+	
 	/**
-	 * DES加密方法，与decrypt互逆
+	 * 生成随机salt
 	 * 
-	 * @param src
-	 *            待加密串
-	 * @return 返回加密的串
-	 * @throws Exception
-	 *//*
-	public static String encrypt(String src) throws Exception {
-		DesUtil des = new DesUtil();
-		return byteArr2HexStr(des.encrypt(src.getBytes()));
+	 * @return
+	 */
+	public static String genSalt() {
+		return RandomUtil.generateNumCharString(SALT_LENGHT);
 	}
 
-	*//**
-	 * DES解密方法,与encrypt互逆
-	 * 
-	 * @param target
-	 *            待解密串
-	 * @return 返回解密的串
-	 * @throws Exception
-	 *//*
-	public static String decrypt(String target) throws Exception {
-		DesUtil des = new DesUtil();
-		return des.decrypt(target);
-	}*/
 
 	/**
 	 * 将byte数组转换为表示16进制值的字符串， 如：byte[]{8,18}转换为：0813， 和public static byte[]
@@ -44,7 +34,7 @@ public class SecurityUtil {
 	 * @throws Exception
 	 *             本方法不处理任何异常，所有异常全部抛出
 	 */
-	public static String byteArr2HexStr(byte[] arrB) throws Exception {
+	protected static String byteArr2HexStr(byte[] arrB) throws Exception {
 		String result="";
 		for (int i = 0; i < arrB.length; i++) {
 			result += Integer.toHexString((0x000000FF & arrB[i]) | 0xFFFFFF00)
@@ -64,7 +54,7 @@ public class SecurityUtil {
 	 *             本方法不处理任何异常，所有异常全部抛出
 	 * @author <a href="mailto:leo841001@163.com">LiGuoQing</a>
 	 */
-	public static byte[] hexStr2ByteArr(String strIn) throws Exception {
+	protected static byte[] hexStr2ByteArr(String strIn) throws Exception {
 		byte[] arrB = strIn.getBytes();
 		int iLen = arrB.length;
 
@@ -76,8 +66,70 @@ public class SecurityUtil {
 		}
 		return arrOut;
 	}
-
-	public static void main(String[] args) throws Exception {
-		
+	
+	/**
+	 * des对字符串加密
+	 * @param strIn	待加密字符串
+	 * @return
+	 * @throws Exception
+	 */
+	public static String encrypt(String strIn) throws Exception {
+		return byteArr2HexStr(DesUtil.encrypt(strIn.getBytes()));
+	}
+	
+	/**
+	 * des解密
+	 * @param strIn	待解密字符串
+	 * @return
+	 * @throws Exception
+	 */
+	public static String decrypt(String strIn) throws Exception {
+		return new String(DesUtil.decrypt(hexStr2ByteArr(strIn)));
+	}
+	
+	/**
+	 * 对指定的salt和password加密
+	 * @param strIn	明文密码
+	 * @param salt	随机salt
+	 * @return	加密后的密码
+	 * @throws Exception
+	 */
+	protected static String encrypt(String strIn,String salt) throws Exception {
+		return byteArr2HexStr(DesUtil.encrypt(Sha2Util.sha2(strIn, salt).getBytes()));
+	}
+	
+	/**
+	 * 比较密码是否正确
+	 * @param passwd	明文密码
+	 * @param salt	随机salt
+	 * @param encryptPwd	加密后的密码
+	 * @return
+	 */
+	public static boolean comparePass(String passwd,String salt,String encryptPwd) {
+		try {
+			return DesUtil.decrypt(encryptPwd).equals(Sha2Util.sha2(passwd, salt));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return false;
+		}
+	}
+	
+	public static void main(String[] args){
+		String salt = genSalt();
+		System.out.println(salt);
+		try {
+			String pwd = encrypt("aaa111",salt);
+			System.out.println(pwd);
+			System.out.println(encrypt("wang_12li@143.com"));
+			System.out.println(decrypt("0a0ccdd6bfb2521ebeb8897852ebf402bec6c5f6d089410b"));
+			System.out.println(comparePass("aaa111",salt,pwd));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
