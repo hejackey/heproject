@@ -4,5 +4,21 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="lib" path="httpcore-4.1.2.jar"/>
+	<classpathentry kind="lib" path="httpclient-cache-4.1.2.jar"/>
+	<classpathentry kind="lib" path="httpmime-4.1.2.jar"/>
+	<classpathentry kind="lib" path="httpclient-4.0.1.jar"/>
+	<classpathentry kind="lib" path="nekohtml.jar"/>
+	<classpathentry kind="lib" path="xercesImpl.jar"/>
+	<classpathentry kind="lib" path="commons-io-2.1.jar"/>
+	<classpathentry kind="lib" path="aspriseOCR.jar"/>
+	<classpathentry kind="lib" path="jai_core.jar"/>
+	<classpathentry kind="lib" path="jai_codec.jar"/>
+	<classpathentry kind="lib" path="jai_imageio.jar"/>
+	<classpathentry kind="lib" path="jna.jar"/>
+	<classpathentry kind="lib" path="ghost4j-0.3.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="spring-mock-2.0-m2.jar"/>
+	<classpathentry kind="lib" path="mail.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

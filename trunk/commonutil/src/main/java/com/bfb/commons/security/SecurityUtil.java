@@ -127,7 +127,7 @@ public class SecurityUtil {
 			System.out.println(pwd);
 			System.out.println(encrypt("wang_12li@143.com"));
 			System.out.println(decrypt("0a0ccdd6bfb2521ebeb8897852ebf402bec6c5f6d089410b"));
-			System.out.println(comparePass("aaa111",salt,pwd));
+			System.out.println(comparePass("pphj7758523",salt,pwd));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
