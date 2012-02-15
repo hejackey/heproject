@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="first review">
+  <ReviewIssue id="GYO00ZZ8">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-02-15 :: 14:47:39:812 CST</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-02-15 :: 14:48:11:843 CST</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>jackey</ReviewerId>
+    <AssignedTo>selina</AssignedTo>
+    <File></File>
+    <Type>item.type.label.programLogic</Type>
+    <Severity>item.severity.label.critical</Severity>
+    <Summary>test</Summary>
+    <Description>test</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validNeedsfixing</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="GYO01ZKH">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-02-15 :: 14:48:25:937 CST</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-02-15 :: 14:48:40:953 CST</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>jackey</ReviewerId>
+    <AssignedTo>selina</AssignedTo>
+    <File line="16">src/main/java/com/bfb/commons/security/Md5Util.java</File>
+    <Type>item.type.label.codingStandards</Type>
+    <Severity>item.label.unset</Severity>
+    <Summary>saf</Summary>
+    <Description>asdfasdf</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="GYO02RPX">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-02-15 :: 14:49:02:421 CST</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-02-15 :: 14:49:06:500 CST</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>jackey</ReviewerId>
+    <AssignedTo>selina</AssignedTo>
+    <File line="42">src/main/java/com/bfb/commons/security/RsaUtil.java</File>
+    <Type>item.label.unset</Type>
+    <Severity>item.label.unset</Severity>
+    <Summary>test</Summary>
+    <Description>test</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+</Review>
