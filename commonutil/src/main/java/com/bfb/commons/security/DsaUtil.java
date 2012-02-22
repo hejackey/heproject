@@ -12,20 +12,23 @@ import java.security.SignatureException;
 
 public class DsaUtil {
 	private static final String DSA_ARITHMETIC="DSA";
-	@SuppressWarnings("unused")
-	private static PrivateKey privateKey;
-	@SuppressWarnings("unused")
-	private static PublicKey publicKey;
 	
-	public static String sign(String content,PrivateKey privateKey){
+	/**
+	 * DSA签名算法
+	 * @param content	明文密码
+	 * @param privateKeyFile	私钥wen'ji
+	 * @return
+	 */
+	public static String sign(String content,String privateKeyFile){
 		 Signature signalg;
 		try {
 			signalg = Signature.getInstance(DSA_ARITHMETIC);
-			 signalg.initSign(privateKey);  
-	         signalg.update(content.getBytes());  
-	         byte[] signature = signalg.sign();  
+			PrivateKey privateKey = setPrivateKey(privateKeyFile);
+			signalg.initSign(privateKey);  
+			signalg.update(content.getBytes());  
+			byte[] signature = signalg.sign();  
 	         
-	         return SecurityUtil.byteArr2HexStr(signature);  
+			return SecurityUtil.byteArr2HexStr(signature);  
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (InvalidKeyException e) {
@@ -39,10 +42,11 @@ public class DsaUtil {
 		return null;
 	}
 	
-	public static boolean vierify(String sign,String content,PublicKey publicKey){
+	public static boolean vierify(String sign,String content,String publicKeyFile){
 		   Signature verifyflag;
 		try {
 			verifyflag = Signature.getInstance(DSA_ARITHMETIC);
+			PublicKey publicKey= setPublicKey(publicKeyFile);
 			verifyflag.initVerify(publicKey);  
 			verifyflag.update(content.getBytes());  
 			
@@ -60,33 +64,35 @@ public class DsaUtil {
 		return false;
 	}
 	
-	public static void setPrivateKey(String privateKeySrc) throws Exception {  
+	private static PrivateKey setPrivateKey(String privateKeySrc) throws Exception {  
         try {  
             ObjectInputStream keyIn = new ObjectInputStream(  
                     new FileInputStream(new File(privateKeySrc)));  
-            privateKey = (PrivateKey) keyIn.readObject();  
+            PrivateKey privateKey = (PrivateKey) keyIn.readObject();  
             keyIn.close();  
+            
+            return privateKey;
         } catch (Exception e) {  
             throw e;  
         }  
     }  
   
-    public static void setPublicKey(String publicKeySrc) throws Exception {  
+    private static PublicKey setPublicKey(String publicKeySrc) throws Exception {  
         try {  
             ObjectInputStream keyIn = new ObjectInputStream(  
                     new FileInputStream(new File(publicKeySrc)));  
-            publicKey = (PublicKey) keyIn.readObject();  
+            PublicKey publicKey = (PublicKey) keyIn.readObject();  
             keyIn.close();  
+            
+            return publicKey;
         } catch (Exception e) {  
             throw e;  
         }  
     }  
 	public static void main(String[] args) throws Exception {
-		setPublicKey("D:\\keypair\\public.key");
-		setPrivateKey("D:\\keypair\\private.key");
-		String t = sign("123",privateKey);
+		String t = sign("123ass","D:\\keypair\\private.key");
 		System.out.println(t);
-		System.out.println(vierify(t,"1223",publicKey));
+		System.out.println(vierify(t,"123ass","D:\\keypair\\public.key"));
 		
 	}
 }
