@@ -14,10 +14,10 @@ public class DsaUtil {
 	private static final String DSA_ARITHMETIC="DSA";
 	
 	/**
-	 * DSA签名算法
+	 * 私钥签名
 	 * @param content	明文密码
-	 * @param privateKeyFile	私钥wen'ji
-	 * @return
+	 * @param privateKeyFile	私钥文件路径
+	 * @return 签名后字符串
 	 */
 	public static String sign(String content,String privateKeyFile){
 		 Signature signalg;
@@ -42,6 +42,13 @@ public class DsaUtil {
 		return null;
 	}
 	
+	/**
+	 * 公钥验证签名
+	 * @param sign	签名串
+	 * @param content	明文密码
+	 * @param publicKeyFile	公钥文件路径
+	 * @return
+	 */
 	public static boolean vierify(String sign,String content,String publicKeyFile){
 		   Signature verifyflag;
 		try {
@@ -64,6 +71,12 @@ public class DsaUtil {
 		return false;
 	}
 	
+	/**
+	 * 获取私钥
+	 * @param privateKeySrc	私钥文件路径
+	 * @return	私钥
+	 * @throws Exception
+	 */
 	private static PrivateKey setPrivateKey(String privateKeySrc) throws Exception {  
         try {  
             ObjectInputStream keyIn = new ObjectInputStream(  
@@ -77,6 +90,12 @@ public class DsaUtil {
         }  
     }  
   
+	/**
+	 * 获取公钥
+	 * @param publicKeySrc	公钥文件路径
+	 * @return	公钥
+	 * @throws Exception
+	 */
     private static PublicKey setPublicKey(String publicKeySrc) throws Exception {  
         try {  
             ObjectInputStream keyIn = new ObjectInputStream(  
@@ -90,9 +109,10 @@ public class DsaUtil {
         }  
     }  
 	public static void main(String[] args) throws Exception {
-		String t = sign("123ass","D:\\keypair\\private.key");
+		String t = sign("123a斯蒂芬阿asdfasdf萨德ss","D:\\keypair\\private.key");
 		System.out.println(t);
-		System.out.println(vierify(t,"123ass","D:\\keypair\\public.key"));
+		System.out.println(vierify(t,"123a斯蒂芬阿asdfasdf萨德ss","D:\\keypair\\public.key"));
+		System.out.println(t.length());
 		
 	}
 }

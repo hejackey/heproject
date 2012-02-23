@@ -11,7 +11,7 @@ import java.security.SecureRandom;
 
 public class DsaKeyPaireGenerator {
 	private static final String DSA_ARITHMETIC="DSA";
-	private static final int KEYSIZE=512; 
+	private static final int KEYSIZE=1024; 
 	
 	/**
 	 * @param args
@@ -20,14 +20,19 @@ public class DsaKeyPaireGenerator {
 		genKeyPair("d:\\keypair\\public.key","d:\\keypair\\private.key");
 	}
 
+	private static final String SEED = "20128f8";
+	
 	public static void genKeyPair(String publicKey,String privateKey){
 		try {
 			KeyPairGenerator pairgen = KeyPairGenerator.getInstance(DSA_ARITHMETIC);
-			SecureRandom random=new SecureRandom();  
+			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+			random.setSeed(SEED.getBytes());
+			
             pairgen.initialize(KEYSIZE, random);  
             KeyPair keyPair=pairgen.generateKeyPair();  
               
             ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(publicKey));  
+           
             out.writeObject(keyPair.getPublic());  
             out.close();  
               
