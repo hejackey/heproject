@@ -219,6 +219,18 @@ public class DateUtil {
 		else
 			return false;
 	}
+	
+	/**
+	 * 返回string型日期对应的long值
+	 * @param date	string型日期
+	 * @param format	日期格式
+	 * @return long值
+	 * @throws ParseException
+	 */
+	public static long getDateTime(String date,String format) throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.parse(date).getTime();
+	}
 	/**
 	 * @param args
 	 * @throws ParseException 
