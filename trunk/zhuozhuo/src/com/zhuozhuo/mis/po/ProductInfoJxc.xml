@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="productInfoJxc">
+  <typeAlias alias="PProductInfoJxc" type="com.zhuozhuo.mis.po.PProductInfoJxc"/>
+  <typeAlias alias="ProductInfoJxc" type="com.zhuozhuo.mis.model.ProductInfoJxc"/>  
+  <typeAlias alias="qProductInfoJxc" type="com.zhuozhuo.mis.model.QueryProductInfoJxc"/>
+  
+  <resultMap id="result" class="PProductInfoJxc">
+  	<result property="id" column="id" columnIndex="1"/>
+    <result property="productCode" column="PRODUCT_CODE" columnIndex="2"/>
+    <result property="productName" column="PRODUCTNAME" columnIndex="3"/>    
+    <result property="productClass" column="PRODUCTCLASS" columnIndex="4"/>    
+    <result property="createBy" column="CREATE_BY" columnIndex="5"/>
+    <result property="createTime" column="CREATE_TIME" columnIndex="6"/>     
+    <result property="productUnit" column="PRODUCTUNIT" columnIndex="7"/>    
+    <result property="productSpecs" column="PRODUCTSPECS" columnIndex="8"/>    
+    <result property="productType" column="PRODUCTTYPE" columnIndex="9"/>    
+    <result property="productProperty" column="PRODUCTPROPERTY" columnIndex="10"/>    
+    <result property="productWeight" column="PRODUCTWEIGHT" columnIndex="11"/> 
+    <result property="productVolume" column="PRODUCTVOLUME" columnIndex="12"/>
+    <result property="productCorlor" column="PRODUCTCORLOR" columnIndex="13"/>
+    <result property="porductSize" column="PORDUCTSIZE" columnIndex="14"/>
+    <result property="factStorage" column="FACTSTORAGE" columnIndex="15"/>    
+    <result property="costCalculate" column="COSTCALCULATE" columnIndex="16"/>    
+    <result property="productentry" column="PRODUCTENTRY" columnIndex="17"/>
+    <result property="weightilyCode" column="WEIGHTILYCODE" columnIndex="18"/>     
+    <result property="ifStoped" column="IFSTOPED" columnIndex="19"/>    
+    <result property="leastOrder" column="LEASTORDER" columnIndex="20"/>    
+    <result property="aheadDay" column="AHEADDAY" columnIndex="21"/>    
+    <result property="batchMark" column="BATCHMARK" columnIndex="22"/>    
+    <result property="produceDate" column="PRODUCEDATE" columnIndex="23"/> 
+    <result property="productIncrement" column="PRODUCTINCREMENT" columnIndex="24"/>
+    <result property="availability" column="AVAILABILITY" columnIndex="25"/>
+    <result property="pricePurchase" column="PRICE_PURCHASE" columnIndex="26"/>
+    <result property="costPrice" column="COSTPRICE" columnIndex="27"/>    
+    <result property="priceNet" column="PRICE_NET" columnIndex="28"/>    
+    <result property="priceMarket" column="PRICE_MARKET" columnIndex="29"/>
+    <result property="define1" column="DEFINE1" columnIndex="30"/>  
+    <result property="define2" column="DEFINE2" columnIndex="31"/>
+    <result property="define3" column="DEFINE3" columnIndex="32"/>
+    <result property="remark" column="REMARK" columnIndex="33"/>             
+  </resultMap>  
+  
+  <!-- 采用主键自动增长 -->
+  <insert id="insertProductInfoJxc">
+  		<selectKey resultClass="long" keyProperty="id" type="pre">
+			<![CDATA[SELECT PRODUCT.SEQ_PRODUCT_INFO_JXC.NEXTVAL AS id FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into PRODUCT.PRODUCT_INFO_JXC(
+    		ID,PRODUCT_CODE,PRODUCTNAME,PRODUCTCLASS,CREATE_BY,CREATE_TIME,PRODUCTUNIT,PRODUCTSPECS,
+    		PRODUCTTYPE,PRODUCTPROPERTY,PRODUCTWEIGHT,PRODUCTVOLUME,PRODUCTCORLOR,PORDUCTSIZE,FACTSTORAGE,
+    		COSTCALCULATE,PRODUCTENTRY,WEIGHTILYCODE,IFSTOPED,LEASTORDER,AHEADDAY,BATCHMARK,PRODUCEDATE,
+    		PRODUCTINCREMENT,AVAILABILITY,PRICE_PURCHASE,COSTPRICE,PRICE_NET,PRICE_MARKET,DEFINE1,DEFINE2,DEFINE3,REMARK)
+    		 values(
+    		 #id#,#productCode#,#productName#,#productClass#,#createBy#,sysdate,#productUnit#,
+    		 #productSpecs#,#productType#,#productProperty#,#productWeight#,#productVolume#,#productCorlor#,
+    		 #porductSize#,#factStorage#,#costCalculate#,#productentry#,#weightilyCode#,#ifStoped#,#leastOrder#,
+    		 #aheadDay#,#batchMark#,to_date(#produceDate#,'yyyy-mm-dd'),#productIncrement#,#availability#,#pricePurchase#,#costPrice#,
+    		 #priceNet#,#priceMarket#,#define1#,#define2#,#define3#,#remark#)
+    	]]>
+  </insert> 
+  
+  <!--  -->  
+  <select id="getAllProductInfoJxc" resultMap="result">
+  	<![CDATA[
+    	select  ID,PRODUCT_CODE,PRODUCTNAME,PRODUCTCLASS,CREATE_BY,CREATE_TIME,PRODUCTUNIT,PRODUCTSPECS,
+    		PRODUCTTYPE,PRODUCTPROPERTY,PRODUCTWEIGHT,PRODUCTVOLUME,PRODUCTCORLOR,PORDUCTSIZE,FACTSTORAGE,
+    		COSTCALCULATE,PRODUCTENTRY,WEIGHTILYCODE,IFSTOPED,LEASTORDER,AHEADDAY,BATCHMARK,PRODUCEDATE,
+    		PRODUCTINCREMENT,AVAILABILITY,PRICE_PURCHASE,COSTPRICE,PRICE_NET,PRICE_MARKET,DEFINE1,DEFINE2,DEFINE3,REMARK
+        from  PRODUCT.PRODUCT_INFO_JXC order by ID desc
+    ]]> 
+  </select> 
+
+    
+  <select id="getProductInfoJxc" resultMap="result"  parameterClass="String">
+  	<![CDATA[
+    	select 
+				ID,PRODUCT_CODE,PRODUCTNAME,PRODUCTCLASS,CREATE_BY,CREATE_TIME,PRODUCTUNIT,PRODUCTSPECS,PRODUCTTYPE,PRODUCTPROPERTY,PRODUCTWEIGHT,PRODUCTVOLUME,
+				PRODUCTCORLOR,PORDUCTSIZE,FACTSTORAGE,COSTCALCULATE,PRODUCTENTRY,WEIGHTILYCODE,IFSTOPED,LEASTORDER,AHEADDAY,BATCHMARK,to_char(PRODUCEDATE,'yyyy-MM-dd') as PRODUCEDATE,PRODUCTINCREMENT,AVAILABILITY,
+				PRICE_PURCHASE,COSTPRICE,PRICE_NET,PRICE_MARKET,DEFINE1,DEFINE2,DEFINE3,REMARK
+		from  PRODUCT.PRODUCT_INFO_JXC where id=#id#
+    ]]>
+  </select>  
+ 
+ 
+  <update id="updateProductInfoJxc" parameterClass="PProductInfoJxc"> 
+  	<![CDATA[   
+    	update PRODUCT.PRODUCT_INFO_JXC set
+    		 	ID=#id#,PRODUCT_CODE=#productCode#,PRODUCTNAME=#productName#,PRODUCTCLASS=#productClass#,CREATE_BY=#createBy#,
+				CREATE_TIME=sysdate,PRODUCTUNIT=#productUnit#,PRODUCTSPECS=#productSpecs#,PRODUCTTYPE=#productType#,
+				PRODUCTPROPERTY=#productProperty#,PRODUCTWEIGHT=#productWeight#,PRODUCTVOLUME=#productVolume#,PRODUCTCORLOR=#productCorlor#,
+				PORDUCTSIZE=#porductSize#,FACTSTORAGE=#factStorage#,COSTCALCULATE=#costCalculate#,PRODUCTENTRY=#productentry#,
+				WEIGHTILYCODE=#weightilyCode#,IFSTOPED=#ifStoped#,LEASTORDER=#leastOrder#,AHEADDAY=#aheadDay#,BATCHMARK=#batchMark#,
+				PRODUCEDATE=to_date(#produceDate#,'yyyy-mm-dd'),PRODUCTINCREMENT=#productIncrement#,AVAILABILITY=#availability#,PRICE_PURCHASE=#pricePurchase#,
+				COSTPRICE=#costPrice#,PRICE_NET=#priceNet#,PRICE_MARKET=#priceMarket#,DEFINE1=#define1#,DEFINE2=#define2#,DEFINE3=#define3#,REMARK=#remark# 
+    	where id = #id#
+    ]]>     
+  </update>
+   
+  
+  <delete id="deleteProductInfoJxc" parameterClass="String" >
+  	<![CDATA[
+    	delete from PRODUCT.PRODUCT_INFO_JXC where ID = #id#
+    ]]> 
+  </delete> 
+  
+  <!-- 删除多条记录,使用动态sql语句 -->
+  <delete id="deleteProductInfoJxcs" parameterClass="java.util.Map" >  	
+    	delete from PRODUCT.PRODUCT_INFO_JXC
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				id=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete>
+   
+  <!-- 综合查询 -->
+  
+  <select id="queryProductInfoJxc" resultMap="result"  parameterClass="com.zhuozhuo.mis.model.QueryProductInfoJxc">  	
+    	select  ID,PRODUCT_CODE,PRODUCTNAME,PRODUCTCLASS,CREATE_BY,CREATE_TIME,PRODUCTUNIT,PRODUCTSPECS,PRODUCTTYPE,PRODUCTPROPERTY,PRODUCTWEIGHT,PRODUCTVOLUME,
+				PRODUCTCORLOR,PORDUCTSIZE,FACTSTORAGE,COSTCALCULATE,PRODUCTENTRY,WEIGHTILYCODE,IFSTOPED,LEASTORDER,AHEADDAY,BATCHMARK,PRODUCEDATE,PRODUCTINCREMENT,AVAILABILITY,
+				PRICE_PURCHASE,COSTPRICE,PRICE_NET,PRICE_MARKET,DEFINE1,DEFINE2,DEFINE3,REMARK
+		from  PRODUCT.PRODUCT_INFO_JXC 	where 1=1
+    	<dynamic>
+    		<isNotEmpty prepend="and" property="productName" >
+        		PRODUCTNAME=#productName#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="productCode" >
+        		PRODUCT_CODE=#productCode#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="createBy" >
+        		CREATE_BY=#createBy#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="productType" >
+        		PRODUCTTYPE=#productType#
+			</isNotEmpty>
+    	</dynamic>  
+  </select>
+  
+  <select id="qByProductCodeProdInfoJxcs" parameterClass="qProductInfoJxc" resultClass="PProductInfoJxc">
+  	select *
+	  from (select t.*, rownum rn
+	          from (select id,
+	                       product_code as productCode,
+	                       productname as productName,
+	                       productspecs as productSpecs,
+	                       price_purchase as pricePurchase,
+	                       productentry as productentry,
+	                       remark
+	                  from product.product_info_jxc
+	                  where 1=1
+	                  <dynamic>
+		                  <isNotEmpty prepend="and" property="productCode">
+		                  	product_code like '%'||#productCode#||'%'
+		                  </isNotEmpty>
+	                  </dynamic>
+	                  ) t
+	    <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+		<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>
+	</select>
+  
+     <select id="qByProductCodeProdInfoJxcsCount" parameterClass="qProductInfoJxc" resultClass="int">
+	  	select count(1)
+	      from product.product_info_jxc
+	     where 1=1
+	     <dynamic>
+		   <isNotEmpty prepend="and" property="productCode">
+		   	product_code like '%'||#productCode#||'%'
+		   </isNotEmpty>
+	      </dynamic>	      
+	</select>
+	
+	<select id="queryProductInfoJxcs" resultMap="result"  parameterClass="com.zhuozhuo.mis.model.QueryProductInfoJxc">  	
+    	select  ID,PRODUCT_CODE,PRODUCTNAME,PRODUCTCLASS,CREATE_BY,CREATE_TIME,PRODUCTUNIT,PRODUCTSPECS,PRODUCTTYPE,PRODUCTPROPERTY,PRODUCTWEIGHT,PRODUCTVOLUME,
+				PRODUCTCORLOR,PORDUCTSIZE,FACTSTORAGE,COSTCALCULATE,PRODUCTENTRY,WEIGHTILYCODE,IFSTOPED,LEASTORDER,AHEADDAY,BATCHMARK,PRODUCEDATE,PRODUCTINCREMENT,AVAILABILITY,
+				PRICE_PURCHASE,COSTPRICE,PRICE_NET,PRICE_MARKET,DEFINE1,DEFINE2,DEFINE3,REMARK
+		from  PRODUCT.PRODUCT_INFO_JXC 	where 1=1
+    	<dynamic>
+    		<isNotEmpty prepend="and" property="productName" >
+        		PRODUCTNAME like  '%'||#productName#||'%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="productCode" >
+        		PRODUCT_CODE like '%'||#productCode#||'%'
+			</isNotEmpty>			
+			<isNotEmpty prepend="and" property="productType" >
+        		PRODUCTTYPE=#productType#
+			</isNotEmpty>
+    	</dynamic>  
+  </select>
+</sqlMap>

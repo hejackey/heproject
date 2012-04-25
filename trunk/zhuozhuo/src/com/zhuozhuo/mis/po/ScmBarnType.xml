@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="scmbarntype">
+
+  <typeAlias alias="barntype" type="com.zhuozhuo.mis.po.ScmBarnType"/>
+  
+  <select id="getBarnTypeList" resultClass="barntype">
+	  select bt.id,
+	       bt.parentid,
+	       (select max(sys_connect_by_path(sbt.barntypename, '-'))
+	          from scm.scm_barn_type sbt
+	         start with sbt.id = bt.parentid
+	        connect by prior sbt.parentid = sbt.id) as parentname,
+	       bt.barntypecode,
+	       bt.barntypename,
+	       bt.address,
+	       bt.phone
+	  from scm.scm_barn_type bt
+	  order by bt.id
+  </select>
+  
+  <select id="getBarnTypeById" resultClass="barntype" parameterClass="string">
+ 	select bt.id,
+	       bt.parentid,
+	       (select max(sys_connect_by_path(sbt.barntypename, '-'))
+	          from scm.scm_barn_type sbt
+	         start with sbt.id = bt.parentid
+	        connect by prior sbt.parentid = sbt.id) as parentname,
+	       bt.barntypecode,
+	       bt.barntypename,
+	       bt.address,
+	       bt.phone
+	  from scm.scm_barn_type bt
+	 where bt.id=#value#
+  </select>
+  
+  <select id="getBarnTypeSonId" resultClass="string" parameterClass="string">
+	  select distinct id
+	  from scm.scm_barn_type t
+	 start with t.parentid = #value#
+	connect by prior t.id = t.parentid
+  </select>
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getAllScmBarnTypes" resultClass="barntype">
+  	<![CDATA[
+    	select id,parentid,parentname,barntypecode,barntypename,address,phone from  SCM.SCM_BARN_TYPE order by ID desc
+    ]]> 
+  </select>
+  
+  <select id="getScmBarnType" resultClass="barntype" parameterClass="string">
+  	<![CDATA[
+    	select id,parentid,parentname,barntypecode,barntypename,address,phone from  SCM.SCM_BARN_TYPE where id=#id#
+    ]]> 
+  </select> 
+  
+  <select id="getChildScmBarnTypes" resultClass="barntype" parameterClass="string">
+  	<![CDATA[
+    	select id,parentid,parentname,barntypecode,barntypename,address,phone from  SCM.SCM_BARN_TYPE where PARENTID=#parentid#
+    ]]> 
+  </select> 
+  <!-- 采用主键自动增长 -->
+  <insert id="insertScmBarnType">
+  		<selectKey resultClass="string" keyProperty="id" type="pre">
+			<![CDATA[SELECT SCM.SEQ_SCM_BARN_TYPE.NEXTVAL AS recordId FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into  SCM.SCM_BARN_TYPE (id,parentid,parentname,barntypecode,barntypename,address,phone) values (#id#,#parentid#,#parentname#,#barntypecode#,#barntypename#,#address#,#phone#)
+    	]]>
+  </insert>
+  
+  <update id="updateScmBarnType" parameterClass="barntype"> 
+  	<![CDATA[   
+    	update SCM.SCM_BARN_TYPE set  parentid=#parentid#,parentname=#parentname#,barntypecode=#barntypecode#,barntypename=#barntypename#,address=#address#,phone=#phone# where id = #id#
+    ]]>     
+  </update>
+  
+  <!-- 删除多条记录,使用动态sql语句 -->
+  <delete id="deleteScmBarnTypes" parameterClass="java.util.Map" >  	
+    	delete from SCM.SCM_BARN_TYPE
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				id=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete> 
+ </sqlMap>

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="scmgather">
+
+  <typeAlias alias="gather" type="com.zhuozhuo.mis.po.ScmGather"/>
+  
+  <insert id="saveScmGather" parameterClass="gather">
+    <selectKey resultClass="string" keyProperty="id" >
+            SELECT scm.seq_scm_gather_order.NextVal AS id FROM DUAL
+    </selectKey>
+    <![CDATA[ 	  
+	insert into scm.scm_gather_order t
+	  (t.id,
+	   t.sheetid,
+	   t.makerid,
+	   t.createdate,
+	   t.sheetstate,
+	   t.providerid,
+	   t.departmentid,
+	   t.userid,
+	   t.sumqty,
+	   t.sumamt,
+	   t.gatheropentype,
+	   t.bargaincode,
+	   t.paydate,
+	   t.barnid,
+	   t.transmodecode,
+	   t.todate,
+	   t.toaddress,
+	   t.srcsheetid,
+	   t.remark,
+	   t.isreceive,
+	   t.pretodate)
+	values
+	  (#id#,
+	   #sheetid#||#id#,
+	   #makerid#,
+	   sysdate,
+	   #sheetstate#,
+	   #providerid#,
+	   #departmentid#,
+	   #userid#,
+	   #sumqty#,
+	   #sumamt#,
+	   #gatheropentype#,
+	   #bargaincode#,	   
+	   to_date(#paydate#, 'yyyy-MM-dd'),
+	   #barnid#,
+	   #transmodecode#,
+	   to_date(#todate#, 'yyyy-MM-dd'),
+	   #toaddress#,
+	   #srcsheetid#,
+	   #memo#,
+	   #isreceive#,
+	   to_date(#pretodate#,'yyyy-MM-dd'))
+	 ]]>
+  </insert>
+  
+  <select id="listScmGather" resultClass="gather" parameterClass="gather">
+    select *
+	  from (select t.*, rownum rn
+	          from (select sso.id,
+	                       sso.sheetid,
+	                       sso.makerid,
+	                       tau.name as makerName,
+	                       to_char(sso.createdate,'yyyy-MM-dd hh24:mi:ss') as createdate,
+	                       sso.sheetstate,
+	                       sso.providerid,
+	                       p.providername as providerName,
+	                       sso.userid,
+	                       tau1.name as userName,
+	                       sso.sumqty,
+	                       sso.sumamt,
+	                       sso.srcsheetid,                       
+	                       to_char(sso.paydate,'yyyy-MM-dd') as paydate,
+	                       to_char(sso.pretodate,'yyyy-MM-dd') as pretodate,
+	                       to_char(sso.todate,'yyyy-MM-dd') as todate,
+	                       sso.remark as memo
+	                  from scm.scm_gather_order sso,
+	                       scm.t_adm_user      tau,
+	                       scm.t_adm_user      tau1,
+	                       scm.provider        p
+	                       <dynamic>
+		                       	<isEqual prepend="," property="prodCond" compareValue="0">
+		                       		scm.scm_gather_order_detail sod,
+			                		product.product_info_jxc pjxc
+			                	</isEqual>
+	                       </dynamic>
+	                 where sso.makerid = tau.id(+)
+	                   and sso.userid = tau1.id(+)
+                  	   and sso.providerid = p.id(+)	                   
+	                 <dynamic>
+		                 <isEqual prepend="and" property="prodCond" compareValue="0">
+				               sod.productid=pjxc.id
+				               and sod.masterid=sso.id
+				                <isNotEmpty prepend="and" property="productName">
+			                		pjxc.productname like '%'|| #productName# ||'%'
+			                	</isNotEmpty>
+			                	<isNotEmpty prepend="and" property="productType">
+			                		pjxc.producttype = #productType#
+			                	</isNotEmpty>
+				        </isEqual>
+				        <isEqual prepend="and" property="sheetstate" compareValue="0">
+				               sso.sheetstate=2
+				        </isEqual>
+				         <isNotEqual prepend="and" property="sheetstate" compareValue="0">
+				               sso.sheetstate=#sheetstate#
+				        </isNotEqual>
+	                	<isNotEmpty prepend="and" property="qsheetid">
+	                		sso.sheetid like '%'|| #qsheetid# ||'%'
+	                	</isNotEmpty>
+	                	<isNotEmpty prepend="and" property="srcsheetid">
+	                		sso.srcsheetid like '%'|| #srcsheetid#||'%'
+	                	</isNotEmpty>
+	                	<isNotEmpty prepend="and" property="providerName">
+	                		p.providername like '%'|| #providerName#||'%'
+	                	</isNotEmpty>
+	                	
+	                	<isNotEmpty prepend="and" property="minAmt">
+	                	 <![CDATA[ 	sso.sumamt >= #minAmt#    ]]>
+	                	</isNotEmpty>
+	                	
+	                	<isNotEmpty prepend="and" property="maxAmt">
+	                	 <![CDATA[ 	sso.sumamt <= #maxAmt#    ]]>
+	                	</isNotEmpty>
+	                	
+	                	<isNotEqual prepend="and" property="userid" compareValue="0">
+	                		sso.userid = #userid#
+	                	</isNotEqual>
+	                 </dynamic>
+	                 order by createdate desc) t	
+	 <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+		<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>
+  </select>
+  
+  <select id="listScmGatherCount" resultClass="int" parameterClass="gather">
+	select count(1)
+	  from scm.scm_gather_order sso,
+	       scm.t_adm_user      tau,
+	       scm.t_adm_user      tau1,
+	       scm.provider        p
+	       <dynamic>
+		      <isEqual prepend="," property="prodCond" compareValue="0">
+		         scm.scm_gather_order_detail sod,
+			     product.product_info_jxc pjxc
+			  </isEqual>
+	       </dynamic>
+	 where sso.makerid = tau.id(+)
+	   and sso.userid = tau1.id(+)
+       and sso.providerid = p.id(+)
+	<dynamic>
+		 <isEqual prepend="and" property="prodCond" compareValue="0">
+		       sod.productid=pjxc.id
+		       and sod.masterid=sso.id
+		        <isNotEmpty prepend="and" property="productName">
+		      		pjxc.productname like '%'|| #productName# ||'%'
+		      	</isNotEmpty>
+		      	<isNotEmpty prepend="and" property="productType">
+		      		pjxc.producttype = #productType#
+		      	</isNotEmpty>
+		</isEqual>
+		<isEqual prepend="and" property="sheetstate" compareValue="0">
+		       sso.sheetstate=2
+		</isEqual>
+		<isNotEqual prepend="and" property="sheetstate" compareValue="0">
+		       sso.sheetstate=#sheetstate#
+		</isNotEqual>
+		<isNotEmpty prepend="and" property="qsheetid">
+			sso.sheetid like '%'|| #qsheetid# ||'%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="srcsheetid">
+			sso.srcsheetid like '%'|| #srcsheetid#||'%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="providerName">
+			p.providername like '%'|| #providerName#||'%'
+		</isNotEmpty>
+		
+		<isNotEmpty prepend="and" property="minAmt">
+		 <![CDATA[ 	sso.sumamt >= #minAmt#    ]]>
+		</isNotEmpty>
+		
+		<isNotEmpty prepend="and" property="maxAmt">
+		 <![CDATA[ 	sso.sumamt <= #maxAmt#    ]]>
+		</isNotEmpty>
+		
+		<isNotEqual prepend="and" property="userid" compareValue="0">
+			sso.userid = #userid#
+		</isNotEqual>
+	</dynamic>
+	
+  </select>
+  
+  <select id="getScmGather" resultClass="gather" parameterClass="string">
+  	select sso.id,
+	       sso.sheetid,
+	       sso.makerid,
+	       tau.name as makerName,
+	       to_char(sso.createdate, 'yyyy-MM-dd hh24:mi:ss') as createdate,
+	       sso.sheetstate,
+	       sso.providerid,
+	       p.providername as providerName,
+	       p.address,
+	       p.phone,
+	       p.businessman,
+	       sso.userid,
+	       tau1.name as userName,
+	       sso.bargaincode,
+	       sso.departmentid as departmentid,
+	       sso.isreceive,
+	       sso.barnid,
+	       bt.address as barnAddress,
+	       bt.phone as barnPhone,
+	       sso.sumqty,
+	       sso.sumamt,
+	       sso.srcsheetid,
+	       sso.auditid,
+	       tau2.name as auditName,
+	       to_char(sso.paydate, 'yyyy-MM-dd') as paydate,
+	       to_char(sso.pretodate, 'yyyy-MM-dd') as pretodate,
+	       to_char(sso.todate, 'yyyy-MM-dd') as todate,
+	       sso.remark as memo
+	  from scm.scm_gather_order sso,
+	       scm.t_adm_user      tau,
+	       scm.t_adm_user      tau1,
+	       scm.t_adm_user	   tau2,
+	       scm.provider        p,
+	       scm.scm_barn_type   bt
+	 where sso.makerid = tau.id(+)
+	   and sso.userid = tau1.id(+)
+	   and sso.providerid = p.id
+	   and sso.barnid=bt.id
+	   and sso.auditid=tau2.id(+)
+	   and sso.id = #value#
+  </select>
+  
+  <update id="editScmGather" parameterClass="gather">
+  	update scm.scm_gather_order t
+	   set t.providerid  = #providerid#,
+	       t.departmentid = #departmentid#,
+	       t.userid      = #userid#,
+	       t.sumqty      = #sumqty#,
+	       t.sumamt      = #sumamt#,
+	       t.bargaincode = #bargaincode#,
+	       t.paydate     = to_date(#paydate#,'yyyy-MM-dd'),
+	       t.barnid      = #barnid#,
+	       t.todate      = to_date(#todate#,'yyyy-MM-dd'),
+	       t.toaddress   = #toaddress#,
+	       t.remark      = #memo#,
+	       t.isreceive   = #isreceive#,
+	       t.pretodate   = to_date(#pretodate#,'yyyy-MM-dd'),
+	       t.srcsheetid  = #srcsheetid#
+	 where t.id = #id#
+  </update>
+  
+  <update id="updateStatusScmGather" parameterClass="gather">
+  	update scm.scm_gather_order t
+	   set t.sheetstate  = #sheetstate#,
+	       t.auditid=#auditid#,
+	       t.auditdate=sysdate
+	where t.id in ($id$)
+	  and t.sheetstate!=#sheetstate#
+  </update>
+  
+  <insert id="exportScmGatherToStorageIn" parameterClass="gather">
+  	  <selectKey resultClass="string" keyProperty="storageInId">
+  	     select scm.seq_scm_storage_in.nextval as id from dual
+  	  </selectKey>
+  	  insert into scm.scm_storage_in
+	  select #storageInId#,
+	         t.sheetid,
+	         t.makerid,
+	         t.createdate,
+	         t.sheetstate,
+	         t.providerid,
+	         t.departmentid,
+	         t.userid,
+	         t.sumqty,
+	         t.sumamt,
+	         t.gatheropentype,
+	         t.bargaincode,
+	         t.paydate,
+	         t.barnid,
+	         t.transmodecode,
+	         t.todate,
+	         t.toaddress,
+	         t.auditid,
+	         t.auditdate,
+	         t.srcsheetid,
+	         t.remark
+	    from scm.scm_gather_order t
+	   where t.id = #id#
+  </insert>
+  
+  <insert id="exportScmGatherDetailToStorageInDetail" parameterClass="gather">
+	  insert into scm.scm_storage_in_detail
+	  select t.did,
+	         #storageInId#,
+	         t.productid,
+	         t.qty,
+	         t.factinprice,
+	         t.taxrate,
+	         t.amt,
+	         t.sheetidoriginal,
+	         t.remark,
+	         scm.seq_scm_storage_in_detail.nextval,
+	         t.barnid
+	    from scm.scm_gather_order_detail t
+	   where t.masterid = #id#
+  </insert>
+</sqlMap>

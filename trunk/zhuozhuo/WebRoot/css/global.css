@@ -1,0 +1,48 @@
+@charset "utf-8";
+/* CSS Document */
+body {font-family:"雅黑","宋体","arial";margin:0;padding:0;font-size:12px;color:#555;line-height:20px;width:100%;}
+div,form,img,ul,ol,li,dl,dt,dd {margin:0;padding:0;border:0;}
+h1,h2,h3,h4,h5,h6 {margin:0;padding:0;font-size:12px;font-weight:normal;overflow:hidden;}
+p{margin:0;padding:0;word-wrap:break-word;overflow:hidden;}
+table,td,tr,th{font-size:12px;}
+li{list-style-type:none;}
+input,textarea {font-family:"宋体","arial";font-size:12px;color:#555;vertical-align:middle;}
+
+/* 链接颜色 */
+a{color:#555;text-decoration:none;}
+a:hover{color:#096;text-decoration:underline;}
+.black,a.black:link,a.black:visited{color:#555;}
+.green,a.green:link,a.green:visited{color:#096;}
+.gray,a.gray:link,a.gray:visited{color:#999;}
+
+/* 字体属性 [定义规则，小写f加属性名称] */
+.fb {font-weight:bold;}
+.fi {font-style:italic;}
+.fnormal {font-weight:normal;}
+.farial {font-family:"Arial";}
+
+/* 字体大小 */
+.f0{ font-size:0;}
+.f12{ font-size:12px;}
+.f14{ font-size:14px;}
+
+/* 按钮 */
+.btn48x22,.btn90x22 {height:22px; line-height:22px; text-align:center;color:#000;font-size:12px;border:0;padding:0;margin:0 2px;}
+.btn48x22 { background:url(../images/btn_48x22.gif) no-repeat;width:48px;}
+.btn90x22 { background:url(../images/btn_90x22.gif) no-repeat;width:90px;}
+.btn70x28,.btn120x28 {height:28px; line-height:28px;font-size:14px;font-weight:bold;text-align:center;color:#fff;border:0;padding:0;margin:0 2px 5px 2px;}
+.btn70x28 { background:url(../images/btn_70x28.gif) no-repeat;width:70px;}
+.btn120x28 { background:url(../images/btn_120x28.gif) no-repeat;width:120px;}
+
+
+/* 其他属性 */
+.fl_left {float:left;}
+.fl_right {float:right;}
+.clear{clear:both;font-size:0;line-height:0;height:0;visibility:}
+.overhidden {overflow:hidden;} /* 溢出隐藏 */
+.textcenter{text-align:center;}
+.textleft{text-align:left;}
+.textright{text-align:right;}
+.nowarp {white-space:nowrap}
+.required {color:#ff0000; font-weight:normal;padding-left:1px;display:inline-block;}
+

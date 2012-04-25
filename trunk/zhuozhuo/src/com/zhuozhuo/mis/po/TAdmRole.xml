@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="tadmrole">
+
+  <typeAlias alias="role" type="com.zhuozhuo.mis.po.TAdmRole"/>
+  
+  <select id="getRoleList" resultClass="role">
+  	select id, role_name as roleName from scm.t_adm_role where status = 1
+  </select>
+  
+  <select id="getRole" resultClass="role" parameterClass="string">
+    select t.id, t.role_name as roleName, t.role_desc as roleDesc
+      from scm.t_adm_role t
+     where t.status = 1
+       and t.id = #value#
+  </select>
+  
+  <select id="getRoleById" resultClass="role" parameterClass="string">
+    select t.id, t.role_name as roleName, t.role_desc as roleDesc,t.status
+      from scm.t_adm_role t
+     where t.id = #value#
+  </select>
+  
+  <select id="getRoleSeq" resultClass="string">
+    select scm.seq_t_adm_role.nextval as id from dual
+  </select>
+  <update id="saveRole" parameterClass="role">  	 
+       <![CDATA[ 
+	  insert into scm.t_adm_role
+	  (id,
+	   role_name,
+	   role_desc,
+	   status,
+	   create_by,
+	   create_time)
+	values
+	  (#id#,
+	   #roleName#,
+	   #roleDesc#,
+	   #status#,	   
+	   #createBy#,
+	   sysdate)	  
+	   ]]>  
+  </update>
+    
+  <select id="listTAdmRole" resultClass="role" parameterClass="role">
+    select *
+	  from (select t.*, rownum rn
+	          from (select id,
+	          			   role_name as roleName,
+	          			   role_desc as roleDesc,
+	          			   status
+					  from scm.t_adm_role
+	                 where 1 = 1
+	                 <dynamic>
+	                	<isNotEmpty prepend="and" property="roleName">
+		                 	role_name like '%'||#roleName#||'%'
+	                 	</isNotEmpty>
+	                 		                 	
+	                 	<isNotEqual prepend="and" property="status" compareValue="0">
+	                 		status = #status#
+	                 	</isNotEqual>	                 	
+	                 </dynamic>
+	                 order by id desc) t	
+	 <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+		<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>
+  </select>
+  
+  <select id="listTAdmRoleCount" resultClass="int" parameterClass="role">
+	select count(1)
+	  from scm.t_adm_role
+	 where 1 = 1
+	 <dynamic>
+		<isNotEmpty prepend="and" property="roleName">
+			role_name like '%'||#roleName#||'%'
+		</isNotEmpty>
+			                 	
+		<isNotEqual prepend="and" property="status" compareValue="0">
+			status = #status#
+		</isNotEqual>
+	</dynamic>
+	order by id desc
+  </select>
+    
+  <update id="editRole" parameterClass="role">
+  	update scm.t_adm_role
+	   set role_name = #roleName#,
+	       role_desc =#roleDesc#，
+	       status=#status#
+	 where id = #id# 
+  </update>
+    
+  <update id="updateStatusRole" parameterClass="role">
+  	update scm.t_adm_role
+  	   set status=#status#
+     where id in ($id$)
+       and status != #status#
+  </update> 
+
+  <delete id="deleteRole" parameterClass="string">
+  	delete scm.t_adm_role where id in($id$)
+  </delete>
+  
+  <delete id="deleteRolePriv" parameterClass="string">
+	delete scm.t_adm_role_privs t where t.role_id in($id$)
+  </delete>
+  
+  <update id="saveRolePriv" parameterClass="role">
+  	insert into scm.t_adm_role_privs
+  	(id,role_id,role_pril,create_by,create_time)
+  	values
+  	(scm.seq_t_adm_role_privs.nextval,
+  	 #id#,
+  	 #rolePril#,
+  	 #createBy#,
+  	 sysdate)
+  </update>
+  
+  <update id="editRolePriv" parameterClass="role">
+  	update scm.t_adm_role_privs
+       set role_pril = #rolePril#,
+  		   last_update_by=#lastUpdateBy#,
+  		   last_update_time=sysdate
+  	 where role_id=#id#
+  </update>
+  
+  <select id="getRolePrilByRoleId" parameterClass="string" resultClass="string">
+  	select t.role_pril as rolePril from scm.t_adm_role_privs t
+  	where t.role_id=#value#
+  </select>
+</sqlMap>

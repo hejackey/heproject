@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="provider">
+  <typeAlias alias="PProvider" type="com.zhuozhuo.mis.po.PProvider"/>
+  <typeAlias alias="Provider" type="com.zhuozhuo.mis.model.Provider"/> 
+  <typeAlias alias="QueryProvider" type="com.zhuozhuo.mis.model.QueryProvider"/>  
+  <resultMap id="result" class="PProvider">
+	  <result property="id" column="id" columnIndex="1"/>
+	  <result property="providerName" column="providerName" columnIndex="2"/>
+	  <result property="providerCode" column="providerCode" columnIndex="3"/>
+	  <result property="department" column="department" columnIndex="4"/>
+	  <result property="businessMan" column="businessMan" columnIndex="5"/>
+	  <result property="providerType" column="providerType" columnIndex="6"/>
+	  <result property="providerClass" column="providerClass" columnIndex="7"/>
+	  <result property="providerCredit" column="providerCredit" columnIndex="8"/>
+	  <result property="province" column="province" columnIndex="9"/>
+	  <result property="county" column="county" columnIndex="10"/>
+	  <result property="leaderName" column="leaderName" columnIndex="11"/>
+	  <result property="address" column="address" columnIndex="12"/>
+	  <result property="phone" column="phone" columnIndex="13"/>
+	  <result property="account" column="account" columnIndex="14"/>
+	  <result property="content" column="content" columnIndex="15"/>
+	  <result property="createDate" column="createDate" columnIndex="16"/>
+	  <result property="agreement" column="agreement" columnIndex="17"/>         
+  </resultMap> 
+  
+  
+  <!-- 得到所有的供应商 -->
+  
+  <select id="listProviders" resultMap="result">
+  	<![CDATA[
+    	select id,providerName,providerCode,department,businessMan,providerType,providerClass,providerCredit,province,county,leaderName,
+  		address,phone,account,content,createDate,agreement from  SCM.PROVIDER order by ID desc
+    ]]> 
+  </select>
+  
+  
+  <select id="getProvider" resultMap="result"  parameterClass="String">
+  	<![CDATA[
+    	select id,providerName,providerCode,department,businessMan,providerType,providerClass,providerCredit,province,county,leaderName,address,phone,account,content,createDate,agreement from  SCM.PROVIDER  where id=#id#
+    ]]>
+  </select>
+  
+  <!-- 采用主键自动增长 -->  
+  <insert id="insertProvider">
+  		<selectKey resultClass="int" keyProperty="id" type="pre">
+			<![CDATA[SELECT SCM.SEQ_PROVIDER.NEXTVAL AS recordId FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into SCM.PROVIDER (id,providerName,providerCode,department,businessMan,providerType,providerClass,providerCredit,province,county,leaderName,address,phone,account,content,createDate,agreement) values (#id#,#providerName#,#providerCode#,#department#,#businessMan#,#providerType#,#providerClass#,#providerCredit#,#province#,#county#,#leaderName#,#address#,#phone#,#account#,#content#,sysdate,#agreement#)
+    	]]>
+  </insert>
+  
+  <!--更新供应商 -->
+  <update id="updateProvider" parameterClass="com.zhuozhuo.mis.po.PProvider"> 
+  	<![CDATA[   
+    	update SCM.PROVIDER set providerName=#providerName#,providerCode=#providerCode#,department=#department#,businessMan=#businessMan#,providerType=#providerType#,providerClass=#providerClass#,providerCredit=#providerCredit#,province=#province#,county=#county#,leaderName=#leaderName#,address=#address#,phone=#phone#,account=#account#,content=#content#,agreement=#agreement# where ID = #id#
+    ]]>     
+  </update>
+  
+ 
+  
+  <!-- 删除多条记录,使用动态sql语句 --> 
+  <delete id="deleteProviders" parameterClass="java.util.Map" >  	
+    	delete from SCM.PROVIDER
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				id=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete>   
+  
+  <!-- 综合查询 -->
+  <select id="queryProvider" resultMap="result"  parameterClass="QueryProvider">  	
+    	select id,providerName,providerCode,department,businessMan,providerType,providerClass,providerCredit,province,county,leaderName,address,phone,account,content,createDate,agreement from  SCM.PROVIDER
+    	where 1=1
+    	<dynamic>
+    		<isNotEmpty prepend="and" property="providerName" >
+        		providerName like '%'||#providerName#||'%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="providerCode" >
+        		providerCode  like '%'||#providerCode#||'%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="address" >
+        		address  like '%'||#address#||'%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="account" >
+        		account like '%'||#account#||'%'
+			</isNotEmpty>
+    	</dynamic>  
+  </select>
+  
+  <!-- 综合查询 -->
+  <select id="qProviderByName" resultMap="result"  parameterClass="QueryProvider">  	
+    select * from
+    (
+    	select t.*,rownum rn
+    	from (
+    	select id,providerName,providerCode,department,businessMan,providerType,providerClass,providerCredit,province,county,leaderName,address,phone,account,content,createDate,agreement 
+    	from  SCM.PROVIDER
+    	where 1=1
+    	<dynamic>
+    		<isNotEmpty prepend="and" property="providerName" >
+        		providerName like '%' ||#providerName#||'%'
+			</isNotEmpty>
+			
+    	</dynamic>  
+    	) t
+    	 <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+		<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>
+  </select>
+  
+  <!-- 综合查询 -->
+  <select id="qProviderByNameCount" resultClass="int"  parameterClass="QueryProvider">  	
+   	select count(1) 
+    from  SCM.PROVIDER
+    where 1=1
+    <dynamic>
+    	<isNotEmpty prepend="and" property="providerName" >
+       		providerName like '%' ||#providerName#||'%'
+		</isNotEmpty>		
+    </dynamic>      
+  </select>
+   
+</sqlMap>

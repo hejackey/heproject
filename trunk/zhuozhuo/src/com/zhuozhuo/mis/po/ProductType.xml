@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="product">
+  <typeAlias alias="PProductType" type="com.zhuozhuo.mis.po.PProductType"/>
+  <typeAlias alias="ProductType" type="com.zhuozhuo.mis.model.ProductType"/>
+  <typeAlias alias="QueryProductType" type="com.zhuozhuo.mis.model.QueryProductType"/>
+  <resultMap id="result" class="PProductType">
+  	<result property="recordId" column="recordId" columnIndex="1"/>
+    <result property="parentId" column="parentId" columnIndex="2"/>
+    <result property="parentName" column="parentName" columnIndex="3"/>    
+    <result property="goodsTypeCode" column="goodsTypeCode" columnIndex="4"/>    
+    <result property="goodsTypeName" column="goodsTypeName" columnIndex="5"/>
+    <result property="createTime" column="create_Time" columnIndex="6"/>     
+    <result property="numb" column="numb" columnIndex="7"/>    
+    <result property="classLevel" column="classLevel" columnIndex="8"/>    
+    <result property="ifUse" column="ifUse" columnIndex="9"/>    
+    <result property="isLeaf" column="isLeaf" columnIndex="10"/>    
+    <result property="define1" column="define1" columnIndex="11"/> 
+    <result property="remark" column="remark" columnIndex="12"/>           
+  </resultMap>  
+  
+  <!-- 根据id得到商品类别的名称 -->
+  <select id="getProductTypeNameById" resultClass="string" parameterClass="string">
+   	select GOODSTYPECODE from PRODUCT.PRODUCT_TYPE t where t.RECORDID=#id#
+  </select>
+  
+  <!-- 得到商品类别的树 -->
+  <select id="productTypeTreeList" resultMap="result">
+  	<![CDATA[
+    	select recordId,parentId,parentName,goodsTypeCode,goodsTypeName,create_Time,numb,classLevel,ifUse,isLeaf,define1,remark from  PRODUCT.PRODUCT_TYPE where  IFUSE=0  order by RECORDID
+    ]]> 
+  </select>
+  
+  <!-- 采用主键自动增长 -->
+  <insert id="insertProductType">
+  		<selectKey resultClass="int" keyProperty="recordId" type="pre">
+			<![CDATA[SELECT PRODUCT.SEQ_PRODUCT_TYPE.NEXTVAL AS recordId FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into PRODUCT.PRODUCT_TYPE (recordId,parentId,parentName,goodsTypeCode,goodsTypeName,create_Time,numb,classLevel,ifUse,isLeaf,define1,remark) values (#recordId#,#parentId#,#parentName#,#goodsTypeCode#,#goodsTypeName#,sysdate,#numb#,#classLevel#,#ifUse#,#isLeaf#,#define1#,#remark#)
+    	]]>
+  </insert>
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getAllProductType" resultMap="result">
+  	<![CDATA[
+    	select recordId,parentId,parentName,goodsTypeCode,goodsTypeName,create_Time,numb,classLevel,ifUse,isLeaf,define1,remark from  PRODUCT.PRODUCT_TYPE where  ifuse != 0
+ order by RECORDID desc
+    ]]> 
+  </select>
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getChildProductType" resultMap="result"  parameterClass="long">
+  	<![CDATA[
+    	select recordId,parentId,parentName,goodsTypeCode,goodsTypeName,create_Time,numb,classLevel,ifUse,isLeaf,define1,remark from  PRODUCT.PRODUCT_TYPE where recordId!=0 and  parentId=#recordId#  order by recordId
+    ]]> 
+  </select>  
+    
+  <select id="getProductType" resultMap="result"  parameterClass="String">
+  	<![CDATA[
+    	select recordId,parentId,parentName,goodsTypeCode,goodsTypeName,create_Time,numb,classLevel,ifUse,isLeaf,define1,remark from  PRODUCT.PRODUCT_TYPE where RECORDID=#recordId#
+    ]]>
+  </select>  
+
+  <update id="updateProductType" parameterClass="com.zhuozhuo.mis.po.PProductType"> 
+  	<![CDATA[   
+    	update PRODUCT.PRODUCT_TYPE set parentId=#parentId#,parentName=#parentName#,goodsTypeCode=#goodsTypeCode#,goodsTypeName=#goodsTypeName#,create_Time=sysdate,numb=#numb#,classLevel=#classLevel#,ifUse=#ifUse#,isLeaf=#isLeaf#,define1=#define1#,remark=#remark# where RECORDID = #recordId#
+    ]]>     
+  </update>
+  
+  
+  <delete id="deleteProductType" parameterClass="String" >
+  	<![CDATA[
+    	delete from PRODUCT.PRODUCT_TYPE where RECORDID= #recordId#  
+    ]]> 
+  </delete>
+   
+  <!-- 删除多条记录,使用动态sql语句 -->
+  <delete id="deleteProductTypes" parameterClass="java.util.Map" >  	
+    	delete from PRODUCT.PRODUCT_TYPE
+	 	<dynamic prepend="WHERE">
+			<iterate property="recordIds" 
+           		open="(" close=")" conjunction="OR">
+  				recordId=#recordIds[]#
+			</iterate>
+        </dynamic>
+  </delete>
+    
+  <select id="queryProductType" resultMap="result"  parameterClass="QueryProductType">  	
+    	select recordId,parentId,parentName,goodsTypeCode,goodsTypeName,create_Time,numb,classLevel,ifUse,isLeaf,define1,remark from  PRODUCT.PRODUCT_TYPE
+    	where 1=1
+    	<dynamic>
+    		<isNotEmpty prepend="and" property="parentName" >
+        		parentName=#parentName#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="goodsTypeCode" >
+        		goodsTypeCode=#goodsTypeCode#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="goodsTypeName" >
+        		goodsTypeName=#goodsTypeName#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="classLevel" >
+        		classLevel=#classLevel#
+			</isNotEmpty>
+    	</dynamic>  
+  </select>
+  
+  <select id="listProductType" parameterClass="PProductType" resultClass="PProductType">
+	  select *
+		  from (select t.*, rownum rn
+	          from (select recordid as recordId, 
+	          			   goodstypecode as goodsTypeCode,
+	          			   goodstypename as goodsTypeName
+	               	  from product.product_type
+	               	  where ifuse=1
+	               	    <dynamic>
+				    		<isNotEmpty prepend="and" property="goodsTypeCode" >
+				        		goodstypecode like '%'||#goodsTypeCode#||'%'
+							</isNotEmpty>							
+				    	</dynamic>  
+	               	 ) t
+	<![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+	<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>               	 
+  </select>
+  
+  <select id="listProductTypeCount" parameterClass="PProductType" resultClass="int">
+	  select count(1)
+		from product.product_type
+		where ifuse=1
+		<dynamic>
+			<isNotEmpty prepend="and" property="goodsTypeCode" >
+				goodstypecode like '%'||#goodsTypeCode#||'%'
+			</isNotEmpty>							
+		</dynamic>  
+  </select>
+  
+  <select id="getProdcutTypeSonId" resultClass="string" parameterClass="string">
+   	select distinct recordid
+   	  from product.product_type pt
+   	 start with pt.parentid = 155
+  	 connect by prior pt.recordid = pt.parentid
+  </select>
+</sqlMap>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tadmuser">
+  <typeAlias alias="user" type="com.zhuozhuo.mis.po.TAdmUser"/>
+  
+  <resultMap id="userResult" class="user">
+		<result property="id" column="id" />
+		<result property="role" column="role_id" select="tadmrole.getRole"/>
+		<result property="dept" column="dept_id" select="tadmdept.getDept"/>
+		<result property="loginName" column="login_name" />
+		<result property="name" column="name" />
+		<result property="expireDate" column="expire_date" />
+		<result property="bname" column="bname" />
+		<result property="status" column="status" />
+		<result property="allowDel" column="allow_delete" />
+		<result property="isAdminUser" column="is_admin_user" />
+		<result property="email" column="email" />
+		<result property="handtel" column="handtel" />
+		<result property="password" column="password" />
+		<result property="sex" column="sex" />
+		<result property="telephone" column="telephone" />
+		<result property="address" column="address" />
+		<result property="remark" column="remark" />		
+	</resultMap>
+  
+  <select id="listTAdmUser" resultClass="user" parameterClass="user">
+    select *
+	  from (select t.*, rownum rn
+	          from (select tu.id,
+					       tr.role_name as roleName,
+					       (select max(sys_connect_by_path(t1.departmentname, '-'))
+					          from scm.t_adm_dept t1
+					         start with t1.id = tu.dept_id
+					        connect by prior t1.parentid = t1.id) as deptName,
+					       tu.login_name as loginName,
+					       tu.name,
+					       tu.expire_date as expireDate,
+					       tu.email,
+					       tu.status,
+					       tu.allow_delete as allowDel,
+					       tu.is_admin_user as isAdminUser,
+					       tu.bname,
+					       tu.handtel,
+					       tu.remark
+					  from scm.t_adm_user tu, scm.t_adm_role tr, scm.t_adm_dept td
+					 where tu.role_id = tr.id(+)
+					   and tu.dept_id = td.id(+)
+	                 <dynamic>
+	                	<isNotEmpty prepend="and" property="loginName">
+		                 	tu.login_name like '%'||#loginName#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEmpty prepend="and" property="name">
+		                 	tu.name like '%'||#name#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEqual prepend="and" property="status" compareValue="0">
+	                 		tu.status = #status#
+	                 	</isNotEqual>
+	                 	<isNotEmpty prepend="and" property="email">
+		                 	tu.email like '%'||#email#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEmpty prepend="and" property="handtel">
+		                 	tu.handtel like '%'||#handtel#||'%'
+	                 	</isNotEmpty>
+	                 </dynamic>
+	                 order by id desc) t	
+	 <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+		<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>
+  </select>
+  
+  <select id="listTAdmUserCount" resultClass="int" parameterClass="user">
+	select count(1)
+	  from scm.t_adm_user tu, scm.t_adm_role tr, scm.t_adm_dept td
+	 where tu.role_id = tr.id(+)
+	   and tu.dept_id = td.id(+)
+	<dynamic>
+		<isNotEmpty prepend="and" property="loginName">
+		 	tu.login_name like '%'||#loginName#||'%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="name">
+		 	tu.name like '%'||#name#||'%'
+		</isNotEmpty>
+		<isNotEqual prepend="and" property="status" compareValue="0">
+			tu.status = #status#
+		</isNotEqual>
+		<isNotEmpty prepend="and" property="email">
+		 	tu.email like '%'||#email#||'%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="handtel">
+		 	tu.handtel like '%'||#handtel#||'%'
+		</isNotEmpty>
+	</dynamic>
+	order by tu.id desc
+  </select>
+  
+  <select id="getUser" resultMap="userResult" parameterClass="string">
+ 	select tu.id,
+	       tu.role_id,
+	       tu.dept_id,
+	       tu.password,
+	       tu.login_name,
+	       tu.name,
+	       tu.expire_date,
+	       tu.email,
+	       tu.status,
+	       tu.allow_delete,
+	       tu.is_admin_user,
+	       tu.bname,
+	       tu.handtel,
+	       tu.telephone,
+	       tu.sex,
+	       tu.address,
+	       tu.remark
+	  from scm.t_adm_user tu
+	 where tu.id = #value#
+  </select>
+  
+  <update id="updateUserStatus" parameterClass="user">
+  	update scm.t_adm_user t
+       set t.status=#status#
+  	 where t.dept_id in ($dept.id$)
+  </update>
+  
+  <update id="updateStatusUser" parameterClass="user">
+  	update scm.t_adm_user t
+       set t.status=#status#
+  	 where t.id in ($id$)
+  	   and t.status!=#status#
+  </update>
+  
+  <update id="saveUser" parameterClass="user">
+  insert into scm.t_adm_user
+	  (id,
+	   role_id,
+	   dept_id,   
+	   login_name,
+	   name,
+	   password,
+	   expire_date,
+	   email,
+	   status,
+	   allow_delete,
+	   is_admin_user,
+	   bname,
+	   create_by,
+	   create_time,
+	   sex,
+	   telephone,
+	   address,
+	   handtel,
+	   remark)
+	values
+	  (scm.seq_t_adm_user.nextval,
+	   #role.id#,
+	   #dept.id#,   
+	   #loginName#,
+	   #name#,
+	   #password#,
+	   to_date(#expireDate#, 'yyyy-MM-dd hh24:mi:ss'),
+	   #email#,
+	   #status#,
+	   #allowDel#,
+	   #isAdminUser#,
+	   #bname#,   
+	   #createBy#,
+	   sysdate,
+	   #sex#,
+	   #telephone#,
+	   #address#,
+	   #handtel#,
+	   #remark#)
+  </update>
+  
+  <update id="editUser" parameterClass="user">
+  	 update scm.t_adm_user 
+		set role_id = #role.id#,                                    
+		    dept_id = #dept.id#,                                    
+		    login_name = #loginName#,                                  
+		    name= #name#,             
+		    <dynamic>
+		    	<isNotEqual property="pwdIsChange" compareValue="0">
+		    	password = #password#,
+		    	</isNotEqual>
+		    </dynamic>                          		                                      
+		    expire_date= to_date(#expireDate#,'yyyy-MM-dd hh24:mi:ss'),
+		    email = #email#,                                      
+		    status = #status#,                                     
+		    allow_delete = #allowDel# ,                                  
+		    is_admin_user= #isAdminUser# ,                               
+		    bname = #bname#,                                                                                                                 
+		    sex= #sex# ,                                       
+		    telephone= #telephone#,                                  
+		    address = #address#,                                    
+		    handtel = #handtel#,     
+		    last_update_by=#lastUpdateBy#,
+		    last_update_time=sysdate,                               
+		    remark = #remark#
+		where id=#id# 
+  </update>
+  
+  <delete id="deleteUser" parameterClass="string">
+  	delete scm.t_adm_user t where t.id in ($id$)  
+  </delete>
+  
+  <select id="getUserByDeptId" parameterClass="string" resultClass="string">
+ 	select t.id from scm.t_adm_user t where t.dept_id in ($value$)
+  </select>
+  
+  <select id="getUserList" resultClass="user">
+  select t.id, t.name from scm.t_adm_user t where t.status = 1
+  </select>
+  
+  <select id="isLogin" parameterClass="user" resultMap="userResult">
+	  select *
+	  from scm.t_adm_user t
+	 where t.Login_Name = #loginName#
+	   and t.password =#password#
+  </select>
+</sqlMap>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  - Application context definition for JPetStore's business layer.
+  - Contains bean references to the transaction manager and to the DAOs in
+  - dataAccessContext-local/jta.xml (see web.xml's "contextConfigLocation").
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xmlns:aop="http://www.springframework.org/schema/aop"
+	     xmlns:tx="http://www.springframework.org/schema/tx"
+	     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"  default-autowire="byName">
+
+	<!-- service Bean -->
+	<bean id="productTypeService" class="com.zhuozhuo.mis.service.impl.ProductTypeServiceImpl"></bean>
+	<bean id="productInfoJxcService" class="com.zhuozhuo.mis.service.impl.ProductInfoJxcServiceImpl"></bean>
+	<bean id="providerService"     class="com.zhuozhuo.mis.service.impl.ProviderServiceImpl"></bean>
+	<bean id="providerTypeService" class="com.zhuozhuo.mis.service.impl.ProviderTypeServiceImpl"></bean>
+	<bean id="scmBarnTypeService" class="com.zhuozhuo.mis.service.impl.ScmBarnTypeServiceImpl"></bean>
+	<bean id="scmStorageOutService" class="com.zhuozhuo.mis.service.impl.ScmStorageOutServiceImpl"></bean>
+	<bean id="scmStorageOutDetailService" class="com.zhuozhuo.mis.service.impl.ScmStorageOutDetailServiceImpl"></bean>
+	<bean id="scmPayService" class="com.zhuozhuo.mis.service.impl.ScmPayServiceImpl"></bean>
+	<bean id="scmPayDetailService" class="com.zhuozhuo.mis.service.impl.ScmPayDetailServiceImpl"></bean>
+	<bean id="scmStorageInService" class="com.zhuozhuo.mis.service.impl.ScmStorageInServiceImpl"></bean>
+	<!--
+	
+	 -->
+	<!-- 		
+	<bean id="sampleService" class="com.zhuozhuo.sample.service.impl.SampleServiceImpl">
+		<property name="sqlMapSampleDao" ref="sqlMapSampleDao"></property>
+	</bean>
+	 -->
+	 
+	<bean id="tadmDeptService" class="com.zhuozhuo.mis.service.impl.TAdmDeptServiceImpl">
+		<property name="tadmDeptDao" ref="tadmDeptDao"></property>
+		<property name="tadmUserService" ref="tadmUserService"></property>
+		<property name="cacheService" ref="cacheService"></property>		
+	</bean>
+	
+	<bean id="tadmUserService" class="com.zhuozhuo.mis.service.impl.TAdmUserServiceImpl">
+		<property name="tadmUserDao" ref="tadmUserDao"></property>
+		<property name="cacheService" ref="cacheService"></property>	
+	</bean>
+	
+	<bean id="tadmModuleService" class="com.zhuozhuo.mis.service.impl.TAdmModuleServiceImpl">
+		<property name="tadmModuleDao" ref="tadmModuleDao"></property>
+		<property name="cacheService" ref="cacheService"></property>	
+	</bean>
+	
+	<bean id="serviceFactoryUtil" class="com.zhuozhuo.utils.ServiceFacotryUtil">
+		<property name="tadmModuleService" ref="tadmModuleService"></property>
+		<property name="tadmDeptService" ref="tadmDeptService"></property>
+		<property name="cacheService" ref="cacheService"></property>	
+		<property name="tadmUserService" ref="tadmUserService"></property>	
+		<property name="tadmRoleService" ref="tadmRoleService"></property>	
+		<property name="stockOrderService" ref="stockOrderService"></property>
+		<property name="providerService" ref="providerService"></property>
+		<property name="diaoBoService" ref="diaoBoService"></property>
+	</bean>
+	
+	<bean id="tadmRoleService" class="com.zhuozhuo.mis.service.impl.TAdmRoleServiceImpl">
+		<property name="tadmRoleDao" ref="tadmRoleDao"></property>	
+		<property name="cacheService" ref="cacheService"></property>		
+	</bean>
+	
+	<bean id="stockOrderService" class="com.zhuozhuo.mis.service.impl.StockOrderServiceImpl">
+		<property name="stockOrderDao" ref="stockOrderDao"></property>	
+	<!--	<property name="cacheService" ref="cacheService"></property>  -->		
+	</bean>
+	
+	<bean id="stockOrderDetailService" class="com.zhuozhuo.mis.service.impl.StockOrderDetailServiceImpl">		
+	</bean>
+	
+	 <bean id="cacheService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean" lazy-init="true">
+		<property name="serviceInterface" value="com.zhuozhuo.b2c.memcached.service.CacheService" />
+		<property name="serviceUrl" value="rmi://172.16.5.131:8888/cacheService" />
+	</bean>
+
+	<bean id="scmStorageService" class="com.zhuozhuo.mis.service.impl.ScmStorageServiceImpl">		
+	</bean>
+	
+	<!-- he start -->
+	<!-- he end -->
+				
+	<!-- sun start -->
+	<!-- sun end -->
+	
+	<!-- li start -->
+	<bean id="diaoBoService" class="com.zhuozhuo.mis.service.impl.DiaoBoServiceImpl">
+		<property name="diaoBoDao" ref="diaoBoDao"></property>	
+	<!--	<property name="cacheService" ref="cacheService"></property>  -->		
+	</bean>
+	<bean id="diaoBoDetailService" class="com.zhuozhuo.mis.service.impl.DiaoBoDetailServiceImpl">
+		<property name="diaoBoDetailDao" ref="diaoBoDetailDao"></property>		
+	</bean>
+	<!-- li end -->
+</beans>

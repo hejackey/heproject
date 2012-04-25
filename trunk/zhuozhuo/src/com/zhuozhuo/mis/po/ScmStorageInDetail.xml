@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="scmStorageInDetail">
+  <typeAlias alias="ScmStorageInDetail" type="com.zhuozhuo.mis.po.ScmStorageInDetail"/>
+  <typeAlias alias="AuditScmStorageOut" type="com.zhuozhuo.mis.po.AuditScmStorageOut"/>
+  <resultMap id="result" class="ScmStorageInDetail">
+		<result property="id" column="id" columnIndex="1"/>
+		<result property="did" column="did" columnIndex="2"/>
+		<result property="masterId" column="masterId" columnIndex="3"/>
+		<result property="productId" column="productId" columnIndex="4"/>
+		<result property="qty" column="qty" columnIndex="5"/>
+		<result property="factInprrice" column="factInprrice" columnIndex="6"/>
+		<result property="taxrate" column="taxrate" columnIndex="7"/>
+		<result property="amt" column="amt" columnIndex="8"/>
+		<result property="sheetIdOriginal" column="sheetIdOriginal" columnIndex="9"/>
+		<result property="remark" column="remark" columnIndex="10"/>
+		<result property="barnid" column="barnid" columnIndex="11"/>
+  </resultMap> 
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getScmStorageInDetails" resultMap="result">
+  	<![CDATA[
+    	select id,did,masterId,productId,qty,factInprrice,taxrate,amt,sheetIdOriginal,remark,barnid
+		from  SCM.SCM_STORAGE_IN_DETAIL
+    ]]> 
+  </select>
+  
+  <select id="getScmStorageInDetailsByMasterId" resultClass="ScmStorageInDetail" parameterClass="string">
+  	<![CDATA[
+    	select t1.id,t1.did,t1.masterId,t1.productId as productId,t2.productname as productname,t2.product_code as productcode,t2.productspecs,t2.productentry as productentry,t1.qty,t1.factInprrice,t1.taxrate,t1.amt,t1.sheetIdOriginal,t1.remark,t3.BARNTYPENAME as barnid
+		from  SCM.SCM_STORAGE_IN_DETAIL t1,PRODUCT.PRODUCT_INFO_JXC t2,SCM.SCM_BARN_TYPE t3 where t1.masterId=#id# and t1.PRODUCTID=t2.ID(+) and t1.barnid=t3.ID(+)
+    ]]> 
+  </select>
+  <select id="getScmStorageInDetailsByMasterId1" resultClass="ScmStorageInDetail" parameterClass="string">
+  	<![CDATA[
+    	select t1.id,t1.did,t1.masterId,t1.productId as productId,t2.productname as productname,t2.product_code as productcode,t2.productspecs,t2.productentry as productentry,-t1.qty as qty,t1.factInprrice,t1.taxrate,-t1.amt as amt,t1.sheetIdOriginal,t1.remark,t3.BARNTYPENAME as barnid
+		from  SCM.SCM_STORAGE_IN_DETAIL t1,PRODUCT.PRODUCT_INFO_JXC t2,SCM.SCM_BARN_TYPE t3 where t1.masterId=#id# and t1.PRODUCTID=t2.ID(+) and t1.barnid=t3.ID(+)
+    ]]> 
+  </select>
+  
+  <insert id="insertScmStorageInDetail">
+  		<selectKey resultClass="int" keyProperty="id" type="pre">
+			<![CDATA[SELECT SCM.SEQ_SCM_STORAGE_IN_DETAIL.NEXTVAL AS id FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into  SCM.SCM_STORAGE_IN_DETAIL (
+				    		id,did,masterId,productId,qty,factInprrice,taxrate,amt,sheetIdOriginal,remark,barnid
+			    		) values (
+				    		#id#,#did#,#masterId#,#productId#,#qty#,#factInprrice#,#taxrate#,#amt#,#sheetIdOriginal#,#remark#,#barnid#
+			    		)
+    	]]>
+  </insert>
+  
+  <delete id="deleteScmStorageInDetails" parameterClass="java.util.Map" >  	
+    	delete from SCM.SCM_STORAGE_IN_DETAIL
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				masterId=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete>
+  
+  <insert id="auditScmStorageInDetail" parameterClass="AuditScmStorageOut">
+  		<selectKey resultClass="int" keyProperty="scmStorageId">
+  	     	select SCM.SEQ_SCM_STORAGE_DETAIL.nextval as scmStorageId from dual
+  	  	</selectKey> 	  
+  	  insert into SCM.SCM_STORAGE_DETAIL(DID,MASTERID,PRODUCTID,QTY,FACTSELLPRICE,TAXRAT,AMT,SHEETIDORIGINAL,REMARK,BARNID,ID)
+	    select DID,#masterId#,PRODUCTID,QTY,FACTINPRRICE,TAXRATE,AMT,SHEETIDORIGINAL,REMARK,BARNID,#scmStorageId#
+	    from SCM.SCM_STORAGE_IN_DETAIL t
+	   where t.id = #id#
+  </insert>   
+  <insert id="auditTHD" parameterClass="AuditScmStorageOut">
+  		<selectKey resultClass="int" keyProperty="scmStorageId">
+  	     	select SCM.SEQ_SCM_STORAGE_DETAIL.nextval as scmStorageId from dual
+  	  	</selectKey> 	  
+  	  insert into SCM.SCM_STORAGE_DETAIL(DID,MASTERID,PRODUCTID,QTY,FACTSELLPRICE,TAXRAT,AMT,SHEETIDORIGINAL,REMARK,BARNID,ID)
+	    select DID,#masterId#,PRODUCTID,QTY,FACTINPRRICE,TAXRATE,AMT,SHEETIDORIGINAL,REMARK,BARNID,#scmStorageId#
+	    from SCM.SCM_STORAGE_IN_DETAIL t
+	   where t.id = #id#
+  </insert>
+  <delete id="deleteScmStorageInDetailByMasterId" parameterClass="int" >  	
+    	delete from SCM.SCM_STORAGE_IN_DETAIL where MASTERID=#id#	 	
+  </delete> 
+ </sqlMap>

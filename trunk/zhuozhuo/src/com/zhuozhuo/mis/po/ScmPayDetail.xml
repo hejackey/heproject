@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="scmPayDetail">
+  <typeAlias alias="ScmPayDetail" type="com.zhuozhuo.mis.po.ScmPayDetail"/>
+  <resultMap id="result" class="ScmPayDetail">
+		<result property="id" column="id" columnIndex="1"/>
+		<result property="did" column="did" columnIndex="2"/>
+		<result property="masterId" column="masterId" columnIndex="3"/>
+		<result property="srcSheetId" column="srcSheetId" columnIndex="4"/>
+		<result property="amt" column="amt" columnIndex="5"/>
+		<result property="payedAmt" column="payedAmt" columnIndex="6"/>
+		<result property="payAmt" column="payAmt" columnIndex="7"/>
+		<result property="plusAmt" column="plusAmt" columnIndex="8"/>
+		<result property="payDate" column="payDate" columnIndex="9"/>
+		<result property="auditSign" column="auditSign" columnIndex="10"/>
+		<result property="remark" column="remark" columnIndex="11"/>
+   </resultMap> 
+   
+   
+   <select id="showScmPayDetail" resultMap="result" parameterClass="string">
+  	<![CDATA[
+    	select id,did,masterId,srcSheetId,amt,payedAmt,payAmt,plusAmt,payDate,auditSign,remark
+		from  SCM.SCM_PAY_DETAIL where MASTERID=#id#
+    ]]> 
+  </select>
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+   <select id="getAllScmPayDetails" resultMap="result">
+  	<![CDATA[
+    	select id,did,masterId,srcSheetId,amt,payedAmt,payAmt,plusAmt,payDate,auditSign,remark
+		from  SCM.SCM_PAY_DETAIL
+    ]]> 
+  </select>
+  
+  <insert id="insertScmPayDetail">
+  		<selectKey resultClass="int" keyProperty="id" type="pre">
+			<![CDATA[SELECT SCM.SEQ_SCM_PAY_DETAIL.NEXTVAL AS id FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into  SCM.SCM_PAY_DETAIL (
+    			id,did,masterId,srcSheetId,amt,payedAmt,payAmt,plusAmt,payDate,auditSign,remark
+    		) values (
+    			#id#,#did#,#masterId#,#srcSheetId#,#amt#,#payedAmt#,#payAmt#,#plusAmt#,to_date(#payDate#,'yyyy-MM-dd'),#auditSign#,#remark#
+    		)
+    	]]>
+  </insert> 
+  
+  <delete id="deleteScmPayDetails" parameterClass="java.util.Map" >  	
+    	delete from SCM.SCM_PAY_DETAIL
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				masterId=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete>  
+  
+  <select id="getScmPayDetailByProviderId" parameterClass="string" resultClass="ScmPayDetail">
+	select spd.id,
+		   spd.srcsheetid as srcSheetId,
+	       p.providercode,
+	       p.providername,
+	       spd.amt,
+	       to_char(sso.paydate,'yyyy-MM-dd') as payDate,
+	       spd.remark
+	  from scm.scm_pay_detail spd, scm.scm_stock_order sso, scm.provider p
+	 where spd.srcsheetid = sso.sheetid
+	   and sso.providerid = p.id
+	   and sso.providerid = #value#
+	   and spd.auditsign=0 
+  </select>
+  
+   <select id="getScmPayDetailByMasterId" parameterClass="string" resultClass="ScmPayDetail">
+	select spd.id,
+	       spd.srcsheetid as srcSheetId,
+	       p.providercode,
+	       p.providername,
+	       spd.amt,
+	       to_char(sso.paydate, 'yyyy-MM-dd') as payDate,
+	       spd.remark,
+	       spd.auditsign as auditSign
+	  from scm.scm_pay_detail spd, scm.scm_stock_order sso, scm.provider p
+	 where spd.srcsheetid = sso.sheetid
+	   and sso.providerid = p.id
+	   and spd.masterid=#value#	   
+  </select>
+  
+  <update id="updateScmPayDetailAuditSign" parameterClass="ScmPayDetail">
+   update scm.scm_pay_detail t
+       set t.masterid = #masterId#, t.auditsign = #auditSign#
+     where t.id = #id#
+  </update>
+ </sqlMap>

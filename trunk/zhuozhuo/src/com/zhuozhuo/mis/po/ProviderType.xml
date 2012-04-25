@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="providerType">
+  <typeAlias alias="PProviderType" type="com.zhuozhuo.mis.po.PProviderType"/>  
+  <resultMap id="result" class="PProviderType">
+  	<result property="recordId" column="recordId" columnIndex="1"/>
+    <result property="parentId" column="parentId" columnIndex="2"/>
+    <result property="parentName" column="parentName" columnIndex="3"/>    
+    <result property="providerTypeCode" column="providerTypeCode" columnIndex="4"/>    
+    <result property="providerytpeName" column="providerytpeName" columnIndex="5"/>    
+    <result property="define1" column="define1" columnIndex="6"/> 
+    <result property="remark" column="remark" columnIndex="7"/>           
+  </resultMap> 
+  
+  <!-- 得到商品类别的树 -->
+  <select id="providerTypeTreeList" resultMap="result">
+  	<![CDATA[
+    	select recordId,parentId,parentName,providerTypeCode,providerytpeName,remark,define1 from  SCM.PROVIDER_TYPE
+    ]]> 
+  </select>
+  
+  <!-- 采用主键自动增长 -->
+  <insert id="insertProviderType">
+  		<selectKey resultClass="string" keyProperty="recordId" type="pre">
+			<![CDATA[SELECT SCM.SEQ_PROVIDER_TYPE.NEXTVAL AS recordId FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into SCM.PROVIDER_TYPE (recordId,parentId,parentName,providerTypeCode,providerytpeName,remark,define1) values (#recordId#,#parentId#,#parentName#,#providerTypeCode#,#providerytpeName#,#remark#,#define1#)
+    	]]>
+  </insert>
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getAllProviderType" resultMap="result">
+  	<![CDATA[
+    	select recordId,parentId,parentName,providerTypeCode,providerytpeName,remark,define1 from  SCM.PROVIDER_TYPE
+    ]]> 
+  </select>
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getChildProviderType" resultMap="result"  parameterClass="String">
+  	<![CDATA[
+    	select recordId,parentId,parentName,providerTypeCode,providerytpeName,remark,define1 from  SCM.PROVIDER_TYPE where  parentId=#recordId#
+    ]]> 
+  </select>  
+    
+  <select id="getProviderType" resultMap="result"  parameterClass="String">
+  	<![CDATA[
+    	select recordId,parentId,parentName,providerTypeCode,providerytpeName,remark,define1 from  SCM.PROVIDER_TYPE where RECORDID=#recordId#
+    ]]>
+  </select>  
+
+  <update id="updateProviderType" parameterClass="PProviderType"> 
+  	<![CDATA[   
+    	update SCM.PROVIDER_TYPE set  providerTypeCode=#providerTypeCode#,providerytpeName=#providerytpeName#,remark=#remark#,define1=#define1# where RECORDID = #recordId#
+    ]]>     
+  </update>
+  
+  
+  <delete id="deleteProviderType" parameterClass="String" >
+  	<![CDATA[
+    	delete from SCM.PROVIDER_TYPE where RECORDID= #recordId#  
+    ]]> 
+  </delete>
+   
+  <!-- 删除多条记录,使用动态sql语句 -->
+  <delete id="deleteProviderTypes" parameterClass="java.util.Map" >  	
+    	delete from SCM.PROVIDER_TYPE
+	 	<dynamic prepend="WHERE">
+			<iterate property="recordIds" 
+           		open="(" close=")" conjunction="OR">
+  				recordId=#recordIds[]#
+			</iterate>
+        </dynamic>
+  </delete> 
+</sqlMap>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="tadmdept">
+
+  <typeAlias alias="dept" type="com.zhuozhuo.mis.po.TAdmDept"/>
+  
+  <resultMap id="tadmDeptList" class="com.zhuozhuo.mis.po.TAdmDept">
+  	<result property="id" column="id" columnIndex="1"/>
+    <result property="parentid" column="parentid" columnIndex="2"/>
+    <result property="parentname" column="parentname" columnIndex="3"/>    
+    <result property="departmentcode" column="departmentcode" columnIndex="4"/>
+    <result property="departmentname" column="departmentname" columnIndex="5"/>      
+    <result property="levels" column="levels" columnIndex="6"/>
+    <result property="isleaf" column="isleaf" columnIndex="7"/>                   
+    <result property="ifuse" column="ifuse" columnIndex="8"/>
+    <result property="remark" column="remark" columnIndex="9"/>
+  </resultMap> 
+
+  <select id="listTAdmDept" resultMap="tadmDeptList" parameterClass="dept">
+    select *
+	  from (select t.*, rownum rn
+	          from (select id,
+	                       parentid,
+	                       (select max(sys_connect_by_path(t1.departmentname, '-'))
+					          from scm.t_adm_dept t1
+					         start with t1.id = a.parentid
+					        connect by prior t1.parentid = t1.id) as parentname,
+	                       departmentcode,
+	                       departmentname,
+	                       nvl(levels,0) as levels,
+	                       nvl(isleaf,0) as isleaf,
+	                       nvl(ifuse,0) as ifuse,
+	                       remark
+	                  from scm.t_adm_dept a
+	                 where 1 = 1
+	                 <dynamic>
+	                	<isNotEmpty prepend="and" property="q_depcode">
+		                 	departmentcode like '%'||#q_depcode#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEmpty prepend="and" property="q_depname">
+		                 	departmentname like '%'||#q_depname#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEqual prepend="and" property="q_ifuse" compareValue="100">
+	                 		ifuse = #q_ifuse#
+	                 	</isNotEqual>
+	                 	<isNotEmpty property="q_id">
+	                 	start with parentid=#q_id#
+                 		connect by prior id=parentid
+	                 	</isNotEmpty>
+	                 	
+	                 </dynamic>
+	                 order by id desc,parentid, numb nulls last) t	
+	 <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+		<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>
+  </select>
+  
+  <select id="listTAdmDeptCount" resultClass="int" parameterClass="dept">
+	select count(1)
+	from scm.t_adm_dept
+	where 1 = 1
+	<dynamic>
+		<isNotEmpty prepend="and" property="q_depcode">
+			departmentcode like '%'||#q_depcode#||'%'
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="q_depname">
+			departmentname like '%'||#q_depname#||'%'
+	    </isNotEmpty>
+	    <isNotEqual prepend="and" property="q_ifuse" compareValue="100">
+	    	ifuse = #q_ifuse#
+	    </isNotEqual>
+	    
+		<isNotEmpty property="q_id">
+	        start with parentid=#q_id#
+			connect by prior id=parentid
+	    </isNotEmpty>
+	</dynamic>
+	order by id desc,parentid,numb nulls last
+  </select>
+  
+  <select id="getDeptTreeList" resultClass="dept">
+  	select id, parentid, departmentname
+	  from scm.t_adm_dept
+	 where ifuse = 1
+	 order by parentid nulls first, numb nulls last,id
+  </select>
+  
+  <select id="getDeptParentName" resultClass="string" parameterClass="string" >  	
+	 select max(sys_connect_by_path(t1.departmentname, '-'))
+          from scm.t_adm_dept t1
+         start with t1.id = #value#
+        connect by prior t1.parentid = t1.id
+  </select>
+  
+  <select id="getDept" resultMap="tadmDeptList" parameterClass="string">
+  	select id,
+	       parentid,
+	       (select max(sys_connect_by_path(t1.departmentname, '-'))
+					          from scm.t_adm_dept t1
+					         start with t1.id = a.parentid
+					        connect by prior t1.parentid = t1.id) as parentname,
+	       departmentcode,
+	       departmentname,
+	       nvl(levels, 0) as levels,
+	       nvl(isleaf, 0) as isleaf,
+	       nvl(ifuse,0) as ifuse,
+	       remark
+	  from scm.t_adm_dept a
+	 where id = #value#
+  </select>
+  
+   <select id="getDeptById" resultMap="tadmDeptList" parameterClass="string">
+  	select id,
+	       parentid,
+	       (select max(sys_connect_by_path(t1.departmentname, '-'))
+					          from scm.t_adm_dept t1
+					         start with t1.id = a.parentid
+					        connect by prior t1.parentid = t1.id) as parentname,
+	       departmentcode,
+	       departmentname,
+	       nvl(levels, 0) as levels,
+	       nvl(isleaf, 0) as isleaf,
+	       nvl(ifuse,0) as ifuse,
+	       remark
+	  from scm.t_adm_dept a
+	 where id = #value#
+	 and ifuse=1
+  </select>
+  
+  <update id="saveDept" parameterClass="dept">
+	  insert into scm.t_adm_dept
+		  (id,
+		   parentid,
+		   parentname,
+		   departmentcode,
+		   departmentname,
+		   levels,
+		   ifuse,
+		   isleaf,
+		   remark)
+		values
+		  (scm.seq_t_adm_dept.nextval,
+		   #parentid#,
+		   #parentname#,
+		   #departmentcode#,
+		   #departmentname#,
+		   #levels#,
+		   #ifuse#,
+		   #isleaf#,
+		   #remark#)
+  </update>
+  
+  <update id="editDept" parameterClass="dept">
+  	update scm.t_adm_dept
+	   set departmentname = #departmentname#,
+	       departmentcode =#departmentcode#,	       
+	       isleaf=#isleaf#,
+	       remark = #remark#
+	 where id = #id# 
+  </update>
+  
+  <update id="updateStatusDept" parameterClass="dept">
+  	update scm.t_adm_dept
+  	   set ifuse=#ifuse#
+     where id in ($id$)
+       and ifuse != #ifuse#
+  </update>
+  
+  <select id="getDeptSonId" resultClass="string" parameterClass="string">
+  	select distinct id
+	  from scm.t_adm_dept t
+	 start with t.parentid in ($id$)
+	connect by prior t.id = t.parentid
+  </select>
+  
+  <select id="getDeptList" resultClass="dept">
+	  select id,       
+	       (select max(sys_connect_by_path(t1.departmentname, '-'))
+	          from scm.t_adm_dept t1
+	         start with t1.id = a.id
+	        connect by prior t1.parentid = t1.id) as departmentname
+	  from scm.t_adm_dept a
+	 where a.ifuse = 1
+	 order by parentid nulls first,id, numb nulls last
+  </select>
+</sqlMap>
