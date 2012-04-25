@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="scmgatherdetail">
+
+  <typeAlias alias="detail" type="com.zhuozhuo.mis.po.ScmGatherDetail"/>
+  
+  <insert id="saveScmGatherDetail" parameterClass="detail">    
+    <![CDATA[ 	  
+	insert into scm.scm_scm_gather_detail t
+	  (t.id,
+	   t.did,
+	   t.masterid,
+	   t.productid,
+	   t.qty,
+	   t.factinprice,
+	   t.taxrate,
+	   t.amt,
+	   t.sheetidoriginal,	  
+	   t.remark)
+	values
+	  (scm.seq_scm_scm_gather_detail.nextval,
+	   #did#,
+	   #masterid#,
+	   #productid#,
+	   #qty#,
+	   #factinprice#,
+	   #taxrate#,
+	   #amt#,
+	   #sheetidoriginal#,	   
+	   #remark#)
+	 ]]>
+  </insert>
+  
+  <select id="getScmGatherDetailBySheetId" parameterClass="string" resultClass="detail" >
+	select t.masterid,
+	       t.productid,
+	       p.productname,
+	       p.product_code as productcode,
+	       p.producttype,
+	       p.productspecs,
+	       p.productunit,
+	       t.factinprice,
+	       t.qty,
+	       t.taxrate,
+	       t.amt,
+	       t.remark
+	  from scm.scm_scm_gather_detail t, product.product_info_jxc p
+	 where t.productid = p.id
+	   and t.masterid = #value#
+  </select>
+  
+  <delete id="deleteScmGatherDetailBySheetid" parameterClass="string">
+  	delete from scm.scm_scm_gather_detail where masterid=#value#
+  </delete>
+ </sqlMap>

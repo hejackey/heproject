@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="scmStorageIn">
+  <typeAlias alias="ScmStorageInQ" type="com.zhuozhuo.mis.po.ScmStorageInQ"/>
+  <typeAlias alias="ScmStorageIn" type="com.zhuozhuo.mis.po.ScmStorageIn"/>
+  <typeAlias alias="AuditScmStorageOut" type="com.zhuozhuo.mis.po.AuditScmStorageOut"/>
+  <resultMap id="result" class="ScmStorageIn">
+		<result property="id" column="id" columnIndex="1"/>
+		<result property="sheetId" column="sheetId" columnIndex="2"/>
+		<result property="makerId" column="makerId" columnIndex="3"/>
+		<result property="createDate" column="createDate" columnIndex="4"/>
+		<result property="sheetState" column="sheetState" columnIndex="5"/>
+		<result property="providerid" column="providerid" columnIndex="6"/>
+		<result property="departmentId" column="departmentId" columnIndex="7"/>
+		<result property="userid" column="userid" columnIndex="8"/>
+		<result property="sumQty" column="sumQty" columnIndex="9"/>
+		<result property="sumAmt" column="sumAmt" columnIndex="10"/>
+		<result property="storageInType" column="storageInType" columnIndex="11"/>
+		<result property="bargainCode" column="bargainCode" columnIndex="12"/>
+		<result property="payDate" column="payDate" columnIndex="13"/>
+		<result property="barnId" column="barnId" columnIndex="14"/>
+		<result property="transModeCode" column="transModeCode" columnIndex="15"/>
+		<result property="toDate" column="toDate" columnIndex="16"/>
+		<result property="toAddress" column="toAddress" columnIndex="17"/>
+		<result property="auditId" column="auditId" columnIndex="18"/>
+		<result property="auditDate" column="auditDate" columnIndex="19"/>
+		<result property="srcSheetid" column="srcSheetid" columnIndex="20"/>
+		<result property="remark" column="remark" columnIndex="21"/>
+  </resultMap> 
+  
+  <!-- 入库单 -->
+  <select id="queryScmStorageIns" resultMap="result" parameterClass="ScmStorageInQ">  	
+    	select  t1.id as id,t1.sheetId as sheetId,t1.makerId as makerId,to_char(t1.createDate,'yyyy-MM-dd') as createDate,t1.sheetState as sheetState,t2.PROVIDERNAME as providerid,
+    	t3.DEPARTMENTNAME  as departmentId,t1.userid as userid,t1.sumQty as sumQty,t1.sumAmt as sumAmt,t1.storageInType as storageInType,t1.bargainCode as bargainCode,to_char(t1.payDate,'yyyy-MM-dd') as payDate,
+    	t1.barnId as barnId,t1.transModeCode as transModeCode,to_char(t1.toDate,'yyyy-MM-dd') as toDate,t1.toAddress as toAddress,t1.auditId as auditId,
+    	to_char(t1.auditDate,'yyyy-MM-dd') as auditDate,t1.srcSheetid as srcSheetid,t1.remark as remark
+		from  SCM.SCM_STORAGE_IN t1,SCM.PROVIDER t2,SCM.T_ADM_DEPT t3 where (t1.SHEETSTATE != 1 or  t1.SHEETSTATE is null) and t1.sumAmt > 0 and t1.sumQty > 0  and t1.PROVIDERID=t2.ID(+) and t1.DEPARTMENTID=t3.ID(+)
+		<dynamic>
+		   		<isNotEmpty prepend="and" property="sheetId">
+	           		t1.sheetId  like '%'||#sheetId#||'%'
+	         	</isNotEmpty>
+	         	<isNotEmpty prepend="and" property="departmentId">
+	           		t1.departmentId = #departmentId#
+	         	</isNotEmpty>	                 	
+	         	<isNotEmpty prepend="and" property="startTime">
+	          		<![CDATA[	t1.PAYDATE  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+	         	</isNotEmpty>
+	         	<isNotEmpty prepend="and" property="endTime">
+	          		<![CDATA[	t1.PAYDATE  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+	         	</isNotEmpty>	
+		</dynamic>
+		order by t1.ID desc     
+  </select>
+ 
+ <!-- 退货单 -->
+  <select id="queryScmStorageIns1" resultMap="result" parameterClass="ScmStorageInQ">  	
+    	select  t1.id as id,t1.sheetId as sheetId,t1.makerId as makerId,to_char(t1.createDate,'yyyy-MM-dd') as createDate,t1.sheetState as sheetState,t2.PROVIDERNAME as providerid,
+    	t3.DEPARTMENTNAME  as departmentId,t1.userid as userid,t1.sumQty as sumQty,t1.sumAmt as sumAmt,t1.storageInType as storageInType,t1.bargainCode as bargainCode,to_char(t1.payDate,'yyyy-MM-dd') as payDate,
+    	t1.barnId as barnId,t1.transModeCode as transModeCode,to_char(t1.toDate,'yyyy-MM-dd') as toDate,t1.toAddress as toAddress,t1.auditId as auditId,
+    	to_char(t1.auditDate,'yyyy-MM-dd') as auditDate,t1.srcSheetid as srcSheetid,t1.remark as remark
+		<![CDATA[ from  SCM.SCM_STORAGE_IN t1,SCM.PROVIDER t2,SCM.T_ADM_DEPT t3 where (t1.SHEETSTATE != 1 or  t1.SHEETSTATE is null) and  t1.sumAmt < 0 and t1.sumQty < 0 and t1.PROVIDERID=t2.ID(+) and t1.DEPARTMENTID=t3.ID(+) ]]> 
+		 <dynamic>
+		   		<isNotEmpty prepend="and" property="sheetId">
+	           		t1.sheetId  like '%'||#sheetId#||'%'
+	         	</isNotEmpty>
+	         	<isNotEmpty prepend="and" property="departmentId">
+	           		t1.departmentId = #departmentId#
+	         	</isNotEmpty>	                 	
+	         	<isNotEmpty prepend="and" property="startTime">
+	          		<![CDATA[	t1.PAYDATE  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+	         	</isNotEmpty>
+	         	<isNotEmpty prepend="and" property="endTime">
+	          		<![CDATA[	t1.PAYDATE  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+	         	</isNotEmpty>	
+		</dynamic>
+		order by t1.ID desc    
+  </select>
+    
+  
+  <update id="updateScmStorageIn" parameterClass="string"> 
+  	<![CDATA[   
+    	update SCM.SCM_STORAGE_IN set  SHEETSTATE=1 where id = #id#
+    ]]>     
+   </update>
+  
+  <!-- 进货单 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getScmStorageIns" resultMap="result">
+  	<![CDATA[
+    	select  t1.id as id,t1.sheetId as sheetId,t1.makerId as makerId,to_char(t1.createDate,'yyyy-MM-dd') as createDate,t1.sheetState as sheetState,t2.PROVIDERNAME as providerid,
+    	t3.DEPARTMENTNAME  as departmentId,t1.userid as userid,t1.sumQty as sumQty,t1.sumAmt as sumAmt,t1.storageInType as storageInType,t1.bargainCode as bargainCode,to_char(t1.payDate,'yyyy-MM-dd') as payDate,
+    	t1.barnId as barnId,t1.transModeCode as transModeCode,to_char(t1.toDate,'yyyy-MM-dd') as toDate,t1.toAddress as toAddress,t1.auditId as auditId,
+    	to_char(t1.auditDate,'yyyy-MM-dd') as auditDate,t1.srcSheetid as srcSheetid,t1.remark as remark
+		from  SCM.SCM_STORAGE_IN t1,SCM.PROVIDER t2,SCM.T_ADM_DEPT t3 where (t1.SHEETSTATE != 1 or  t1.SHEETSTATE is null) and t1.sumAmt > 0 and t1.sumQty > 0  and t1.PROVIDERID=t2.ID(+) and t1.DEPARTMENTID=t3.ID(+) order by t1.ID desc
+    ]]> 
+  </select>
+  <!-- 退货单 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getScmStorageIns1" resultMap="result">
+  	<![CDATA[
+    	select  t1.id as id,t1.sheetId as sheetId,t1.makerId as makerId,to_char(t1.createDate,'yyyy-MM-dd') as createDate,t1.sheetState as sheetState,t2.PROVIDERNAME as providerid,
+    	t3.DEPARTMENTNAME  as departmentId,t1.userid as userid,t1.sumQty as sumQty,t1.sumAmt as sumAmt,t1.storageInType as storageInType,t1.bargainCode as bargainCode,to_char(t1.payDate,'yyyy-MM-dd') as payDate,
+    	t1.barnId as barnId,t1.transModeCode as transModeCode,to_char(t1.toDate,'yyyy-MM-dd') as toDate,t1.toAddress as toAddress,t1.auditId as auditId,
+    	to_char(t1.auditDate,'yyyy-MM-dd') as auditDate,t1.srcSheetid as srcSheetid,t1.remark as remark
+		from  SCM.SCM_STORAGE_IN t1,SCM.PROVIDER t2,SCM.T_ADM_DEPT t3 where (t1.SHEETSTATE != 1 or  t1.SHEETSTATE is null) and t1.sumAmt <0 and t1.sumQty<0 and t1.PROVIDERID=t2.ID(+) and t1.DEPARTMENTID=t3.ID(+) order by t1.ID desc
+    ]]> 
+  </select>
+  
+  <select id="getScmStorageIn" resultClass="ScmStorageIn"  parameterClass="string">
+  	<![CDATA[
+    	select 
+				id,sheetId,makerId,createDate,sheetState,providerid,departmentId,userid,sumQty,
+				sumAmt,storageInType,bargainCode,barnId,transModeCode,to_char(payDate,'yyyy-MM-dd') as payDate,toAddress,auditId,
+				srcSheetid,remark
+		from  SCM.SCM_STORAGE_IN where id=#id#
+    ]]>
+  </select>
+  <select id="getScmStorageIn1" resultClass="ScmStorageIn"  parameterClass="string">
+  	<![CDATA[
+    	select 
+				id,sheetId,makerId,createDate,sheetState,providerid,departmentId,userid,-sumQty as sumQty,
+				-sumAmt as sumAmt,storageInType,bargainCode,barnId,transModeCode,to_char(payDate,'yyyy-MM-dd') as payDate,toAddress,auditId,
+				srcSheetid,remark
+		from  SCM.SCM_STORAGE_IN where id=#id#
+    ]]>
+  </select>
+  
+  <insert id="insertScmStorageIn">
+  		<selectKey resultClass="int" keyProperty="id" type="pre">
+			<![CDATA[SELECT SCM.SEQ_SCM_STORAGE_IN.NEXTVAL AS id FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into  SCM.SCM_STORAGE_IN (id,sheetId,makerId,createDate,sheetState,providerid,departmentId,userid,sumQty,sumAmt,storageInType,bargainCode,barnId,transModeCode,payDate,toAddress,auditId,srcSheetid,remark) 
+    		values (#id#,#sheetId#||#id#,#makerId#,sysdate,#sheetState#,#providerid#,#departmentId#,#userid#,#sumQty#,#sumAmt#,#storageInType#,#bargainCode#,#barnId#,#transModeCode#,to_date(#payDate#,'yyyy-MM-dd'),#toAddress#,#auditId#,#srcSheetid#,#remark#)
+    	]]>
+  </insert>
+  
+  <delete id="deleteScmStorageIns" parameterClass="java.util.Map" >  	
+    	delete from SCM.SCM_STORAGE_IN
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				id=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete>
+  
+  
+  <insert id="auditScmStorageIn" parameterClass="AuditScmStorageOut">
+  	  <selectKey resultClass="int" keyProperty="scmStorageId">
+  	     select SCM.SEQ_SCM_STORAGE.nextval as scmStorageId from dual
+  	  </selectKey>
+  	  	insert into SCM.SCM_STORAGE(ID,SHEETID,MAKERID,CREATE_TIME,SHEETSTATE,CLIENTID,DEPARTMENTID,USERID,SUMQTY,SUMAMT,BARGAINCODE,GATHERDATE,BARNID,TRANSMODECODE,GATHER_NAME,TELEPHONE,TODATE,TOADDRESS,AUDITID,AUDITDATE,SRCSHEETID,REMARK,STORAGETYPE)
+	  	select #scmStorageId#,t.SHEETID,t.MAKERID,t.CREATEDATE,t.SHEETSTATE,t.PROVIDERID,t.DEPARTMENTID,t.USERID,t.SUMQTY,t.SUMAMT,t.BARGAINCODE,t.PAYDATE,t.BARNID,t.TRANSMODECODE,'','',t.TODATE,t.TOADDRESS,t.AUDITID,t.AUDITDATE,t.SRCSHEETID,t.REMARK,'1'  
+	    from SCM.SCM_STORAGE_IN t
+	   where t.id = #id#
+  </insert>
+  
+  <update id="updateScmStorageIn1" parameterClass="ScmStorageIn"> 
+  	<![CDATA[   
+    	update SCM.SCM_STORAGE_IN set
+	    	sheetId=#sheetId#,makerId=#makerId#,createDate=sysdate,sheetState=#sheetState#,providerid=#providerid#,departmentId=#departmentId#,
+			userid=#userid#,sumQty=#sumQty#,sumAmt=#sumAmt#,storageInType=#storageInType#,bargainCode=#bargainCode#,payDate=to_date(#payDate#,'yyyy-MM-dd'),barnId=#barnId#,
+			transModeCode=#transModeCode#,toDate=to_date(#toDate#,'yyyy-MM-dd'),toAddress=#toAddress#,auditId=#auditId#,auditDate=to_date(#auditDate#,'yyyy-MM-dd'),srcSheetid=#srcSheetid#,remark=#remark#
+    	where id = #id#
+    ]]>     
+   </update>
+   
+   <insert id="auditTHD" parameterClass="AuditScmStorageOut">
+  	  <selectKey resultClass="int" keyProperty="scmStorageId">
+  	     select SCM.SEQ_SCM_STORAGE.nextval as scmStorageId from dual
+  	  </selectKey>
+  	  	insert into SCM.SCM_STORAGE(ID,SHEETID,MAKERID,CREATE_TIME,SHEETSTATE,CLIENTID,DEPARTMENTID,USERID,SUMQTY,SUMAMT,BARGAINCODE,GATHERDATE,BARNID,TRANSMODECODE,GATHER_NAME,TELEPHONE,TODATE,TOADDRESS,AUDITID,AUDITDATE,SRCSHEETID,REMARK,STORAGETYPE)
+	  	select #scmStorageId#,t.SHEETID,t.MAKERID,t.CREATEDATE,t.SHEETSTATE,t.PROVIDERID,t.DEPARTMENTID,t.USERID,t.SUMQTY,t.SUMAMT,t.BARGAINCODE,t.PAYDATE,t.BARNID,t.TRANSMODECODE,'','',t.TODATE,t.TOADDRESS,t.AUDITID,t.AUDITDATE,t.SRCSHEETID,t.REMARK,'3'  
+	    from SCM.SCM_STORAGE_IN t
+	   where t.id = #id#
+  </insert>
+  
+ </sqlMap>

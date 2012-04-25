@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="user">
+  <typeAlias alias="AdmDept" type="com.zhuozhuo.mis.po.AdmDept"/>
+  <typeAlias alias="Department" type="com.zhuozhuo.mis.model.Department"/>
+  <resultMap id="result" class="AdmDept">
+  	<result property="id" column="id" columnIndex="1"/>
+    <result property="parentId" column="parentId" columnIndex="2"/>
+    <result property="parentname" column="parentname" columnIndex="3"/>    
+    <result property="departmentCode" column="departmentCode" columnIndex="4"/>    
+    <result property="departmentName" column="departmentName" columnIndex="5"/>    
+    <result property="num" column="num" columnIndex="6"/>    
+    <result property="level" column="level" columnIndex="7"/>    
+    <result property="ifUse" column="ifUse" columnIndex="8"/>    
+    <result property="isLeaf" column="isLeaf" columnIndex="9"/>    
+    <result property="remark" column="remark" columnIndex="10"/>    
+    <result property="define1" column="define1" columnIndex="11"/>            
+  </resultMap>  
+  
+  <select id="getAllDepartment" resultMap="result">
+  	<![CDATA[
+    	select id,parentid,parentname,departmentcode,departmentname,num,level,ifuse,isleaf,remark,define1 from  t_adm_dept
+    ]]> 
+  </select>
+  
+  <select id="getDepartment" resultMap="result">
+  	<![CDATA[
+    	select id,parentid,parentname,departmentcode,departmentname,num,level,ifuse,isleaf,remark,define1 from t_adm_dept where id=#id#
+    ]]>
+  </select>
+  
+  <!-- 采用主键自动增长 -->
+  <insert id="insertDepartment">
+  		<selectKey resultClass="int" keyProperty="id" type="pre">
+			<![CDATA[SELECT SEQ_T_ADM_DEPT.NEXTVAL AS ID FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into t_adm_dept (id,parentid,parentname,departmentcode,departmentname,num,level,ifuse,isleaf,remark,define1) values (#id#,#parentid#,#parentname#,#departmentcode#,#departmentname#,#num#,#level#,#ifuse#,#isleaf#,#remark#,#define1#)
+    	]]>
+  </insert>
+
+  <update id="updateDepartment" > 
+  	<![CDATA[   
+    	update t_adm_dept set parentid= #parentid#,parentname= #parentname#,departmentcode= #departmentcode#,departmentname= #departmentname#,num= #num#,level= #level#,ifuse= #ifuse#,isleaf= #isleaf#,remark= #remark#,define1= #define1# where id = #id#
+    ]]>     
+  </update>
+  
+  
+  <delete id="deleteDepartment" parameterClass="long" >
+  	<![CDATA[
+    	delete from t_adm_dept where id= #id#  
+    ]]> 
+  </delete> 
+   
+</sqlMap>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!--
+		- Application context definition for JPetStore's business layer. -
+		Contains bean references to the transaction manager and to the DAOs in
+		- dataAccessContext-local/jta.xml (see web.xml's
+		"contextConfigLocation").
+	-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+    
+    <!--       	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>oracle.jdbc.driver.OracleDriver</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>jdbc:oracle:thin:@172.16.5.247:1521:oracle</value>
+		</property>
+		<property name="user">
+			<value>back</value>
+		</property>
+		<property name="password">
+			<value>back</value>
+		</property>
+	</bean>	
+	-->
+	 
+		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+			destroy-method="close">
+			<property name="driverClass">
+				<value>oracle.jdbc.driver.OracleDriver</value>
+			</property>
+			<property name="jdbcUrl">
+				<value>jdbc:oracle:thin:@172.16.5.247:1521:orcl</value>
+			</property>
+			<property name="user">
+				<value>BACKUSER</value>
+			</property>
+			<property name="password">
+				<value>BACKUSER</value>
+			</property>
+		</bean>	
+	 
+	
+	
+	<bean id="dataSourceProxy"
+		class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+		<constructor-arg>
+			<ref bean="dataSource" />
+		</constructor-arg>
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceProxy"></property>
+	</bean>
+	
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSourceProxy" />
+		</property>
+		<property name="configLocation">
+			<value>classpath:sqlmaps.xml</value>
+		</property>
+		<property name="lobHandler"><ref local="oracleLobHandler"/></property>		
+	</bean>
+	
+	<bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor"  lazy-init="true"/>
+	
+    <!-- LobHandler for Oracle JDBC drivers -->
+	<!-- (refers to the NativeJdbcExtractor above to get access to native OracleConnections) -->
+	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler"  lazy-init="true">
+	   <property name="nativeJdbcExtractor"><ref local="nativeJdbcExtractor"/></property>
+	</bean>
+	
+	<tx:advice id="serviceAdvice"  transaction-manager="transactionManager">  
+	    <tx:attributes>  
+	        <tx:method name="insert*" propagation="REQUIRED" rollback-for="Throwable"/>  
+	        <tx:method name="save*" propagation="REQUIRED" rollback-for="Throwable"/>  
+	        <tx:method name="edit" propagation="REQUIRED" rollback-for="Throwable"/>  
+	        <tx:method name="del*" propagation="REQUIRED" rollback-for="Throwable"/>  
+	        <tx:method name="update*" propagation="REQUIRED" rollback-for="Throwable"/>  
+	        <tx:method name="*" read-only="true"/>  
+	    </tx:attributes>
+    </tx:advice>  
+    <!-- 配置哪些类的方法需要进行事务管理 -->  
+    <aop:config proxy-target-class="true">  
+       <aop:pointcut id="servicePointcut" expression="execution(* com.zhuozhuo.*.service.*.*(..))"/>  
+       <aop:advisor pointcut-ref="servicePointcut" advice-ref="serviceAdvice"/>  
+    </aop:config> 
+</beans>

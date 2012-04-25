@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="scmstorage">
+
+	<typeAlias alias="storage" type="com.zhuozhuo.mis.po.report.ScmStorage" />
+
+	<select id="listScmStorage" resultClass="storage"
+		parameterClass="storage">
+		select *
+		from (select t.productid,
+		t.productcode,
+		t.productname,
+		t.productTypeName,
+		t.rkqty,
+		t.rkamt,
+		t.ckqty,
+		t.ckamt,
+		t.thqty,
+		t.thamt,
+		t.cgqty,
+		t.cgamt,
+		t.xsqty,
+		t.xsamt,
+		(t.rkqty + t.ckqty + t.thqty + t.cgqty + t.xsqty) as hjqty,
+		(t.rkamt + t.ckamt + t.thamt + t.cgamt + t.xsamt) as hjamt,
+		rownum rn
+		from (select ssd.productid,
+		pjxc.product_code as productcode,
+		pjxc.productname,
+		pt.goodstypename as productTypeName,
+		sum(decode(ss.storagetype, 1, ssd.qty, 0)) as rkqty,
+		sum(decode(ss.storagetype, 1, ssd.amt, 0)) as rkamt,
+		sum(decode(ss.storagetype, 2, ssd.qty, 0)) as ckqty,
+		sum(decode(ss.storagetype, 2, ssd.amt, 0)) as ckamt,
+		sum(decode(ss.storagetype, 3, ssd.qty, 0)) as thqty,
+		sum(decode(ss.storagetype, 3, ssd.amt, 0)) as thamt,
+		sum(decode(ss.storagetype, 4, ssd.qty, 0)) as cgqty,
+		sum(decode(ss.storagetype, 4, ssd.amt, 0)) as cgamt,
+		sum(decode(ss.storagetype, 5, ssd.qty, 0)) as xsqty,
+		sum(decode(ss.storagetype, 5, ssd.amt, 0)) as xsamt
+		from scm.scm_storage_detail ssd,
+		scm.scm_storage ss,
+		product.product_info_jxc pjxc,
+		product.product_type pt
+		where ssd.masterid = ss.id(+)
+		and ssd.productid = pjxc.id(+)
+		and pjxc.producttype = pt.recordid(+)
+		<dynamic>
+			<isNotEmpty prepend="and" property="productname">
+				pjxc.productname like '%'||#productname#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEmpty prepend="and" property="productcode">
+		                 	pjxc.product_code like '%'||#productcode#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEmpty prepend="and" property="productTypes">
+		                 	pt.recordid in ($productTypes$)
+	                 	</isNotEmpty>	                 	
+	                 	<isNotEmpty prepend="and" property="startTime">
+		                 <![CDATA[	ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+	                 	</isNotEmpty>
+	                 	<isNotEmpty prepend="and" property="endTime">
+		                 <![CDATA[	ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>	                
+	                 	</isNotEmpty>	                 		                 	
+	                 </dynamic>
+	                 group by ssd.productid,
+				           pjxc.product_code,
+				           pjxc.productname,
+				           pt.goodstypename) t	
+	 <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+		<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>
+  </select>
+  
+  <select id="listScmStorageCount" resultClass="int" parameterClass="storage">
+	select count(1)
+	  from (select count(1)
+	          from scm.scm_storage_detail   ssd,
+	               scm.scm_storage          ss,
+	               product.product_info_jxc pjxc,
+	               product.product_type     pt
+	         where ssd.masterid = ss.id(+)
+	           and ssd.productid = pjxc.id(+)
+	           and pjxc.producttype = pt.recordid(+)
+			<dynamic>
+				<isNotEmpty prepend="and" property="productname">
+				 	pjxc.productname like '%'||#productname#||'%'
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="productcode">
+				 	pjxc.product_code like '%'||#productcode#||'%'
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="productTypes">
+		            pt.recordid in ($productTypes$)
+	            </isNotEmpty>	                 	
+				
+				<isNotEmpty prepend="and" property="startTime">
+				 <![CDATA[	ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="endTime">
+				 <![CDATA[	ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+				</isNotEmpty>	    
+			</dynamic>	           
+	         group by ssd.productid,
+	                  pjxc.product_code,
+	                  pjxc.productname,
+	                  pt.goodstypename)
+  </select>  
+  
+  <select id="listScmStorageHj" resultClass="storage" parameterClass="storage">
+	select nvl(sum(t.rkqty), 0) as hjrkqty,
+	       nvl(sum(t.rkamt), 0) as hjrkamt,
+	       nvl(sum(t.ckqty), 0) as hjckqty,
+	       nvl(sum(t.ckamt), 0) as hjckamt,
+	       nvl(sum(t.thqty), 0) as hjthqty,
+	       nvl(sum(t.thamt), 0) as hjthamt,
+	       nvl(sum(t.cgqty), 0) as hjcgqty,
+	       nvl(sum(t.cgamt), 0) as hjcgamt,
+	       nvl(sum(t.xsqty), 0) as hjxsqty,
+	       nvl(sum(t.xsamt), 0) as hjxsamt,
+	       nvl(sum(t.rkqty + t.ckqty + t.thqty + t.cgqty + t.xsqty), 0) as hjzqty, 
+	       nvl(sum(t.rkamt + t.ckamt + t.thamt + t.cgamt + t.xsamt), 0) as hjzamt
+	  from (select sum(decode(ss.storagetype, 1, ssd.qty, 0)) as rkqty,
+	               sum(decode(ss.storagetype, 1, ssd.amt, 0)) as rkamt,
+	               sum(decode(ss.storagetype, 2, ssd.qty, 0)) as ckqty,
+	               sum(decode(ss.storagetype, 2, ssd.amt, 0)) as ckamt,
+	               sum(decode(ss.storagetype, 3, ssd.qty, 0)) as thqty,
+	               sum(decode(ss.storagetype, 3, ssd.amt, 0)) as thamt,
+	               sum(decode(ss.storagetype, 4, ssd.qty, 0)) as cgqty,
+	               sum(decode(ss.storagetype, 4, ssd.amt, 0)) as cgamt,
+	               sum(decode(ss.storagetype, 5, ssd.qty, 0)) as xsqty,
+	               sum(decode(ss.storagetype, 5, ssd.amt, 0)) as xsamt
+	          from scm.scm_storage_detail   ssd,
+	               scm.scm_storage          ss,
+	               product.product_info_jxc pjxc,
+	               product.product_type     pt
+	         where ssd.masterid = ss.id(+)
+	           and ssd.productid = pjxc.id(+)
+	           and pjxc.producttype = pt.recordid(+)
+	        <dynamic>
+				<isNotEmpty prepend="and" property="productname">
+				 	pjxc.productname like '%'||#productname#||'%'
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="productcode">
+				 	pjxc.product_code like '%'||#productcode#||'%'
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="productTypes">
+		            pt.recordid in ($productTypes$)
+	            </isNotEmpty>	                 	
+				<isNotEmpty prepend="and" property="startTime">
+				 <![CDATA[	ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="endTime">
+				 <![CDATA[	ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+				</isNotEmpty>	    
+			</dynamic>	     
+	         group by ssd.productid,
+	                  pjxc.product_code,
+	                  pjxc.productname,
+	                  pt.goodstypename) t
+  </select>
+  
+  <select id="listScmStorageToExcel" resultClass="storage" parameterClass="storage">
+  	select t.productid,
+		   t.productcode,
+		   t.productname,
+		   t.productTypeName,
+		   t.rkqty,
+		   t.rkamt,
+		   t.ckqty,
+		   t.ckamt,
+		   t.thqty,
+		   t.thamt,
+		   t.cgqty,
+		   t.cgamt,
+		   t.xsqty,
+		   t.xsamt,
+		   (t.rkqty + t.ckqty + t.thqty + t.cgqty + t.xsqty) as hjqty,
+		   (t.rkamt + t.ckamt + t.thamt + t.cgamt + t.xsamt) as hjamt,
+		   rownum rn
+		  from (select ssd.productid,
+		       pjxc.product_code as productcode,
+		       pjxc.productname,
+		       pt.goodstypename as productTypeName,
+		       sum(decode(ss.storagetype, 1, ssd.qty, 0)) as rkqty,
+		       sum(decode(ss.storagetype, 1, ssd.amt, 0)) as rkamt,
+		       sum(decode(ss.storagetype, 2, ssd.qty, 0)) as ckqty,
+		       sum(decode(ss.storagetype, 2, ssd.amt, 0)) as ckamt,
+		       sum(decode(ss.storagetype, 3, ssd.qty, 0)) as thqty,
+		       sum(decode(ss.storagetype, 3, ssd.amt, 0)) as thamt,
+		       sum(decode(ss.storagetype, 4, ssd.qty, 0)) as cgqty,
+		       sum(decode(ss.storagetype, 4, ssd.amt, 0)) as cgamt,
+		       sum(decode(ss.storagetype, 5, ssd.qty, 0)) as xsqty,
+		       sum(decode(ss.storagetype, 5, ssd.amt, 0)) as xsamt
+		  from scm.scm_storage_detail   ssd,
+		       scm.scm_storage          ss,
+		       product.product_info_jxc pjxc,
+		       product.product_type     pt
+		 where ssd.masterid = ss.id(+)
+		   and ssd.productid = pjxc.id(+)
+		   and pjxc.producttype = pt.recordid(+)							 
+		         <dynamic>
+		        	<isNotEmpty prepend="and" property="productname">
+		           	pjxc.productname like '%'||#productname#||'%'
+		         	</isNotEmpty>
+		         	<isNotEmpty prepend="and" property="productcode">
+		           	pjxc.product_code like '%'||#productcode#||'%'
+		         	</isNotEmpty>
+		         	<isNotEmpty prepend="and" property="productTypes">
+		            pt.recordid in ($productTypes$)
+	            	</isNotEmpty>	                 	
+		         	<isNotEmpty prepend="and" property="startTime">
+		           <![CDATA[	ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+		         	</isNotEmpty>
+		         	<isNotEmpty prepend="and" property="endTime">
+		           <![CDATA[	ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+		         	</isNotEmpty>	                 		                 	
+		         </dynamic>
+		         group by ssd.productid,
+		         pjxc.product_code,
+		         pjxc.productname,
+		         pt.goodstypename) t	
+  </select>
+  
+  <select id="listBarnTypeStorage" resultClass="storage" parameterClass="storage">
+	select *
+	from(
+		select t.*,rownum rn
+			from(
+			select bt.barntypename||(select max(sys_connect_by_path(sbt.barntypename, '-'))
+			          from scm.scm_barn_type sbt
+			         start with sbt.id = bt.parentid
+			        connect by prior sbt.parentid = sbt.id) as barntypename,
+			       pjxc.product_code as productcode,
+			       pjxc.productname,
+			       pjxc.productspecs,
+			       pjxc.productunit,
+			       sum(ssd.qty) as qty,
+			       sum(ssd.amt) as amt
+			  from scm.scm_storage          ss,
+			       scm.scm_storage_detail   ssd,
+			       product.product_info_jxc pjxc,
+			       scm.scm_barn_type        bt
+			 where ss.id = ssd.masterid
+			   and ssd.productid = pjxc.id
+			   and ssd.barnid = bt.id	   
+			   and (ss.storagetype != 4 and ss.storagetype != 5)
+			   <dynamic>
+			   		<isNotEmpty prepend="and" property="barnids">
+		           		bt.id in ($barnids$)
+		         	</isNotEmpty>
+		         	<isNotEmpty prepend="and" property="barntypecode">
+		           		bt.barntypecode like '%'||#barntypecode#||'%'
+		         	</isNotEmpty>	                 	
+		         	<isNotEmpty prepend="and" property="startTime">
+		          		<![CDATA[	ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+		         	</isNotEmpty>
+		         	<isNotEmpty prepend="and" property="endTime">
+		          		<![CDATA[	ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+		         	</isNotEmpty>	
+			   </dynamic>
+			 group by rollup((bt.id,bt.barntypename, bt.parentid),
+                                 (pjxc.product_code, pjxc.productname,
+                                  pjxc.productspecs, pjxc.productunit))
+                 order by bt.id,bt.parentid,pjxc.product_code
+		                  ) t
+	 <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+	<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>                  
+  </select>
+  
+  <select id="listBarnTypeStorageCount" resultClass="int" parameterClass="storage">
+	  select count(1)
+	  from (select count(1)
+	          from scm.scm_storage          ss,
+	               scm.scm_storage_detail   ssd,
+	               product.product_info_jxc pjxc,
+	               scm.scm_barn_type        bt
+	         where ss.id = ssd.masterid
+	           and ssd.productid = pjxc.id
+	           and ssd.barnid = bt.id
+	           and (ss.storagetype != 4 and ss.storagetype != 5)
+	           <dynamic>
+			   		<isNotEmpty prepend="and" property="barnids">
+		           		bt.id in ($barnids$)
+		         	</isNotEmpty>
+		         	<isNotEmpty prepend="and" property="barntypecode">
+		           		bt.barntypecode like '%'||#barntypecode#||'%'
+		         	</isNotEmpty>	                 	
+		         	<isNotEmpty prepend="and" property="startTime">
+		          		<![CDATA[	ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+		         	</isNotEmpty>
+		         	<isNotEmpty prepend="and" property="endTime">
+		          		<![CDATA[	ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+		         	</isNotEmpty>	
+			   </dynamic>
+	         group by rollup((bt.barntypename),
+	                         (pjxc.product_code, pjxc.productname,
+	                          pjxc.productspecs, pjxc.productunit))
+	       order by bt.id,bt.parentid,pjxc.product_code)
+  </select>
+  
+  <select id="listBarnTypeStorageToExcel" resultClass="storage" parameterClass="storage">
+	  select bt.barntypename ||
+	       (select max(sys_connect_by_path(sbt.barntypename, '-'))
+	          from scm.scm_barn_type sbt
+	         start with sbt.id = bt.parentid
+	        connect by prior sbt.parentid = sbt.id) as barntypename,
+	       pjxc.product_code as productcode,
+	       pjxc.productname,
+	       pjxc.productspecs,
+	       pjxc.productunit,
+	       sum(ssd.qty) as qty,
+	       sum(ssd.amt) as amt
+	  from scm.scm_storage          ss,
+	       scm.scm_storage_detail   ssd,
+	       product.product_info_jxc pjxc,
+	       scm.scm_barn_type        bt
+	 where ss.id = ssd.masterid(+)
+	   and ssd.productid = pjxc.id(+)
+	   and ssd.barnid = bt.id(+)
+	   and (ss.storagetype != 4 and ss.storagetype != 5)
+	   <dynamic>
+			<isNotEmpty prepend="and" property="barnids">
+		     		bt.id in ($barnids$)
+		   	</isNotEmpty>
+		   	<isNotEmpty prepend="and" property="barntypecode">
+		     		bt.barntypecode like '%'||#barntypecode#||'%'
+		   	</isNotEmpty>	                 	
+		   	<isNotEmpty prepend="and" property="startTime">
+		    		<![CDATA[	ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+		   	</isNotEmpty>
+		   	<isNotEmpty prepend="and" property="endTime">
+		    		<![CDATA[	ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+		   	</isNotEmpty>	
+		</dynamic>
+	 group by rollup((bt.id,bt.barntypename, bt.parentid),
+                                 (pjxc.product_code, pjxc.productname,
+                                  pjxc.productspecs, pjxc.productunit))
+     order by bt.id,bt.parentid,pjxc.product_code
+  </select>
+  
+  <select id="listProductTypeStorage" resultClass="storage" parameterClass="storage">
+	  select *
+	  from
+		  (select t.*,rownum rn
+		  from(
+			  	select pt.goodstypename ||
+			       (select max(sys_connect_by_path(sbt.goodstypename, '-'))
+			          from product.product_type sbt
+			         start with sbt.recordid = pt.parentid
+			        connect by prior sbt.parentid = sbt.recordid) as productTypeName,
+			       (select nvl(sum(ssd1.amt), 0)
+			          from scm.scm_storage_detail   ssd1,
+			               scm.scm_storage          ss1,
+			               product.product_info_jxc pjxc1,
+			               product.product_type     pt1
+			         where ssd1.masterid = ss1.id
+			           and ssd1.productid = pjxc1.id
+			           and pjxc1.producttype = pt1.recordid
+			 <![CDATA[ and ss1.create_time  < to_date(#startTime#,'yyyy-MM-dd') ]]>
+			           and pt1.recordid = pt.recordid) as lastAmt,
+			       sum(decode(ss.storagetype, 1, ssd.amt, 0)) as inAmt,
+			       sum(decode(ss.storagetype, 2, ssd.amt, 3, ssd.amt, 0)) as outAmt
+			  from scm.scm_storage_detail   ssd,
+			       scm.scm_storage          ss,
+			       product.product_info_jxc pjxc,
+			       product.product_type     pt
+			 where ssd.masterid = ss.id(+)
+			   and ssd.productid = pjxc.id(+)
+			   and pjxc.producttype = pt.recordid(+)
+	  <![CDATA[and ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+	  <![CDATA[and ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+			   <dynamic>
+					<isNotEmpty prepend="and" property="productTypes">
+				     		pt.recordid in ($productTypes$)
+				   	</isNotEmpty>				   
+				</dynamic>			
+			 group by pt.recordid, pt.parentid, pt.goodstypename
+			 order by pt.recordid, pt.parentid
+		  ) t
+	<![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+	<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>                  
+  </select>
+  
+  <select id="listProductTypeStorageCount" resultClass="int" parameterClass="storage">
+  select count(1)
+  from (select count(1)
+          from scm.scm_storage_detail   ssd,
+               scm.scm_storage          ss,
+               product.product_info_jxc pjxc,
+               product.product_type     pt
+         where ssd.masterid = ss.id(+)
+           and ssd.productid = pjxc.id(+)
+           and pjxc.producttype = pt.recordid(+)
+  <![CDATA[and ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+  <![CDATA[and ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+		<dynamic>
+			<isNotEmpty prepend="and" property="productTypes">
+				pt.recordid in ($productTypes$)
+			</isNotEmpty>				   
+		</dynamic>			
+    group by pt.recordid, pt.parentid, pt.goodstypename
+    order by pt.recordid, pt.parentid)
+  </select>
+  
+  <select id="listProductTypeStorageHj" resultClass="storage" parameterClass="storage">
+	  select nvl(sum(lastAmt),0) as hjLastAmt,
+	       nvl(sum(inAmt),0) as hjInAmt,
+	       nvl(sum(outAmt),0) as hjOutAmt
+	  from (select (select nvl(sum(ssd1.amt), 0)
+	                  from scm.scm_storage_detail   ssd1,
+	                       scm.scm_storage          ss1,
+	                       product.product_info_jxc pjxc1,
+	                       product.product_type     pt1
+	                 where ssd1.masterid = ss1.id
+	                   and ssd1.productid = pjxc1.id
+	                   and pjxc1.producttype = pt1.recordid
+			 <![CDATA[ and ss1.create_time  < to_date(#startTime#,'yyyy-MM-dd') ]]>
+	                   and pt1.recordid = pt.recordid) as lastAmt,
+	               sum(decode(ss.storagetype, 1, ssd.amt, 0)) as inAmt,
+	               sum(decode(ss.storagetype, 2, ssd.amt, 3, ssd.amt, 0)) as outAmt
+	          from scm.scm_storage_detail   ssd,
+	               scm.scm_storage          ss,
+	               product.product_info_jxc pjxc,
+	               product.product_type     pt
+	         where ssd.masterid = ss.id(+)
+	           and ssd.productid = pjxc.id(+)
+	           and pjxc.producttype = pt.recordid(+)
+	  <![CDATA[and ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+  	  <![CDATA[and ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+		<dynamic>
+			<isNotEmpty prepend="and" property="productTypes">
+				pt.recordid in ($productTypes$)
+			</isNotEmpty>				   
+		</dynamic>		
+	         group by pt.recordid, pt.parentid, pt.goodstypename
+	         order by pt.recordid, pt.parentid)
+  </select>
+  
+  <select id="listProductTypeStorageToExcel"  resultClass="storage" parameterClass="storage">
+  	select pt.goodstypename ||
+		   (select max(sys_connect_by_path(sbt.goodstypename, '-'))
+		      from product.product_type sbt
+		     start with sbt.recordid = pt.parentid
+		   connect by prior sbt.parentid = sbt.recordid) as productTypeName,
+		   (select nvl(sum(ssd1.amt), 0)
+		      from scm.scm_storage_detail   ssd1,
+		           scm.scm_storage          ss1,
+		           product.product_info_jxc pjxc1,
+		           product.product_type     pt1
+		     where ssd1.masterid = ss1.id
+		       and ssd1.productid = pjxc1.id
+		       and pjxc1.producttype = pt1.recordid
+	 <![CDATA[ and ss1.create_time  < to_date(#startTime#,'yyyy-MM-dd') ]]>
+	           and pt1.recordid = pt.recordid) as lastAmt,
+	       sum(decode(ss.storagetype, 1, ssd.amt, 0)) as inAmt,
+	       sum(decode(ss.storagetype, 2, ssd.amt, 3, ssd.amt, 0)) as outAmt
+	  from scm.scm_storage_detail   ssd,
+	       scm.scm_storage          ss,
+	       product.product_info_jxc pjxc,
+	       product.product_type     pt
+	 where ssd.masterid = ss.id(+)
+		   and ssd.productid = pjxc.id(+)
+		   and pjxc.producttype = pt.recordid(+)
+ 	<![CDATA[and ss.create_time  >= to_date(#startTime#,'yyyy-MM-dd') ]]>
+	 <![CDATA[and ss.create_time  <= to_date(#endTime#||' 23:59:59','yyyy-MM-dd hh24:mi:ss') ]]>
+		<dynamic>
+			<isNotEmpty prepend="and" property="productTypes">
+				pt.recordid in ($productTypes$)
+			</isNotEmpty>				   
+		</dynamic>			
+	group by pt.recordid, pt.parentid, pt.goodstypename
+	order by pt.recordid, pt.parentid
+  </select>
+</sqlMap>

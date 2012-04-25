@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	
+	<context:component-scan base-package="com.zhuozhuo.web" />	
+	
+	<!-- 以下是共用的配置内容 -->
+	<!-- 缺省的viewName翻译器 -->
+	<bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator" />
+	<!--
+		- This bean configures the 'prefix' and 'suffix' properties of -
+		InternalResourceViewResolver, which resolves logical view names -
+		returned by Controllers. For example, a logical view name of "vets" -
+		will be mapped to "/WEB-INF/jsp/vets.jsp".
+	-->
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/mis/"></property>
+		<property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">1</prop>
+                <prop key="defaultEncoding">UTF-8</prop>
+            </props>
+        </property>
+	</bean>
+	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver" p:prefix="" p:suffix=".ftl">
+		<property name="contentType" value="text/html;charset=utf-8"></property>
+	</bean>
+	
+	<!-- 当抛出例外时，转向的页面配置 -->
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.dao.DataAccessException">dataAccessFailure</prop>
+				<prop key="org.springframework.transaction.TransactionException">dataAccessFailure</prop>
+				<prop key="java.lang.Exception">dataAccessFailure</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<!-- 资源配置文件的位置 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages" />		
+</beans>

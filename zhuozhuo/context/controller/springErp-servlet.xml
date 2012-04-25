@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"  default-autowire="byName">
+	
+	<bean id="loginInterceptor" class="com.zhuozhuo.mis.interceptor.LoginInterceptor"/>
+	
+	<!-- 配置多个controller -->
+	<bean id="defaultMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="loginInterceptor"/>
+			</list>
+		</property>
+		<property name="mappings">
+			<value>			
+				mis/productType/*ProductType.do=productTypeController
+			    mis/provider/*Provider.do=providerController
+			    mis/productInfoJxc/*ProductInfoJxc.do=productInfoJxcController
+			    mis/providerType/*ProviderType.do = providerTypeController
+				mis/scmBarnType/*ScmBarnType.do = scmBarnTypeController
+				mis/scmStorageOut/*ScmStorageOut.do = scmStorageOutController<!-- 发货单 -->
+				mis/scmStorageOutDetail/*ScmStorageOutDetail.do = scmStorageOutDetailController
+				mis/scmPay/*ScmPay.do = scmPayController<!-- 付款单 -->
+				mis/scmPayDetail/*ScmPayDetail.do = scmPayDetailController
+				mis/scmStorageIn/*ScmStorageIn.do = scmStorageInController
+				dept/*Dept.do = tadmDeptController
+				module/*Module.do=tadmModuleController
+				user/*User.do=tadmUserController
+				role/*Role.do=tadmRoleController
+				login/*.do=loginController
+				stock/*StockOrder.do=stockOrderController
+				barn/*BarnType.do=barnTypeController
+				report/storage/*Storage.do=scmStorageController
+				upload/*Upload.do=uploadFileController
+				<!-- he start -->
+				<!-- he end -->
+				
+				<!-- sun start -->
+				<!-- sun end -->
+				
+				<!-- li start  -->
+				diaoBo/*DiaoBo.do=diaoBoController
+				<!-- li end -->
+				<!--/user/*User.do = sampleMultiMethodController -->
+				<!-- 在下面可以增加其它的Controller -->
+				<!-- /manager/role*.do = roleController -->
+			</value>
+		</property>
+		
+	</bean>
+	
+	<bean id="productTypeController" class="com.zhuozhuo.mis.web.ProductTypeController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ProductTypeValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/mis/productType/addorEditProductType.do">addorEditProductType</prop>
+						<prop key="/mis/productType/saveProductType.do">saveProductType</prop>
+						<prop key="/mis/productType/editProductType.do">editProductType</prop>
+						<prop key="/mis/productType/deleteProductType.do">deleteProductType</prop>						
+						<prop key="/mis/productType/listProductType.do">listProductTypes</prop>
+						<prop key="/mis/productType/updateProductType.do">updateProductType</prop>
+						<prop key="/mis/productType/queryProductType.do">queryProductType</prop>
+						<prop key="/mis/productType/treeProductType.do">treeProductType</prop>		
+						<prop key="/mis/productType/qByCodeProductType.do">qByCodeProductType</prop>															
+					</props>
+				</property>
+			</bean>
+		</property>				
+	</bean>
+	<!-- controller控制类，按照方法名称来转发 -->
+	<bean id="tadmDeptController" class="com.zhuozhuo.mis.web.TAdmDeptController">		
+		<!-- <property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.AdmDeptValidator" />
+			</list>
+		</property> -->		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/dept/listDept.do">listDept</prop>
+						<prop key="/dept/editDept.do">editDept</prop>						
+						<prop key="/dept/saveDept.do">saveDept</prop>
+						<prop key="/dept/preAddDept.do">preAddDept</prop>
+						<prop key="/dept/preEditDept.do">preAddDept</prop>
+						<prop key="/dept/deleteDept.do">deleteDept</prop>
+						<prop key="/dept/updateStatusDept.do">updateStatusDept</prop>
+					</props>
+				</property>
+			</bean>
+		</property>	
+		<property name="tadmDeptService" ref="tadmDeptService"/>	
+	</bean>
+		
+	<bean id="tadmModuleController" class="com.zhuozhuo.mis.web.TAdmModuleController">		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/module/listModule.do">listModule</prop>
+						<prop key="/module/editModule.do">editModule</prop>						
+						<prop key="/module/saveModule.do">saveModule</prop>
+						<prop key="/module/preAddModule.do">preAddModule</prop>
+						<prop key="/module/preEditModule.do">preAddModule</prop>
+						
+						<prop key="/module/updateStatusModule.do">updateStatusModule</prop>
+					</props>
+				</property>
+			</bean>
+		</property>	
+		<property name="tadmModuleService" ref="tadmModuleService"/>	
+	</bean>
+	
+	<bean id="tadmUserController" class="com.zhuozhuo.mis.web.TAdmUserController">		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/user/listUser.do">listUser</prop>
+						<prop key="/user/editUser.do">editUser</prop>						
+						<prop key="/user/saveUser.do">saveUser</prop>
+						<prop key="/user/preAddUser.do">preAddUser</prop>
+						<prop key="/user/preEditUser.do">preAddUser</prop>						
+						<prop key="/user/updateStatusUser.do">updateStatusUser</prop>
+					</props>
+				</property>
+			</bean>
+		</property>	
+		<property name="serviceFactoryUtil" ref="serviceFactoryUtil"/>	
+	</bean>
+		
+	<bean id="tadmRoleController" class="com.zhuozhuo.mis.web.TAdmRoleController">		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/role/listRole.do">listRole</prop>
+						<prop key="/role/editRole.do">editRole</prop>						
+						<prop key="/role/saveRole.do">saveRole</prop>
+						<prop key="/role/preAddRole.do">preAddRole</prop>
+						<prop key="/role/preEditRole.do">preAddRole</prop>						
+						<prop key="/role/updateStatusRole.do">updateStatusRole</prop>
+					</props>
+				</property>				
+			</bean>			
+		</property>	
+		<property name="serviceFactoryUtil" ref="serviceFactoryUtil"/>	
+	</bean>
+	
+	<bean id="stockOrderController" class="com.zhuozhuo.mis.web.StockOrderController">		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/stock/listStockOrder.do">listStockOrder</prop>
+						<prop key="/stock/editStockOrder.do">editStockOrder</prop>						
+						<prop key="/stock/saveStockOrder.do">saveStockOrder</prop>
+						<prop key="/stock/preAddStockOrder.do">preAddStockOrder</prop>
+						<prop key="/stock/preEditStockOrder.do">preAddStockOrder</prop>
+						<prop key="/stock/getDetailBySheetIdStockOrder.do">getDetailBySheetIdStockOrder</prop>								
+						<prop key="/stock/updateStatusStockOrder.do">updateStatusStockOrder</prop>
+						<prop key="/stock/exportToExcelStockOrder.do">exportStockOrderToExcel</prop>
+					</props>
+				</property>				
+			</bean>			
+		</property>	
+		<property name="serviceFactoryUtil" ref="serviceFactoryUtil"/>	
+	</bean>
+	
+	<bean id="barnTypeController" class="com.zhuozhuo.mis.web.BarnTypeController">		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/barn/listBarnType.do">listBarnType</prop>
+						<prop key="/barn/editBarnType.do">editBarnType</prop>						
+						<prop key="/barn/saveBarnType.do">saveBarnType</prop>
+						<prop key="/barn/preAddBarnType.do">preAddBarnType</prop>
+						<prop key="/barn/preEditBarnType.do">preAddBarnType</prop>						
+						<prop key="/barn/updateStatusBarnType.do">updateStatusBarnType</prop>
+						<prop key="/barn/getByIdBarnType.do">getByIdBarnType</prop>
+					</props>
+				</property>				
+			</bean>			
+		</property>	
+		<property name="serviceFactoryUtil" ref="serviceFactoryUtil"/>	
+	</bean>
+	
+	<bean id="providerController" class="com.zhuozhuo.mis.web.ProviderController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ProviderValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/mis/provider/listProvider.do">listProviders</prop>
+						<prop key="/mis/provider/addEditProvider.do">addEditProvider</prop>
+						<prop key="/mis/provider/saveProvider.do">saveProvider</prop>
+						<prop key="/mis/provider/updateProvider.do">updateProvider</prop>
+						<prop key="/mis/provider/deleteProvider.do">deleteProviders</prop>	
+						<prop key="/mis/provider/queryProvider.do">queryProvider</prop>
+						<prop key="/mis/provider/qByNameProvider.do">qProviderByName</prop>														
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>
+	
+	<bean id="scmStorageController" class="com.zhuozhuo.mis.web.ScmStorageController">				
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/report/storage/listScmStorage.do">listScmStorage</prop>
+						<prop key="/report/storage/listExcelScmStorage.do">listExcelScmStorage</prop>	
+						<prop key="/report/storage/listBarnTypeStorage.do">listBarnTypeStorage</prop>
+						<prop key="/report/storage/listExcelBarnTypeStorage.do">listExcelBarnTypeStorage</prop>
+						<prop key="/report/storage/listProductTypeStorage.do">listProductTypeStorage</prop>
+						<prop key="/report/storage/listExcelProductTypeStorage.do">listExcelProductTypeStorage</prop>									
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>
+	
+	<bean id="loginController" class="com.zhuozhuo.mis.web.LoginController">		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/login/showLogin.do">showLogin</prop>	
+						<prop key="/login/submitLogin.do">login</prop>		
+						<prop key="/login/left.do">left</prop>	
+						<prop key="/login/bottom.do">bottom</prop>	
+						<prop key="/login/top.do">top</prop>	
+						<prop key="/login/center.do">center</prop>	
+						<prop key="/login/selllist.do">selllist</prop>	
+						<prop key="/login/logout.do">logout</prop>					
+					</props>
+				</property>
+			</bean>
+		</property>	
+		
+	</bean>
+	
+	<bean id="productInfoJxcController" class="com.zhuozhuo.mis.web.ProductInfoJxcController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ProductInfoJxcValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/mis/productInfoJxc/addorEditProductInfoJxc.do">addorEditProductInfoJxc</prop>
+						<prop key="/mis/productInfoJxc/saveProductInfoJxc.do">saveProductInfoJxc</prop>	
+						<prop key="/mis/productInfoJxc/listProductInfoJxc.do">listProductInfoJxcs</prop>
+						<prop key="/mis/productInfoJxc/updateProductInfoJxc.do">updateProductInfoJxc</prop>	
+						<prop key="/mis/productInfoJxc/deleteProductInfoJxc.do">deleteProductInfoJxcs</prop>
+						<prop key="/mis/productInfoJxc/queryProductInfoJxc.do">queryProductInfoJxcs</prop>	
+						<prop key="/mis/productInfoJxc/qByProductCodeProductInfoJxc.do">qByProductCodeProductInfoJxc</prop>
+						<prop key="/mis/productInfoJxc/uploadImageProductInfoJxc.do">uploadImageProductInfoJxc</prop>
+						<prop key="/mis/productInfoJxc/saveImageProductInfoJxc.do">saveImageProductInfoJxc</prop>										
+					</props>
+				</property>
+			</bean>
+		</property>			
+</bean>	
+	<bean id="providerTypeController" class="com.zhuozhuo.mis.web.ProviderTypeController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ProviderTypeValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/mis/providerType/listProviderType.do">listProviderTypes</prop>
+						<prop key="/mis/providerType/addEditProviderType.do">addEditProviderType</prop>
+						<prop key="/mis/providerType/editProviderType.do">editProviderType</prop>
+						<prop key="/mis/providerType/saveProviderType.do">saveProviderType</prop>
+						<prop key="/mis/providerType/updateProviderType.do">updateProviderType</prop>
+						<prop key="/mis/providerType/deleteProviderType.do">deleteProviderTypes</prop>													
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>
+	<!-- 入库单 -->
+	<bean id="scmStorageInController" class="com.zhuozhuo.mis.web.ScmStorageInController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ScmStorageInValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/mis/scmStorageIn/auditTHDScmStorageIn.do">auditTHD</prop><!-- 审核退货单 -->
+						<prop key="/mis/scmStorageIn/listScmStorageIn.do">listScmStorageIns</prop>
+						<prop key="/mis/scmStorageIn/addScmStorageIn.do">addScmStorageIn</prop>
+						<prop key="/mis/scmStorageIn/editScmStorageIn.do">editScmStorageIn</prop>
+						<prop key="/mis/scmStorageIn/saveScmStorageIn.do">saveScmStorageIn</prop>
+						<prop key="/mis/scmStorageIn/updateScmStorageIn.do">updateScmScmStorageIn</prop>
+						<prop key="/mis/scmStorageIn/deleteScmStorageIn.do">deleteScmScmStorageIns</prop>
+						<prop key="/mis/scmStorageIn/auditScmStorageIn.do">auditScmScmStorageIns</prop>	
+						<prop key="/mis/scmStorageIn/showDetailScmStorageIn.do">showDetailScmStorageIn</prop>													
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>
+	
+	<!-- 发货单 -->
+	<bean id="scmStorageOutController" class="com.zhuozhuo.mis.web.ScmStorageOutController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ScmStorageOutValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/mis/scmStorageOut/listScmStorageOut.do">listScmStorageOuts</prop>
+						<prop key="/mis/scmStorageOut/addScmStorageOut.do">addScmStorageOut</prop>
+						<prop key="/mis/scmStorageOut/editScmStorageOut.do">editScmStorageOut</prop>
+						<prop key="/mis/scmStorageOut/saveScmStorageOut.do">saveScmStorageOut</prop>
+						<prop key="/mis/scmStorageOut/updateScmStorageOut.do">updateScmStorageOut</prop>
+						<prop key="/mis/scmStorageOut/deleteScmStorageOut.do">deleteScmStorageOuts</prop>
+						<prop key="/mis/scmStorageOut/getDetailScmStorageOut.do">getDetailScmStorageOut</prop>
+						<prop key="/mis/scmStorageOut/auditScmStorageOut.do">auditScmStorageOut</prop>
+						<prop key="/mis/scmStorageOut/showDetailScmStorageOut.do">showScmStorageOutDetail</prop>													
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>
+	
+	<!-- 发货单明细 -->
+	<bean id="scmStorageOutDetailController" class="com.zhuozhuo.mis.web.ScmStorageOutDetailController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ScmStorageOutDetailValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/mis/scmStorageOutDetail/listScmStorageOutDetail.do">listScmStorageOutDetails</prop>
+						<prop key="/mis/scmStorageOutDetail/addScmStorageOutDetail.do">addScmStorageOutDetail</prop>
+						<prop key="/mis/scmStorageOutDetail/editScmStorageOutDetail.do">editScmStorageOutDetail</prop>
+						<prop key="/mis/scmStorageOutDetail/saveScmStorageOutDetail.do">saveScmStorageOutDetail</prop>
+						<prop key="/mis/scmStorageOutDetail/updateScmStorageOutDetail.do">updateScmStorageOutDetail</prop>
+						<prop key="/mis/scmStorageOutDetail/deleteScmStorageOutDetail.do">deleteScmStorageOutDetails</prop>													
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>
+	
+	<!-- 付款单 -->
+	<bean id="scmPayController" class="com.zhuozhuo.mis.web.ScmPayController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ScmPayValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/mis/scmPay/listScmPay.do">listScmPays</prop>
+						<prop key="/mis/scmPay/addScmPay.do">addScmPay</prop>
+						<prop key="/mis/scmPay/preEditScmPay.do">preEditScmPay</prop>
+						<prop key="/mis/scmPay/editScmPay.do">editScmPay</prop>
+						<prop key="/mis/scmPay/saveScmPay.do">saveScmPay</prop>
+						<prop key="/mis/scmPay/updateScmPay.do">updateScmPay</prop>
+						<prop key="/mis/scmPay/deleteScmPay.do">deleteScmPays</prop>
+						<prop key="/mis/scmPay/showDetailsScmPay.do">showScmPayDetail</prop>	
+						<prop key="/mis/scmPay/getDetailByProviderIdScmPay.do">getScmPayDetailByProviderId</prop>													
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>
+	
+	<!-- 付款单明细 -->
+	<bean id="scmPayDetailController" class="com.zhuozhuo.mis.web.ScmPayDetailController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ScmPayDetailValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/mis/scmPayDetail/listScmPayDetail.do">listScmPayDetails</prop>
+						<prop key="/mis/scmPayDetail/addScmPayDetail.do">addScmPayDetail</prop>
+						<prop key="/mis/scmPayDetail/editScmPayDetail.do">editScmPayDetail</prop>
+						<prop key="/mis/scmPayDetail/saveScmPayDetail.do">saveScmPayDetail</prop>
+						<prop key="/mis/scmPayDetail/updateScmPayDetail.do">updateScmPayDetail</prop>
+						<prop key="/mis/scmPayDetail/deleteScmPayDetail.do">deleteScmPayDetails</prop>																			
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>	
+	
+	<bean id="scmBarnTypeController" class="com.zhuozhuo.mis.web.ScmBarnTypeController">		
+		<property name="validators">
+			<list>
+				<bean class="com.zhuozhuo.mis.web.validator.ScmBarnTypeValidator" />
+			</list>
+		</property>		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>						
+						<prop key="/mis/scmBarnType/listScmBarnType.do">listScmBarnTypes</prop>
+						<prop key="/mis/scmBarnType/addScmBarnType.do">addScmBarnType</prop>
+						<prop key="/mis/scmBarnType/editScmBarnType.do">editScmBarnType</prop>
+						<prop key="/mis/scmBarnType/saveScmBarnType.do">saveScmBarnType</prop>
+						<prop key="/mis/scmBarnType/updateScmBarnType.do">updateScmBarnType</prop>
+						<prop key="/mis/scmBarnType/deleteScmBarnType.do">deleteScmBarnTypes</prop>													
+					</props>
+				</property>
+			</bean>
+		</property>			
+	</bean>
+	
+	<!-- he start -->
+	<bean id="uploadFileController" class="com.zhuozhuo.mis.web.UploadFileController">		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/upload/fileUpload.do">uploadFile</prop>					
+					</props>
+				</property>
+			</bean>
+		</property>		
+	</bean>
+	<!-- he end -->
+				
+	<!-- sun start -->
+	
+	<!-- sun end -->
+	
+	<!-- li start -->
+	<bean id="diaoBoController" class="com.zhuozhuo.mis.web.DiaoBoController">		
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/diaoBo/listDiaoBo.do">listDiaoBo</prop>
+						<prop key="/diaoBo/editDiaoBo.do">editDiaoBo</prop>						
+						<prop key="/diaoBo/saveDiaoBo.do">saveDiaoBo</prop>
+						<prop key="/diaoBo/preAddDiaoBo.do">preAddDiaoBo</prop>
+						<prop key="/diaoBo/preEditDiaoBo.do">preAddDiaoBo</prop>
+						<prop key="/diaoBo/getDetailBySheetIdDiaoBo.do">getDetailBySheetIdDiaoBo</prop>								
+						<prop key="/diaoBo/updateStatusDiaoBo.do">updateStatusDiaoBo</prop>
+					</props>
+				</property>				
+			</bean>			
+		</property>	
+		<property name="serviceFactoryUtil" ref="serviceFactoryUtil"/>	
+	</bean>
+	<!-- li end -->
+</beans>

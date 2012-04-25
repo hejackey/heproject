@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="scmStorageOutDetail">
+  <typeAlias alias="ScmStorageOutDetail" type="com.zhuozhuo.mis.po.ScmStorageOutDetail"/>
+  <typeAlias alias="AuditScmStorageOut" type="com.zhuozhuo.mis.po.AuditScmStorageOut"/>
+  <resultMap id="result" class="ScmStorageOutDetail">
+		<result property="did" column="dId" columnIndex="1"/>
+		<result property="masterId" column="masterId" columnIndex="2"/>
+		<result property="productId" column="productId" columnIndex="3"/>
+		<result property="qty" column="qty" columnIndex="4"/>
+		<result property="factSellPrice" column="factSellPrice" columnIndex="5"/>
+		<result property="taxRat" column="taxRat" columnIndex="6"/>
+		<result property="amt" column="amt" columnIndex="7"/>
+		<result property="sheetIdOriginal" column="sheetIdOriginal" columnIndex="8"/>
+		<result property="remark" column="remark" columnIndex="9"/>
+  </resultMap> 
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getAllScmStorageOutDetails" resultMap="result">
+  	<![CDATA[
+    	select did,masterId,productId,qty,factsellprice,taxrat,amt,sheetidoriginal,remark 
+		from  SCM.SCM_STORAGE_OUT_DETAIL
+    ]]> 
+  </select>
+  
+  <select id="getDetailScmStorageOut" resultClass="ScmStorageOutDetail" parameterClass="string">
+  	<![CDATA[
+    	select t1.did as did,
+		       t1.masterId as masterId,
+		       t1.productid as productId,
+		       t2.PRODUCTNAME as productname,
+		       t2.product_code as productcode,
+		       t2.productspecs,
+		       t1.qty as qty,
+		       t1.factsellprice as factsellprice,
+		       t1.taxrat as taxrat,
+		       t1.amt as amt,
+		       t1.sheetidoriginal as sheetidoriginal,
+		       t1.remark as remark
+		  from SCM.SCM_STORAGE_OUT_DETAIL t1, PRODUCT.PRODUCT_INFO_JXC t2
+		 where t1.masterId = #value#
+		   and t1.PRODUCTID = t2.ID(+)
+    ]]> 
+  </select>  
+  
+  <insert id="insertScmStorageOutDetail">
+  		<selectKey resultClass="int" keyProperty="id" type="pre">
+			<![CDATA[SELECT SCM.SEQ_SCM_STORAGE_OUT_DETAIL.NEXTVAL AS id FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into  SCM.SCM_STORAGE_OUT_DETAIL (id,did,masterId,productId,qty,factSellPrice,taxRat,amt,sheetIdOriginal,remark)
+    		 values (#id#,#did#,#masterId#,#productId#,#qty#,#factSellPrice#,#taxRat#,#amt#,#sheetIdOriginal#,#remark#)
+    	]]>
+  </insert>
+  
+  <delete id="deleteScmStorageOutDetails" parameterClass="java.util.Map" >  	
+    	delete from SCM.SCM_STORAGE_OUT_DETAIL
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				masterId=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete>
+  
+  <!-- 根据masterId得到明细记录数据 -->
+  <select id="getScmStorageDetailByMasterId" resultClass="ScmStorageOutDetail" parameterClass="string">
+  	<![CDATA[
+    	select t1.did as did,t1.masterId as masterId ,t1.productId as productId,t1.qty as qty,
+    	t1.factsellprice as factsellprice,t1.taxrat as taxrat ,t1.amt as amt,
+    	t1.sheetidoriginal as sheetidoriginal,t1.remark  as remark ,t1.id as id
+		from  SCM.SCM_STORAGE_OUT_DETAIL t1 where t1.masterId=#id#
+    ]]> 
+  </select>
+  
+  <insert id="auditScmStorageDetail" parameterClass="AuditScmStorageOut">  
+  		<selectKey resultClass="int" keyProperty="scmStorageId">
+  	     	select SCM.SEQ_SCM_STORAGE_DETAIL.nextval as scmStorageId from dual
+  	  	</selectKey>	  
+	  	  insert into SCM.SCM_STORAGE_DETAIL(DID,MASTERID,PRODUCTID,QTY,FACTSELLPRICE,TAXRAT,AMT,SHEETIDORIGINAL,REMARK,BARNID,ID)
+		  select DID,#masterId#,PRODUCTID,QTY,FACTSELLPRICE,TAXRAT,AMT,SHEETIDORIGINAL,REMARK,BARNID,#scmStorageId#
+		    from SCM.SCM_STORAGE_OUT_DETAIL t
+		   where t.ID = #id#
+  </insert>
+  
+  <delete id="deleteScmStorageOutDetail" parameterClass="string">
+ 	 delete from scm.scm_storage_out_detail t where t.masterid = #value#
+  </delete>
+ </sqlMap>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings useStatementNamespaces="true" 
+				cacheModelsEnabled="false" 
+	/>	   
+    <typeHandler jdbcType="CLOB" javaType="java.lang.String"  callback="org.springframework.orm.ibatis.support.ClobStringTypeHandler" />
+    
+	<sqlMap resource="com/zhuozhuo/mis/po/TAdmDept.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/TAdmUser.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/TAdmModule.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/TAdmRole.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/StockOrder.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/StockOrderDetail.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/ProductType.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/ProductInfoJxc.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/Provider.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/ProviderType.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/ScmBarnType.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/report/ScmStorage.xml" />
+	
+	
+	<sqlMap resource="com/zhuozhuo/mis/po/ScmPay.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/ScmPayDetail.xml" />
+	
+	
+	<sqlMap resource="com/zhuozhuo/mis/po/ScmStorageIn.xml" />
+	
+	<sqlMap resource="com/zhuozhuo/mis/po/ScmStorageInDetail.xml" />	 
+	<sqlMap resource="com/zhuozhuo/mis/po/ScmStorageOut.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/ScmStorageOutDetail.xml" />
+	
+	
+	<!-- he start -->
+	<!-- he end -->
+				
+	<!-- sun start -->
+	<!-- sun end -->
+	
+	<!-- li start -->
+	<sqlMap resource="com/zhuozhuo/mis/po/DiaoBo.xml" />
+	<sqlMap resource="com/zhuozhuo/mis/po/DiaoBoDetail.xml" />
+	<!-- li end -->
+</sqlMapConfig>

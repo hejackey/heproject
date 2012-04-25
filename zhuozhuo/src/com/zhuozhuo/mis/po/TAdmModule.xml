@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="tadmmodule">
+
+  <typeAlias alias="modules" type="com.zhuozhuo.mis.po.TAdmModule"/>
+  
+  <select id="listTAdmModule" resultClass="modules" parameterClass="modules">
+    select *
+	  from (select t.*, rownum rn
+	          from (select tm.id,
+					       tm.parent_id as parentid,
+					       (select max(sys_connect_by_path(t1.module_name, '-'))
+	                          from scm.t_adm_modules t1
+	                         start with t1.id = tm.parent_id
+	                        connect by prior t1.parent_id = t1.id) as parentname,
+					       tm.module_name as moduleName,
+					       tm.module_code as moduleCode,
+					       tm.url,
+					       nvl(tm.module_type, 0) as moduleType,
+					       nvl(tm.for_log, 0) as forLog,
+					       nvl(tm.ifuse, 0) as ifuse,
+					       tm.dispnum,
+					       tm.remark
+					  from scm.t_adm_modules tm
+	                 where 1 = 1
+	                 <dynamic>
+	                	<isNotEmpty prepend="and" property="q_modulecode">
+		                 	tm.module_code like '%'||#q_modulecode#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEmpty prepend="and" property="q_modulename">
+		                 	tm.module_name like '%'||#q_modulename#||'%'
+	                 	</isNotEmpty>
+	                 	<isNotEqual prepend="and" property="q_ifuse" compareValue="0">
+	                 		ifuse = #q_ifuse#
+	                 	</isNotEqual>
+	                 	<isNotEqual prepend="and" property="q_forlog" compareValue="0">
+	                 		for_log = #q_forlog#
+	                 	</isNotEqual>
+	                 	<isNotEqual prepend="and" property="q_moduletype" compareValue="0">
+	                 		module_type = #q_moduletype#
+	                 	</isNotEqual>
+	                 	<isNotEmpty property="q_id">
+	                 	start with parent_id=#q_id#
+                 		connect by prior id=parent_id
+	                 	</isNotEmpty>
+	                 	
+	                 </dynamic>
+	                 order by id desc,parent_id, dispnum nulls last) t	
+	 <![CDATA[  ) where rn > ($pageInfo.page$ - 1) * $pageInfo.pageSize$]]>
+		<![CDATA[   and rn <= ($pageInfo.page$*$pageInfo.pageSize$)	]]>
+  </select>
+  
+  <select id="listTAdmModuleCount" resultClass="int" parameterClass="modules">
+	select count(1)
+	from scm.t_adm_modules tm
+	where 1 = 1
+	<dynamic>
+		<isNotEmpty prepend="and" property="q_modulecode">
+			tm.module_code like '%'||#q_modulecode#||'%'
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="q_modulename">
+		    tm.module_name like '%'||#q_modulename#||'%'
+	    </isNotEmpty>
+	    <isNotEqual prepend="and" property="q_ifuse" compareValue="0">
+	        ifuse = #q_ifuse#
+	    </isNotEqual>
+	    <isNotEqual prepend="and" property="q_forlog" compareValue="0">
+	        for_log = #q_forlog#
+	    </isNotEqual>
+	    <isNotEqual prepend="and" property="q_moduletype" compareValue="0">
+	         module_type = #q_moduletype#
+	    </isNotEqual>
+	</dynamic>
+	order by id desc,parent_id, dispnum nulls last
+  </select>
+  
+  <select id="getModuleTreeList" resultClass="modules">
+  	<!--  select id, parent_id as parentid, module_name as moduleName
+	  from scm.t_adm_modules
+	 where ifuse = 1
+	 order by parent_id nulls first,id, dispnum nulls last-->
+	select id, parent_id as parentid, module_name as moduleName,url
+	  from scm.t_adm_modules
+	 where ifuse = 1
+	 start with parent_id is null
+	 connect by prior id=parent_id
+  </select>
+   
+
+  <select id="getModule" resultClass="modules" parameterClass="string">
+  	select id,
+	       parent_id as parentid,
+	       (select max(sys_connect_by_path(t1.module_name, '-'))
+			  from scm.t_adm_modules t1
+			 start with t1.id = tm.parent_id
+			connect by prior t1.parent_id = t1.id) as parentname,
+	       tm.module_code as moduleCode,
+	       tm.module_name as moduleName,
+	       nvl(tm.module_type, 0) as moduleType,
+	       nvl(tm.for_log, 0) as forLog,
+	       nvl(tm.ifuse,0) as ifuse,
+	       tm.url,
+	       tm.dispnum,
+	       tm.remark
+	  from scm.t_adm_modules tm
+	 where id = #value#
+  </select>
+      
+  <update id="editModule" parameterClass="modules">
+  	update scm.t_adm_modules
+	   set module_name = #moduleName#,
+	       module_code =#moduleCode#,
+	       module_type = #moduleType#,
+	       for_log = #forLog#,
+	       url = #url#,
+	       dispnum=#dispnum#,	       
+	       remark = #remark#
+	 where id = #id# 
+  </update>
+  
+  
+  <update id="updateStatusModule" parameterClass="modules">
+  	update scm.t_adm_modules
+  	   set ifuse=#ifuse#
+     where id in ($id$)
+       and ifuse != #ifuse#
+  </update> 
+  
+  <update id="saveModule" parameterClass="modules">
+	  insert into scm.t_adm_modules
+	  (id,
+	   module_type,
+	   for_log,
+	   url,
+	   module_code,
+	   dispnum,
+	   remark,
+	   module_name,
+	   parent_id,
+	   ifuse,
+	   create_time)
+	values
+	  (scm.seq_t_adm_modules.nextval,
+	   #moduleType#,
+	   #forLog#,
+	   #url#,
+	   #moduleCode#,
+	   #dispnum#,
+	   #remark#,
+	   #moduleName#,
+	   #parentid#,
+	   #ifuse#,
+	   sysdate)
+  </update>
+  
+  <!-- 
+   <select id="getModuleParentName" resultClass="string" parameterClass="string" >
+  	select module_name as moduleName
+	  from scm.t_adm_modules t	 
+	 start with t.id = #value#
+	connect by prior t.parent_id = t.id
+	 order by dispnum nulls last
+  </select>
+   -->
+   
+  <select id="getModuleSonId" resultClass="string" parameterClass="string">
+  	select distinct id
+	  from scm.t_adm_modules t
+	 start with t.parent_id in ($id$)
+	connect by prior t.id = t.parent_id
+  </select>
+</sqlMap>

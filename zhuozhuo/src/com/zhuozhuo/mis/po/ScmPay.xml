@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="scmPay">
+  <typeAlias alias="ScmPay" type="com.zhuozhuo.mis.po.ScmPay"/>
+  <typeAlias alias="ScmPayQ" type="com.zhuozhuo.mis.po.ScmPayQ"/>  
+  <resultMap id="result" class="ScmPay">
+		<result property="id" column="id" columnIndex="1"/>
+		<result property="sheetId" column="sheetId" columnIndex="2"/>
+		<result property="makerId" column="makerId" columnIndex="3"/>
+		<result property="createDate" column="createDate" columnIndex="4"/>
+		<result property="sheetState" column="sheetState" columnIndex="5"/>
+		<result property="providerId" column="providerId" columnIndex="6"/>
+		<result property="departmentId" column="departmentId" columnIndex="7"/>
+		<result property="userId" column="userId" columnIndex="8"/>
+		<result property="sumAmt" column="sumAmt" columnIndex="9"/>
+		<result property="sumOverAmt" column="sumOverAmt" columnIndex="10"/>
+		<result property="sumPayAmt" column="sumPayAmt" columnIndex="11"/>
+		<result property="sumPlusAmt" column="sumPlusAmt" columnIndex="12"/>
+		<result property="paymentType" column="paymentType" columnIndex="13"/>
+		<result property="checkCode" column="checkCode" columnIndex="14"/>
+		<result property="auditId" column="auditId" columnIndex="15"/>
+		<result property="auditDate" column="auditDate" columnIndex="16"/>
+		<result property="remark" column="remark" columnIndex="17"/>
+  </resultMap> 
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getAllScmPays" resultMap="result">
+  	<![CDATA[
+    	select t1.id as id,t1.sheetId as sheetId,t1.makerId as makerId,t1.createDate as createDate,t1.sheetState as sheetState,t1.providerId as providerId,
+    	t1.departmentId as departmentId,t2.NAME as userId,t1.sumAmt as sumAmt,t1.sumOverAmt as sumOverAmt,t1.sumPayAmt as sumPayAmt,
+    	t1.sumPlusAmt as sumPlusAmt,t1.paymentType as paymentType,t1.checkCode as checkCode,t1.auditId as auditId,t1.auditDate as auditDate,t1.remark as remark
+		from  SCM.SCM_PAY t1,SCM.T_ADM_USER t2 where t1.userId=t2.ID(+) order by ID desc
+    ]]> 
+  </select>
+  
+  <select id="queryScmPays" resultMap="result" parameterClass="ScmPayQ">  	
+    	select t1.id as id,t1.sheetId as sheetId,t1.makerId as makerId,t1.createDate as createDate,t1.sheetState as sheetState,t1.providerId as providerId,
+    	t1.departmentId as departmentId,t2.NAME as userId,t1.sumAmt as sumAmt,t1.sumOverAmt as sumOverAmt,t1.sumPayAmt as sumPayAmt,
+    	t1.sumPlusAmt as sumPlusAmt,t1.paymentType as paymentType,t1.checkCode as checkCode,t1.auditId as auditId,t1.auditDate as auditDate,t1.remark as remark
+		from  SCM.SCM_PAY t1,SCM.T_ADM_USER t2 where t1.userId=t2.ID(+)
+		<dynamic>
+    		<isNotEmpty prepend="and" property="sheetId" >
+        		sheetId like  '%'||#sheetId#||'%'
+			</isNotEmpty>						
+			<isNotEmpty prepend="and" property="userId" >
+        		userId=#userId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="checkCode" >
+        		checkCode like '%'||#checkCode#||'%'
+			</isNotEmpty>
+    	</dynamic>
+		 order by t1.ID desc   
+  </select>
+  
+  <insert id="insertscmPay">
+  		<selectKey resultClass="int" keyProperty="id" type="pre">
+			<![CDATA[SELECT SCM.SEQ_SCM_PAY.NEXTVAL AS id FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into  SCM.SCM_PAY (
+				    		id,sheetId,makerId,createDate,sheetState,providerId,departmentId,userId,sumAmt,
+							sumOverAmt,sumPayAmt,sumPlusAmt,paymentType,checkCode,auditId,auditDate,remark
+			    		) values (
+				    		#id#,#sheetId#||#id#,#makerId#,sysdate,#sheetState#,#providerId#,#departmentId#,#userId#,#sumAmt#,
+							#sumOverAmt#,#sumPayAmt#,#sumPlusAmt#,#paymentType#,#checkCode#,#auditId#,#auditDate#,#remark#
+			    		)
+    	]]>
+  </insert>
+  
+  <delete id="deleteScmPays" parameterClass="java.util.Map" >  	
+    	delete from SCM.SCM_PAY
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				id=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete>  
+  
+  <select id="getScmPay" parameterClass="string" resultClass="ScmPay">
+	select t.id,
+	       t.sheetid as sheetId,
+	       t.providerid,
+	       p.providername,
+	       p.account,
+	       t.departmentid as departmentId,
+	       t.paymenttype as paymentType,
+	       t.remark,
+	       t.makerid as makerId,
+	       t.userid as userId,
+	       nvl(t.sumamt,0) as sumAmt,
+	       t.auditid as auditId
+	  from scm.scm_pay t, scm.provider p
+	 where t.providerid = p.id
+	   and t.id = #value#
+  </select>
+  
+  <update id="editScmPayAndDetail" parameterClass="ScmPay" >
+	update scm.scm_pay t
+	   set t.departmentid = #departmentId#,
+	       t.paymenttype  = #paymentType#,
+	       t.remark       = #remark#,
+	       t.userid       = #userId#,
+	       t.auditid      = #auditId#
+	 where t.id = #id#
+  </update>
+ </sqlMap>

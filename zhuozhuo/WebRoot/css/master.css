@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* CSS Document */
+.tooltop {background:#ddf0e7;height:23px;padding:5px;border-bottom:#c3dcd3 1px solid;}
+.tooltop .left {width:330px;}
+.sellsearch {background:url(../images/sellsearch.gif) no-repeat;width:212px;height:20px;padding:2px 4px;}
+.sellsearch input {width:160px;border:0; height:18px;line-height:18px;}
+.pages span,.pages a{ display:inline-block;padding:0 0 0 5px;}
+/* 销售列表 */
+.selllist {margin:1px 0;}
+.addsell {padding-bottom:5px;float:left;width:100%}
+.addsell .left {float:left;}
+.addsell .right {float:right;padding-top:10px;}
+.addsell .right span { display:inline-block;padding-left:20px;margin-left:15px;}
+.addsell .right span.th { background:url(../images/icon01.gif) no-repeat;}
+.addsell .right span.cl { background:url(../images/icon02.gif) no-repeat;}
+.addsell .right span.ch { background:url(../images/icon03.gif) no-repeat;}
+.tabheader {background:#f2f4f6;border-right:#d1e7df 1px solid;border-bottom:#d1e7df 1px solid;font-weight:normal; text-align:center;padding:1px 0 1px 8px;}
+.detailtabheader {background:#c0c020;border-right:#d1e7df 1px solid;border-bottom:#d1e7df 1px solid;font-weight:normal; text-align:left;padding:1px 0 1px 8px;}
+.nb_right {border-right:none !important}
+.tablist {border-right:#ededed 1px solid;border-bottom:#ededed 1px solid;text-align:left;padding:5px 8px;}
+/* 销售详情 */
+.currentname {padding-top:10px;}
+.selldetail {border-left:#dfdfdf 1px solid;border-top:#dfdfdf 1px solid;}
+.selldetail td {padding:5px;border-right:#dfdfdf 1px solid;border-bottom:#dfdfdf 1px solid;}
+.selldetail td.header { background:#f2f4f6;}
+.sellinput {border:#ccc 1px solid; height:18px;line-height:18px;padding:2px;width:82%}

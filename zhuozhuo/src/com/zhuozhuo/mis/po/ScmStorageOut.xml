@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="scmStorageOut">
+  <typeAlias alias="ScmStorageOutQO" type="com.zhuozhuo.mis.po.ScmStorageOutQO"/>
+  <typeAlias alias="ScmStorageOut" type="com.zhuozhuo.mis.po.ScmStorageOut"/>
+  <typeAlias alias="AuditScmStorageOut" type="com.zhuozhuo.mis.po.AuditScmStorageOut"/>
+  <resultMap id="result" class="ScmStorageOut">
+		<result property="id" column="id" columnIndex="1"/>
+		<result property="sheetId" column="sheetId" columnIndex="2"/>
+		<result property="makerId" column="makerId" columnIndex="3"/>
+		<result property="createTime" column="create_Time" columnIndex="4"/>
+		<result property="sheetState" column="sheetState" columnIndex="5"/>
+		<result property="clientId" column="clientId" columnIndex="6"/>
+		<result property="departmentId" column="departmentId" columnIndex="7"/>
+		<result property="userId" column="userId" columnIndex="8"/>
+		<result property="sumQty" column="sumQty" columnIndex="9"/>
+		<result property="sumAmt" column="sumAmt" columnIndex="10"/>
+		<result property="storageOutType" column="storageOutType" columnIndex="11"/>
+		<result property="bargainCode" column="bargainCode" columnIndex="12"/>
+		<result property="gatherDate" column="gatherDate" columnIndex="13"/>
+		<result property="barnId" column="barnId" columnIndex="14"/>
+		<result property="transModeCode" column="transModeCode" columnIndex="15"/>
+		<result property="gatherName" column="gather_Name" columnIndex="16"/>
+		<result property="telephone" column="telephone" columnIndex="17"/>
+		<result property="toDate" column="toDate" columnIndex="18"/>
+		<result property="toAddress" column="toAddress" columnIndex="19"/>
+		<result property="auditId" column="auditId" columnIndex="20"/>
+		<result property="auditDate" column="auditDate" columnIndex="21"/>
+		<result property="srcSheetId" column="srcSheetId" columnIndex="22"/>
+		<result property="remark" column="remark" columnIndex="23"/>
+  </resultMap> 
+  
+  <!-- 根据recordId得到其下的子类型，如果是根，则返回所有的类型 -->
+  <select id="getAllScmStorageOuts" resultMap="result">
+  	<![CDATA[
+    	select t1.id as id,t1.sheetId as sheetId,t1.makerId as makerId,t1.create_Time as create_Time,t1.sheetState as sheetState,
+    	       t1.clientId as clientId,t1.departmentId as departmentId,t3.NAME as userId,t1.sumQty as sumQty,t1.sumAmt as sumAmt,
+    			t1.storageOutType as storageOutType,t1.bargainCode as bargainCode,t1.gatherDate as gatherDate,t2.BARNTYPENAME as barnId,
+    			t1.transModeCode as transModeCode,t1.gather_Name as gather_Name,t1.telephone as telephone,t1.toDate as toDate,
+				t1.toAddress as toAddress,t1.auditId as auditId,t1.auditDate as auditDate,t1.srcSheetId as srcSheetId,t1.remark  as remark
+		from  SCM.SCM_STORAGE_OUT t1,SCM.SCM_BARN_TYPE t2,SCM.T_ADM_USER t3
+	    where (t1.SHEETSTATE != 1 or t1.SHEETSTATE is null) 
+			    and t1.BARNID=t2.ID 
+			    and t1.USERID=to_char(t3.ID(+))  order by t1.ID desc
+    ]]> 
+  </select>
+  
+  <select id="queryScmStorageOuts" resultMap="result"  parameterClass="ScmStorageOutQO">  	
+    	select t1.id as id,t1.sheetId as sheetId,t1.makerId as makerId,t1.create_Time as create_Time,t1.sheetState as sheetState,
+    	       t1.clientId as clientId,t1.departmentId as departmentId,t3.NAME as userId,t1.sumQty as sumQty,t1.sumAmt as sumAmt,
+    			t1.storageOutType as storageOutType,t1.bargainCode as bargainCode,t1.gatherDate as gatherDate,t2.BARNTYPENAME as barnId,
+    			t1.transModeCode as transModeCode,t1.gather_Name as gather_Name,t1.telephone as telephone,t1.toDate as toDate,
+				t1.toAddress as toAddress,t1.auditId as auditId,t1.auditDate as auditDate,t1.srcSheetId as srcSheetId,t1.remark  as remark
+		from  SCM.SCM_STORAGE_OUT t1,SCM.SCM_BARN_TYPE t2,SCM.T_ADM_USER t3
+	    where (t1.SHEETSTATE != 1 or t1.SHEETSTATE is null) 
+			    and t1.BARNID=t2.ID 
+			    and t1.USERID=to_char(t3.ID(+))
+    	<dynamic>
+    		<isNotEmpty prepend="and" property="sheetId" >
+        		sheetId like  '%'||#sheetId#||'%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="clientId" >
+        		clientId like '%'||#clientId#||'%'
+			</isNotEmpty>			
+			<isNotEmpty prepend="and" property="barnId" >
+        		barnId=#barnId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="srcSheetId" >
+        		srcSheetId like '%'||#srcSheetId#||'%'
+			</isNotEmpty>
+    	</dynamic>  
+    	order by t1.ID desc
+  </select>
+  
+  <insert id="insertScmStorageOut">
+  		<selectKey resultClass="int" keyProperty="id" type="pre">
+			<![CDATA[SELECT SCM.SEQ_SCM_STORAGE_OUT.NEXTVAL AS id FROM dual]]>
+		</selectKey>
+		<![CDATA[
+    		insert into  SCM.SCM_STORAGE_OUT (
+    						id,sheetId,makerId,create_Time,sheetState,clientId,departmentId,userId,sumQty,sumAmt,storageOutType,bargainCode,
+							gatherDate,barnId,transModeCode,gather_Name,telephone,toDate,toAddress,auditId,auditDate,srcSheetId,remark,qualiterid
+						) values (
+							#id#,#sheetId#||#id#,#makerId#,sysdate,2,#clientId#,#departmentId#,#userId#,#sumQty#,#sumAmt#,#storageOutType#,#bargainCode#,
+							to_date(#gatherDate#,'yyyy-MM-dd'),#barnId#,#transModeCode#,#gatherName#,#telephone#,to_date(#toDate#,'yyyy-MM-dd'),#toAddress#,#auditId#,
+							#auditDate#,#srcSheetId#,#remark#,#qualiterid#
+						)
+    	]]>
+  </insert>
+  
+  <delete id="deleteScmStorageOuts" parameterClass="java.util.Map" >  	
+    	delete from SCM.SCM_STORAGE_OUT
+	 	<dynamic prepend="WHERE">
+			<iterate property="ids" 
+           		open="(" close=")" conjunction="OR">
+  				id=#ids[]#
+			</iterate>
+        </dynamic>
+  </delete>
+  <insert id="auditScmStorageOut" parameterClass="AuditScmStorageOut">
+  	  <selectKey resultClass="int" keyProperty="scmStorageId">
+  	     select SCM.SEQ_SCM_STORAGE.nextval as scmStorageId from dual
+  	  </selectKey>
+  	  insert into SCM.SCM_STORAGE(ID,SHEETID,MAKERID,CREATE_TIME,SHEETSTATE,CLIENTID,DEPARTMENTID,USERID,SUMQTY,SUMAMT,BARGAINCODE,GATHERDATE,BARNID,TRANSMODECODE,GATHER_NAME,TELEPHONE,TODATE,TOADDRESS,AUDITID,AUDITDATE,SRCSHEETID,STORAGETYPE)
+	  select #scmStorageId#,
+	         t.SHEETID,t.MAKERID,t.CREATE_TIME,t.SHEETSTATE,t.CLIENTID,t.DEPARTMENTID,t.USERID,t.SUMQTY,t.SUMAMT,t.BARGAINCODE,t.GATHERDATE,t.BARNID,t.TRANSMODECODE,t.GATHER_NAME,t.TELEPHONE,t.TODATE,t.TOADDRESS,t.AUDITID,t.AUDITDATE,t.SRCSHEETID,'2'
+	    from SCM.SCM_STORAGE_OUT t
+	   where t.id = #id#
+  </insert>
+  
+  <update id="updateScmStorageOut" parameterClass="string"> 
+  	<![CDATA[   
+    	update SCM.SCM_STORAGE_OUT set  SHEETSTATE=1 where id = #id#
+    ]]>     
+  </update>
+ 
+  <select id="getScmStorageOut" parameterClass="string" resultClass="ScmStorageOut">
+  	select t.id,
+	       t.sheetid as sheetId,
+	       t.makerid as makerId,
+	       t.clientid as clientId,
+	       t.departmentid as departmentId,
+	       t.transmodecode as transModeCode,
+	       t.barnid as barnId,
+	       sbt.address as barnAddress,
+	       sbt.phone as barnPhone,
+	       t.storageouttype as storageOutType,
+	       t.srcsheetid as srcSheetId,
+	       t.userid as userId,
+	       t.auditid as auditId,
+	       nvl(t.sumqty, 0) as sumQty,
+	       nvl(t.sumamt, 0) as sumAmt,
+	       t.qualiterid,
+	       to_char(t.todate, 'yyyy-MM-dd') as toDate,
+	       t.toaddress as toAddress,
+	       to_char(t.gatherdate, 'yyyy-MM-dd') as gatherDate
+	  from scm.scm_storage_out t, scm.scm_barn_type sbt
+	 where t.barnid = sbt.id
+	   and t.id = #value#
+  </select>
+  
+  <update id="editScmStorageOut" parameterClass="ScmStorageOut"> 
+	  update scm.scm_storage_out t
+	   set t.clientid       = #clientId#,
+	       t.departmentid   = #departmentId#,
+	       t.transmodecode  = #transModeCode#,
+	       t.barnid         = #barnId#,
+	       t.storageouttype = #storageOutType#,
+	       t.srcsheetid     = #srcSheetId#,
+	       t.userid         = #userId#,
+	       t.auditid        = #auditId#,
+	       t.sumqty         = #sumQty#,
+	       t.sumamt         = #sumAmt#,
+	       t.qualiterid     = #qualiterid#,
+	       t.todate         = to_date(#toDate#, 'yyyy-MM-dd'),
+	       t.toaddress      = #toAddress#,
+	       t.gatherdate     = to_date(#gatherDate#, 'yyyy-MM-dd')
+	 where t.id = #id#
+  </update>
+ </sqlMap>
