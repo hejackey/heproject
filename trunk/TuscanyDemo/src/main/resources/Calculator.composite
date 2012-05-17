@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+           name="Calculator">
+
+    <component name="CalculatorServiceComponent">
+	<implementation.java class="com.sohu.demo.tuscany.service.impl.CalculatorServiceImpl"/>
+        <reference name="addService" target="AddServiceComponent" />
+        <!-- references to SubtractComponent, MultiplyComponent and DivideComponent  -->
+    </component>
+
+    <component name="AddServiceComponent">
+        <implementation.java class="com.sohu.demo.tuscany.service.impl.AddServiceImpl"/>
+    </component>
+
+    <!-- definitions of SubtractComponent, MultiplyComponent and DivideComponent -->
+
+</composite>
