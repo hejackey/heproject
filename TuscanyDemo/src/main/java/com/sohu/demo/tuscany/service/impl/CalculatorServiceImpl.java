@@ -5,6 +5,7 @@ import org.osoa.sca.annotations.Reference;
 import com.sohu.demo.tuscany.service.AddService;
 import com.sohu.demo.tuscany.service.CalculatorService;
 import com.sohu.demo.tuscany.service.DivideService;
+import com.sohu.demo.tuscany.service.MultiplyService;
 import com.sohu.demo.tuscany.service.SubstractService;
 
 public class CalculatorServiceImpl implements CalculatorService {
@@ -38,26 +39,14 @@ public class CalculatorServiceImpl implements CalculatorService {
 		this.addService = addService;
 	}
 
-	public SubstractService getSubtractService() {
-		return subtractService;
-	}
-
 	@Reference
 	public void setSubtractService(SubstractService subtractService) {
 		this.subtractService = subtractService;
 	}
 
-	public MultiplyService getMultiplyService() {
-		return multiplyService;
-	}
-
 	@Reference
 	public void setMultiplyService(MultiplyService multiplyService) {
 		this.multiplyService = multiplyService;
-	}
-
-	public DivideService getDivideService() {
-		return divideService;
 	}
 
 	@Reference

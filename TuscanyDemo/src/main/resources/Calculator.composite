@@ -35,7 +35,7 @@
     </component>
 
     <component name="SubtractServiceComponent">
-        <implementation.java class="com.sohu.demo.tuscany.service.impl.SubtractServiceImpl"/>
+        <implementation.java class="com.sohu.demo.tuscany.service.impl.SubstractServiceImpl"/>
     </component>
 
     <component name="MultiplyServiceComponent">
