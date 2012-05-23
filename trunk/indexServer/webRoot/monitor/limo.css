@@ -1,0 +1,27 @@
+/* 
+$Id: limo.css,v 1.1 2008/09/24 07:56:01 wind Exp $
+
+    Document   : limo
+    Created on : 20 janvier 2004, 20:11
+    Author     : jnioche
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+.limo {  font-family: Arial, Helvetica, sans-serif; color: #666666}
+.limomedium {  font-family: Arial, Helvetica, sans-serif; color: #669966; font-weight: bold; font-size: medium; vertical-align: middle}
+.tabtitlewhite {  font-family: Arial, Helvetica, sans-serif; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #CCCCCC; background-position: left; font-style: italic; text-transform: none}
+.sumfname {  font-family: Arial, Helvetica, sans-serif; font-style: italic; color: #000000; text-align: center}
+.isIndexed {  font-family: Arial, Helvetica, sans-serif; font-weight: bold; color: #00CC00; background-position: center center; text-align: center}
+.isNotIndexed { font-family: Arial, Helvetica, sans-serif; font-weight: bold; color: #FF3300; background-position: center center; text-align: center }
+.false {  font-family: Arial, Helvetica, sans-serif; font-size: small; text-decoration: line-through; color: #FF3300; font-weight: bold}
+.true {  font-family: Arial, Helvetica, sans-serif; font-size: small; color: #00CC00; font-weight: bold}.tabtitlegrey { font-family: Arial, Helvetica, sans-serif; font-size: medium; font-weight: bold; color: #000000; background-color: #999999; font-style: italic; text-transform: none ; text-align: left}
+.fieldcontent {  font-family: Geneva, Arial, Helvetica, san-serif; font-size: small; color: #000000; text-align: justify; vertical-align: middle}
+.searchResultMenu { font-family: Geneva, Arial, Helvetica, san-serif; font-size: 50%; text-align: center}
+.colorAlternate0 { background-color: #CCCCCC }
+.colorAlternate1 { background-color: white }
+.highlightedText { background-color: yellow }
+.reconstructed { color: red }
