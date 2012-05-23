@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+   "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- IndexPageCreateJob : run evry day in 00:00  -->
+	<bean id="indexPageCreateJobBean" class="com.moobao.b2c.cms.console.job.IndexPageCreateJob" />
+	<bean id="doIndexPageCreateJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	    <property name="targetObject">
+	    	<ref bean="indexPageCreateJobBean"/>
+	    </property>
+	    <property name="targetMethod">
+	    	<value>run</value>
+	    </property> 
+	</bean>
+	
+	<bean id="indexPageCreateJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail">
+	    <ref bean="doIndexPageCreateJob"/>
+	  </property>
+	  <property name="cronExpression">
+	  	<value>0 0 0 * * ?</value>
+	  </property>
+	</bean>
+	
+	<!-- run jobs -->
+	<bean id="doScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	  <property name="triggers">
+	    <list>
+	        <!-- 
+	    	<ref local="indexPageCreateJobTrigger"/>
+	    	 -->
+	    </list>
+	  </property>
+	</bean>
+</beans>

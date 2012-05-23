@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration>
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%d{ISO8601}] %-5p %c %m %n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="DEBUG" />
+			<param name="LevelMax" value="DEBUG" />
+		</filter>
+	</appender>
+
+	<appender name="STDINFO" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%d{ISO8601}] %-5p %c %m %n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+			<param name="LevelMax" value="INFO" />
+		</filter>
+	</appender>
+
+	<appender name="STDERR" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.err" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%d{ISO8601}] %-5p %c %m %n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="WARN" />
+			<param name="LevelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+	<appender name="HTMLLOG"
+		class="org.apache.log4j.RollingFileAppender">
+		<param name="File"
+			value="/server/cms_b2b/cms_logs/miccms_logs/index.shtml" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="1000KB" />
+		<param name="MaxBackupIndex" value="1" />
+
+		<layout class="org.apache.log4j.HTMLLayout"></layout>
+
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="WARN" />
+			<param name="LevelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+
+	<appender name="FILELOG"
+		class="org.apache.log4j.RollingFileAppender">
+		<param name="File"
+			value="/server/cms_b2b/cms_logs/miccms_logs/logs.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="500KB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%c %d{ISO8601} -- %p -- %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="WARN" />
+			<param name="LevelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+	<appender name="FILEJOBLOG"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="File"
+			value="/server/cms_b2b/cms_logs/miccms_logs/joblogs.log" />
+		<param name="Append" value="true" />
+		<param name="Threshold" value="INFO" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%c %d{ISO8601} -- %p -- %m%n" />
+		</layout>
+
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+			<param name="LevelMax" value="INFO" />
+		</filter>
+	</appender>
+
+	<!--                          -->
+	<!-- Declare the SMTPAppender -->
+	<!--                          -->
+
+	<appender name="EMAIL" class="org.apache.log4j.net.SMTPAppender">
+		<param name="BufferSize" value="512" />
+		<param name="SMTPHost" value="mail.madeinchina-inc.com" />
+		<param name="From" value="luoweifeng@madeinchina-inc.com" />
+		<param name="To"
+			value="luoweifeng@madeinchina-inc.com,weiguoqing@madeinchina-inc.com,changhao@madeinchina-inc.com" />
+		<param name="Subject" value="MIC CMS ERROR LOGS" />
+
+		<param name="SMTPUsername"
+			value="luoweifeng@madeinchina-inc.com" />
+		<param name="SMTPPassword" value="slightwind" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%d{ISO8601}]%n%n%-5p%n%n%c%n%n%m%n%n" />
+		</layout>
+
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+			<param name="LevelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+	<!--                           -->
+	<!-- setup log4j's root logger -->
+	<!--                           -->
+
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="STDINFO" />
+		<appender-ref ref="STDERR" />
+		<appender-ref ref="EMAIL" />
+		<appender-ref ref="HTMLLOG" />
+		<appender-ref ref="FILELOG" />
+	</root>
+</log4j:configuration>
