@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title>CMS administrator console</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+		<script language=javascript>
+var flag = 1;
+function changel(id){
+        var inputid=id;
+        if(window.parent.forum.cols != "0,11,*"){
+                window.parent.bMainFrame.cols = "0,11,*";
+        }else{
+                window.parent.bMainFrame.cols = "160,11,*";
+        }
+		
+        if(flag == 0){
+                document.images(inputid).src="images/arrow_l.gif";
+                flag = 1;
+        }else{
+                document.images(inputid).src="images/arrow_r.gif";
+                flag = 0;
+        }
+}
+</script>
+	</head>
+	<body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0">
+		<table width="11" border="0" cellspacing="0" cellpadding="0"
+			height="100%">
+			<tr>
+				<td style="CURSOR: hand" background="images/left_4.gi
+					onclick='changel("hideFrame-l")'>
+					<div align="center">
+						<img id=hideFrame-l src="images/arrow_l.gif" width="9" height="80">
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

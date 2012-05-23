@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" 
+	xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <servlet>
+    <description>the index control of Phone</description>
+    <servlet-name>PhoneIndexServlet</servlet-name>
+    <servlet-class>com.moobao.index.console.PhoneIndexServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>PhoneIndexServlet</servlet-name>
+    <url-pattern>/PhoneIndexServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description>the index control of Peijian</description>
+    <servlet-name>PeiJianIndexServlet</servlet-name>
+    <servlet-class>com.moobao.index.console.PeiJianIndexServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>PeiJianIndexServlet</servlet-name>
+    <url-pattern>/PeiJianIndexServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description>the index control of PeijianBase</description>
+    <servlet-name>PeiJianBaseIndexServlet</servlet-name>
+    <servlet-class>com.moobao.index.console.PeiJianBaseIndexServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>PeiJianBaseIndexServlet</servlet-name>
+    <url-pattern>/PeiJianBaseIndexServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description>the index control of Peijian</description>
+    <servlet-name>NetComputerIndexServlet</servlet-name>
+    <servlet-class>com.moobao.index.console.NetComputerIndexServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>NetComputerIndexServlet</servlet-name>
+    <url-pattern>/NetComputerIndexServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description>the index control of Resource</description>
+    <servlet-name>ResourceIndexServlet</servlet-name>
+    <servlet-class>com.moobao.index.console.ResourceIndexServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ResourceIndexServlet</servlet-name>
+    <url-pattern>/ResourceIndexServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description>the index control of Entertainment</description>
+    <servlet-name>EntertainmentIndexServlet</servlet-name>
+    <servlet-class>com.moobao.index.console.EntertainmentIndexServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>EntertainmentIndexServlet</servlet-name>
+    <url-pattern>/EntertainmentIndexServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description>update one Doucment of index</description>
+    <servlet-name>UpdateOneDocument</servlet-name>
+    <servlet-class>com.moobao.index.console.UpdateOneDocument</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>UpdateOneDocument</servlet-name>
+    <url-pattern>/UpdateOneDocument</url-pattern>
+  </servlet-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
