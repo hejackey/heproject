@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src/main/java"/>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="lib" path="apache-solr-solrj-3.6.0.jar"/>
+	<classpathentry kind="lib" path="apache-solr-core-3.6.0.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="commons-io-2.1.jar"/>
+	<classpathentry kind="lib" path="geronimo-stax-api_1.0_spec-1.0.1.jar"/>
+	<classpathentry kind="lib" path="jcl-over-slf4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="wstx-asl-3.2.7.jar"/>
+	<classpathentry kind="lib" path="httpclient-4.2.jar"/>
+	<classpathentry kind="lib" path="httpcore-4.2.jar"/>
+	<classpathentry kind="lib" path="httpmime-4.2.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
