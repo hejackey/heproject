@@ -84,9 +84,8 @@ public class SolrClient {
         try {
             SolrServer server = new HttpSolrServer( url );
             
-            Map<String, String> compositorMap = new TreeMap<String, String>();  
             SolrQuery query = new SolrQuery();
-            query.setQuery( "name:doc2 AND id:id2" );
+            query.setQuery( "name:doc2 OR id:id2" );
             
             query.addSortField( "id", SolrQuery.ORDER.asc );
             
