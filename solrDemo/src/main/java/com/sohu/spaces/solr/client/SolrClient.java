@@ -85,8 +85,8 @@ public class SolrClient {
             SolrServer server = new HttpSolrServer( url );
             
             SolrQuery query = new SolrQuery();
-            query.setQuery( "name:doc2 OR id:id2" );
-            
+            query.setQuery( "name:doc2 AND id:id1" );
+           // query.setQuery( "name:doc2 OR id:id2" );
             query.addSortField( "id", SolrQuery.ORDER.asc );
             
             QueryResponse rsp = server.query( query );
