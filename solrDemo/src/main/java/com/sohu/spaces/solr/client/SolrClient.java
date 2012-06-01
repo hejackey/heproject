@@ -34,13 +34,13 @@ public class SolrClient {
      */
     public static void main(String[] args) {
         //String url = "http://10.11.132.63:8983/solr";
-        String url =  "http://localhost:8080/solr/core1";
+        String url =  "http://localhost:8080/solr";
         //addIndex(url);
         
         queryIndex(url);   
         //String emburl = "http://localhost:8080/solr/core0/";
-        //addIndex(emburl);//core0µƒschemal÷–Œﬁprice◊÷∂Œ£¨addfireld≤ªƒ‹º”price
-        addIndexByEmbedd(url);
+        //addIndex(emburl);//core0ÁöÑschemal‰∏≠Êó†priceÂ≠óÊÆµÔºåaddfireld‰∏çËÉΩÂä†price
+        //addIndexByEmbedd(url);
     }
     
     public static void addIndex(String url){
@@ -95,9 +95,9 @@ public class SolrClient {
             SolrServer server = new HttpSolrServer( url );
             
             SolrQuery query = new SolrQuery();
-            query.setQuery( "name:doc2 AND id:id1" );
+            query.setQuery( "c_name_exact:ÂàùÂ≠¶" );
            // query.setQuery( "name:doc2 OR id:id2" );
-            query.addSortField( "id", SolrQuery.ORDER.asc );
+          //  query.addSortField( "id", SolrQuery.ORDER.asc );
             
             QueryResponse rsp = server.query( query );
             SolrDocumentList docs = rsp.getResults();
@@ -109,10 +109,10 @@ public class SolrClient {
     
     public static void addIndexByEmbedd(String url){
         try {
-             System.setProperty("solr.solr.home", "D:\\solr_home");
+             System.setProperty("solr.solr.home", "D:\\solr");
             CoreContainer.Initializer initializer = new CoreContainer.Initializer();
             CoreContainer coreContainer = initializer.initialize();
-            EmbeddedSolrServer server = new EmbeddedSolrServer(coreContainer, "core1");
+            EmbeddedSolrServer server = new EmbeddedSolrServer(coreContainer, "collection1");
             
            /*File home = new File( "D:\\solr_home" );
             File f = new File( home, "solr.xml" );
@@ -128,12 +128,12 @@ public class SolrClient {
             
             SolrInputDocument doc2 = new SolrInputDocument();
             doc2.addField( "id", "id2", 1.0f );
-            doc2.addField( "name", "doc÷–π˙2 »À", 1.0f );
+            doc2.addField( "name", "doc‰∏≠ÂõΩ2 ‰∫∫", 1.0f );
            // doc2.addField( "price", 20 );
             
             SolrInputDocument doc3 = new SolrInputDocument();
             doc3.addField( "id", "id3", 1.0f );
-            doc3.addField( "name", "doc2÷–π˙»À", 1.0f );
+            doc3.addField( "name", "doc2‰∏≠ÂõΩ‰∫∫", 1.0f );
             //doc3.addField( "price", 20 );
        
        

@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Jun 01 13:58:19 CST 2012
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=solrDemo.jar
+manifest.mergeall=true
+manifest.mainclass=com.sohu.spaces.solr.client.TestSolrClient
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
