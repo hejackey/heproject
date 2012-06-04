@@ -101,7 +101,6 @@ public class VideoInfoIndexService {
     public void allVideoInfoIndex(){
         try {
             VideoInfoDaoImpl dao = VideoInfoDaoImpl.getInstantce();
-            //String date = DateUtil.formatDate2Str(new Date(), "yyyy-MM-dd");
             String date = ConstantUtil.ALL_INDEX_END_DATE;
             Date sdate =DateUtil.formatStr2Date(date, "yyyy-MM-dd");
             Date initDate = DateUtil.formatStr2Date(ConstantUtil.ALL_INDEX_START_DATE, "yyyy-MM-dd");
@@ -120,7 +119,6 @@ public class VideoInfoIndexService {
             int page = 0;
             //EmbeddedSolrServer server = SolrIndexClient.getEmbeddedSolrServer("D:\\solr", "collection1");
             EmbeddedSolrServer server = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_SOLR_CORE_NAME);
-            //String sorlServerUrl = "http://localhost:8080/solr";
             String sorlServerUrl = ConstantUtil.HTTP_SOLR_SERVER_URL;
             String strDate = null;
             
