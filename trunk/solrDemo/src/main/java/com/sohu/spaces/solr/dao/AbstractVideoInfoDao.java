@@ -83,7 +83,7 @@ public abstract class AbstractVideoInfoDao {
      * @throws SQLException
      */
     public VideoInfo getVideoInfoById(Long vid) throws SQLException{
-        String sql = getDynamicSql(vid,1,0,0);
+        String sql = getDynamicSql(vid,0,0,0);
         log.info("getVideoInfoById sql =====>"+sql);
         
         Object[] params={vid};
