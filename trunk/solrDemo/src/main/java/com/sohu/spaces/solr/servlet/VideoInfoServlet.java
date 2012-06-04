@@ -67,6 +67,10 @@ public class VideoInfoServlet extends HttpServlet {
             query.addSortField( "c_lastmodified", SolrQuery.ORDER.desc );
         }
         
+        //设置分页条件
+        query.setStart(qVideoInfo.getStart());
+        query.setRows(qVideoInfo.getLimit());
+        
         SolrServer server = SolrIndexClient.getHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
        
         QueryResponse rsp;
@@ -128,6 +132,20 @@ public class VideoInfoServlet extends HttpServlet {
             qVideoInfo.setcValid(VideoIndexUtil.getValidStatus(status));
         }
        
+        String start = request.getParameter("start");
+        if (!StringUtils.isNullOrEmpty(start)) {
+            qVideoInfo.setStart(Integer.valueOf(start));
+        } else {
+        	 qVideoInfo.setStart(0);
+        }
+        
+        String limit = request.getParameter("limit");
+        if (!StringUtils.isNullOrEmpty(limit)) {
+            qVideoInfo.setLimit(Integer.valueOf(limit));
+        } else {
+        	 qVideoInfo.setLimit(ConstantUtil.QUERY_PAGE_SIZE);
+        }
+        
         return qVideoInfo;
     }
 }
