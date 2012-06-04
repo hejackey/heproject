@@ -71,7 +71,7 @@ public class SolrIndexClient {
             return httpSolrServer;
         } else {
             httpSolrServer = new HttpSolrServer( url );
-            httpSolrServer.setSoTimeout(1000); 
+            httpSolrServer.setSoTimeout(3000); 
             httpSolrServer.setConnectionTimeout(100);
             httpSolrServer.setDefaultMaxConnectionsPerHost(100);
             httpSolrServer.setMaxTotalConnections(100);

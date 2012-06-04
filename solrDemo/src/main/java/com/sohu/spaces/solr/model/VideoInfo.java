@@ -2,6 +2,11 @@ package com.sohu.spaces.solr.model;
 
 import java.io.Serializable;
 
+/**
+ * 数据库查询返回封装类
+ * @author xiaolianghe
+ *
+ */
 public class VideoInfo implements Serializable {
 	private static final long serialVersionUID = 8865686285495110431L;
 
