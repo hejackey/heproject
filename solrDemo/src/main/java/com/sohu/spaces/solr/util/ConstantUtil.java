@@ -1,8 +1,6 @@
 package com.sohu.spaces.solr.util;
 
 public class ConstantUtil {
-    public static final int INDEX_PAGE_SIZE=2500;
-    
     public static final int C_VERSION_01 = 1;   //高清
     public static final int C_VERSION_02 = 2;   //普通流畅
     public static final int C_VERSION_03 = 3;   //手机移动版
@@ -46,4 +44,13 @@ public class ConstantUtil {
     
     public static final int VALID_STATUS_0 = 0;   //无效
     public static final int VALID_STATUS_1 = 1;   //有效
+    
+    public static final String SOLR_CONFIG = "solr_config.properties";
+    public static final String ALL_INDEX_START_DATE =PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "ALL_INDEX_START_DATE");
+    public static final String ALL_INDEX_END_DATE = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "ALL_INDEX_END_DATE");
+    public static final String EMBED_SOLR_HOME = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_SOLR_HOME");
+    public static final String EMBED_SOLR_CORE_NAME=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_SOLR_CORE_NAME");
+    public static final String HTTP_SOLR_SERVER_URL =PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL");
+    public static final int INDEX_PAGE_SIZE=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "INDEX_PAGE_SIZE"));
+    public static final int JVM_CREATE_INDEX = Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(ConstantUtil.SOLR_CONFIG, "JVM_CREATE_INDEX"));
 }

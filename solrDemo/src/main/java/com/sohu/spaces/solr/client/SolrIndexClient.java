@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.core.CoreContainer;
@@ -22,6 +23,8 @@ import org.xml.sax.SAXException;
  */
 public class SolrIndexClient {
     private static Logger log = LoggerFactory.getLogger(SolrIndexClient.class);
+    private static EmbeddedSolrServer embeddSolrServer;
+    private static HttpSolrServer httpSolrServer;
     
     /**
      * 获取EmbeddedSolrServer对象
@@ -29,27 +32,56 @@ public class SolrIndexClient {
      * @param coreName  solr.xml中配置的corename
      * @return EmbeddedSolrServer对象
      */
-    public static EmbeddedSolrServer getEmbeddedSolrServer(String solrHome,String coreName){
-        try {
-            log.info("solrhome====>"+solrHome+",coreName=====>"+coreName);
+    public static synchronized EmbeddedSolrServer getEmbeddedSolrServer(String solrHome,String coreName){
+        if (embeddSolrServer != null) {
+            return embeddSolrServer;
+        } else {
+            try {
+                log.info("solrhome====>"+solrHome+",coreName=====>"+coreName);
+                
+                System.setProperty("solr.solr.home", solrHome);
+                CoreContainer.Initializer initializer = new CoreContainer.Initializer();
+                CoreContainer coreContainer = initializer.initialize();
+                
+                embeddSolrServer = new EmbeddedSolrServer(coreContainer, coreName);
+                
+                return embeddSolrServer;
+            } catch (IOException e) {
+                e.printStackTrace();
+                log.error("getEmbeddedSolrServer error",e.getMessage());
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+                log.error("getEmbeddedSolrServer error",e.getMessage());
+            } catch (SAXException e) {
+                e.printStackTrace();
+                log.error("getEmbeddedSolrServer error",e.getMessage());
+            }
             
-            System.setProperty("solr.solr.home", solrHome);
-            CoreContainer.Initializer initializer = new CoreContainer.Initializer();
-            CoreContainer coreContainer = initializer.initialize();
-            
-           return new EmbeddedSolrServer(coreContainer, coreName);
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("getEmbeddedSolrServer error",e.getMessage());
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            log.error("getEmbeddedSolrServer error",e.getMessage());
-        } catch (SAXException e) {
-            e.printStackTrace();
-            log.error("getEmbeddedSolrServer error",e.getMessage());
+            return null;
         }
-        
-        return null;
+    }
+    
+    /**
+     * 获取httpsolrserver对象
+     * @param url   solrserver的url地址
+     * @return  httpsolrserver对象
+     */
+    public static HttpSolrServer getHttpSolrServer(String url){
+        if (httpSolrServer != null) {
+            return httpSolrServer;
+        } else {
+            httpSolrServer = new HttpSolrServer( url );
+            httpSolrServer.setSoTimeout(1000); 
+            httpSolrServer.setConnectionTimeout(100);
+            httpSolrServer.setDefaultMaxConnectionsPerHost(100);
+            httpSolrServer.setMaxTotalConnections(100);
+            httpSolrServer.setFollowRedirects(false);  
+            httpSolrServer.setAllowCompression(true);
+            httpSolrServer.setMaxRetries(1); 
+            httpSolrServer.setParser(new XMLResponseParser()); 
+            
+            return httpSolrServer;
+        }
     }
     
     /**
@@ -60,15 +92,17 @@ public class SolrIndexClient {
      * @return 提交结果
      */
     public static UpdateResponse embeddedIndexCommit(String solrServerUrl,Collection<SolrInputDocument> docs,
-            EmbeddedSolrServer server){
+            String solrHome,String coreName){
         try {
-            UpdateResponse res = server.add( docs );
+            getEmbeddedSolrServer(solrHome,coreName);
+            
+            UpdateResponse res = embeddSolrServer.add( docs );
             log.info( "add status" + res.getStatus() );
             log.info(  "add qtime " + res.getQTime() );
             if(res.getStatus() != 0 )
                 return null;
             
-            res = server.commit();
+            res = embeddSolrServer.commit();
             log.info(  "EmbeddedSolrServer commit status" + res.getStatus() );
             log.info( "EmbeddedSolrServer commit qtime " + res.getQTime() );
             if(res.getStatus() != 0 )
@@ -139,5 +173,38 @@ public class SolrIndexClient {
                 return null;
           
             return res;
+    }
+    
+    /**
+     *  http方式提交索引
+     * @param docs  doc集合
+     * @param url   httpsolrserver的URL地址
+     * @return  更新索引结果
+     */
+    public static UpdateResponse httpIndexCommit(Collection<SolrInputDocument> docs,String url){
+        try {
+            getHttpSolrServer(url);
+            UpdateResponse res = httpSolrServer.add( docs );
+            log.info( "httpSolrServer add status" + res.getStatus() );
+            log.info(  "httpSolrServer add qtime " + res.getQTime() );
+            if(res.getStatus() != 0 )
+                return null;
+            
+            res = httpSolrServer.commit();
+            log.info(  "httpSolrServer commit status" + res.getStatus() );
+            log.info( "httpSolrServer commit qtime " + res.getQTime() );
+            if(res.getStatus() != 0 )
+                return null;
+           
+            return res;
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+            log.error("httpSolrServer indexCommit error",e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("httpSolrServer indexCommit error",e.getMessage());
+        }
+        
+       return null;
     }
 }
