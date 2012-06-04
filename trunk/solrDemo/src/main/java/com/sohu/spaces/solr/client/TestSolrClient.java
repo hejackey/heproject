@@ -14,7 +14,7 @@ public class TestSolrClient {
         
         service.updateVideoIndex(66l);
         long time2 = System.currentTimeMillis();
-        System.out.println("update video info use time"+(time2-time1)/1000);
+        System.out.println("update video info use time=====>"+(time2-time1)/1000);
         
         System.exit(0);
     }
