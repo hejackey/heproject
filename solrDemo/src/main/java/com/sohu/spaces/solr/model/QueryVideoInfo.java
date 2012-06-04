@@ -21,6 +21,20 @@ public class QueryVideoInfo {
     private String cSource;                  //0、全部 1、ugc 2、vrs（查询范围）
     private String isPrecise;                 //是否精准（1、精准 其他非精准）
     
+    private Integer start;					//起始记录下标
+    public Integer getStart() {
+		return start;
+	}
+	public void setStart(Integer start) {
+		this.start = start;
+	}
+	public Integer getLimit() {
+		return limit;
+	}
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+	private Integer limit;					//分页记录数
     public String getKey() {
         return key;
     }
