@@ -1,7 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/sohu/spaces/solr/client/SolrClient.java=UTF-8
 encoding//src/main/java/com/sohu/spaces/solr/client/SolrIndexClient.java=UTF-8
-encoding//src/main/java/com/sohu/spaces/solr/client/TestDate.java=UTF-8
 encoding//src/main/java/com/sohu/spaces/solr/client/TestSolrClient.java=UTF-8
 encoding//src/main/java/com/sohu/spaces/solr/dao/VideoInfoDaoImpl.java=UTF-8
 encoding//src/main/java/com/sohu/spaces/solr/model/VideoInfo.java=UTF-8
