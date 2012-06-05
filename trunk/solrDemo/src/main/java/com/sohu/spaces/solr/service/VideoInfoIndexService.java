@@ -8,8 +8,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -32,6 +35,7 @@ public class VideoInfoIndexService {
     private static Logger log = LoggerFactory.getLogger(VideoInfoIndexService.class);
     private static VideoInfoIndexService instance = null;
     private VideoInfoDaoImpl dao;
+    private SolrServer solrServer = null;
     
     private VideoInfoIndexService(){
         
@@ -92,6 +96,35 @@ public class VideoInfoIndexService {
             log.error("updateVideoIndex exception:" + e.getMessage()+",vid=====>"+vid);
             
             return null;
+        }
+    }
+    
+    public void delVideoIndex(Long vid){
+        try {
+            
+            
+            if ( ConstantUtil.JVM_CREATE_INDEX == 1){
+                log.info("create index use jvm");
+                solrServer = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_SOLR_CORE_NAME);
+            } else {
+                log.info("create index use http");
+                solrServer = SolrIndexClient.getHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
+            }
+            
+            /*UpdateRequest req = new UpdateRequest();
+            req.setAction( UpdateRequest.ACTION.COMMIT, false, false );
+            req.deleteById("U"+vid);
+            UpdateResponse res = req.process( solrServer );*/
+            solrServer.deleteById("U"+vid);
+            solrServer.commit();
+             
+            solrServer = new HttpSolrServer( ConstantUtil.HTTP_SOLR_SERVER_URL );
+            UpdateResponse res = solrServer.commit();
+            System.out.println(res);
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     
