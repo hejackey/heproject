@@ -54,4 +54,12 @@ public class ConstantUtil {
     public static final int INDEX_PAGE_SIZE=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "INDEX_PAGE_SIZE"));
     public static final int JVM_CREATE_INDEX = Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(ConstantUtil.SOLR_CONFIG, "JVM_CREATE_INDEX"));
     public static final int QUERY_PAGE_SIZE=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "QUERY_PAGE_SIZE"));
+    
+    public static final int HTTP_CONNECTION_TIMEOUT=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_CONNECTION_TIMEOUT"));
+    public static final int HTTP_SOCKET_TIME_OUT=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOCKET_TIME_OUT"));
+    public static final int HTTP_MAX_CONNECTION_PER_ROUTER=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_MAX_CONNECTION_PER_ROUTER"));
+    public static final int HTTP_MAX_TOTAL_CONNECTIONS=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_MAX_TOTAL_CONNECTIONS"));
+    
+    public static final String HTTP_GET_USER_URL=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_GET_USER_URL");
+    public static final String HTTP_GET_USER_PORT=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_GET_USER_PORT");
 }

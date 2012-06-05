@@ -19,7 +19,8 @@ public class QueryVideoInfo {
     private Integer cValid;                    //有效状态
     private Integer uStatus;                 //ugc视频状态
     private String cSource;                  //0、全部 1、ugc 2、vrs（查询范围）
-    private String isPrecise;                 //是否精准（1、精准 其他非精准）
+    private String tag;                         //标签
+    private String title;                        //视频标题
     
     private Integer start;					//起始记录下标
     public Integer getStart() {
@@ -113,10 +114,17 @@ public class QueryVideoInfo {
     public void setcSource(String cSource) {
         this.cSource = cSource;
     }
-    public String getIsPrecise() {
-        return isPrecise;
+   
+    public String getTag() {
+        return tag;
     }
-    public void setIsPrecise(String isPrecise) {
-        this.isPrecise = isPrecise;
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
