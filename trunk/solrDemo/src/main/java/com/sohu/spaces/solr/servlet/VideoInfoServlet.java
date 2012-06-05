@@ -120,8 +120,6 @@ public class VideoInfoServlet extends HttpServlet {
             qVideoInfo.setcValid(Integer.valueOf(cValid));
         }
         
-        qVideoInfo.setcSource(request.getParameter("cSource"));
-        
         String cUploadStatus = request.getParameter("cUploadStatus");
         if (!StringUtils.isNullOrEmpty(cUploadStatus)) {
             qVideoInfo.setcUploadStatus(Integer.valueOf(cUploadStatus));
@@ -163,6 +161,7 @@ public class VideoInfoServlet extends HttpServlet {
         qVideoInfo.setCateCode(request.getParameter("cateCode"));
         qVideoInfo.setTag(request.getParameter("tag"));
         qVideoInfo.setTitle(request.getParameter("title"));
+        qVideoInfo.setcSource(request.getParameter("cSource"));
         
         return qVideoInfo;
     }
@@ -254,6 +253,10 @@ public class VideoInfoServlet extends HttpServlet {
                     httpGet.abort();
             }
         }
+        
+        if (!StringUtils.isNullOrEmpty(qVideoInfo.getcSource()) ){
+            query.setQuery("c_source:"+qVideoInfo.getcSource());
+        } 
         
         if ("1".equals(qVideoInfo.getSort())) {
             query.addSortField( "c_uploadtime", SolrQuery.ORDER.desc );
