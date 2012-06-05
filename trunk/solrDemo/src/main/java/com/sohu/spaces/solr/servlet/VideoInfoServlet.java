@@ -224,12 +224,37 @@ public class VideoInfoServlet extends HttpServlet {
             query.setQuery( "c_valid:"+qVideoInfo.getcValid() );
         }
         
-        if (!StringUtils.isNullOrEmpty(qVideoInfo.getUploadUserName())) {
+        Long userId = getUserId(qVideoInfo.getUploadUserName());
+        if (userId != null) {
+            query.setQuery("c_upload_userid:"+userId);    
+        }
+        
+        if (!StringUtils.isNullOrEmpty(qVideoInfo.getcSource()) ){
+            query.setQuery("c_source:"+qVideoInfo.getcSource());
+        } 
+        
+        if ("1".equals(qVideoInfo.getSort())) {
+            query.addSortField( "c_uploadtime", SolrQuery.ORDER.desc );
+        } else if ("2".equals(qVideoInfo.getSort())) {
+            query.addSortField( "c_lastmodified", SolrQuery.ORDER.desc );
+        }
+        
+       
+        
+        //设置分页条件
+        query.setStart(qVideoInfo.getStart());
+        query.setRows(qVideoInfo.getLimit());
+        
+        return query;
+    }
+    
+    private Long getUserId(String userName){
+        if (!StringUtils.isNullOrEmpty(userName)) {
             HttpGet httpGet = null;
             try {
                 String url=ConstantUtil.HTTP_GET_USER_URL;
                 Map<String,String> paramMap = new HashMap<String,String>();
-                paramMap.put("passport",qVideoInfo.getUploadUserName());
+                paramMap.put("passport",userName);
                 httpGet = HttpClientUtil.getHttpGet(url, paramMap, HTTP.UTF_8);
                 
                 HttpClient httpClient = HttpConnectionManager.getHttpClient();
@@ -241,7 +266,7 @@ public class VideoInfoServlet extends HttpServlet {
                     if (!StringUtils.isNullOrEmpty(res)) {
                         JSONObject object = JSONObject.fromObject(JSONObject.fromObject(res).get("data"));
                         if ( 1 == object.getInt("status") ){
-                            query.setQuery("c_upload_userid:"+object.get("id"));
+                            return Long.valueOf(object.get("id").toString());
                         }
                     }
                 }
@@ -263,22 +288,6 @@ public class VideoInfoServlet extends HttpServlet {
             }
         }
         
-        if (!StringUtils.isNullOrEmpty(qVideoInfo.getcSource()) ){
-            query.setQuery("c_source:"+qVideoInfo.getcSource());
-        } 
-        
-        if ("1".equals(qVideoInfo.getSort())) {
-            query.addSortField( "c_uploadtime", SolrQuery.ORDER.desc );
-        } else if ("2".equals(qVideoInfo.getSort())) {
-            query.addSortField( "c_lastmodified", SolrQuery.ORDER.desc );
-        }
-        
-       
-        
-        //设置分页条件
-        query.setStart(qVideoInfo.getStart());
-        query.setRows(qVideoInfo.getLimit());
-        
-        return query;
+        return null;
     }
 }
