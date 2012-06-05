@@ -1,10 +1,8 @@
 package com.sohu.spaces.solr.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
