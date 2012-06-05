@@ -3,6 +3,7 @@ package com.sohu.spaces.solr.servlet;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.SolrParams;
+import org.apache.solr.servlet.SolrRequestParsers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,15 +60,21 @@ public class VideoInfoServlet extends HttpServlet {
     public void doGet(HttpServletRequest request,HttpServletResponse response){
         
         try {
-            QueryVideoInfo qVideoInfo = new QueryVideoInfo();
+            //自定义封装请求参数
+            /*QueryVideoInfo qVideoInfo = new QueryVideoInfo();
             qVideoInfo = putDataToQueryVideoInfo(request,qVideoInfo);
             
             SolrQuery query = new SolrQuery();
-            query = setQueryCond(query,qVideoInfo);
+            query = setQueryCond(query,qVideoInfo);*/
+            
+            //仿solrj客户端请求，原生把请求参数传到solr
+            String queryStr = URLDecoder.decode(request.getQueryString(),"gbk");
+            System.out.println(queryStr);
+            SolrParams solrParams = SolrRequestParsers.parseQueryString(queryStr);
             
             SolrServer server = SolrIndexClient.getHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
-            QueryResponse rsp = server.query( query );
-            
+            QueryResponse rsp = server.query( solrParams);//query );
+
             if (rsp != null) {
                 SolrDocumentList docs = rsp.getResults();
                 
