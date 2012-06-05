@@ -45,6 +45,9 @@ public class ConstantUtil {
     public static final int VALID_STATUS_0 = 0;   //无效
     public static final int VALID_STATUS_1 = 1;   //有效
     
+    public static final String C_SOURCE_UGC = "UGC";   //索引来源ugc
+    public static final String C_SOURCE_VRS = "VRS";     //索引来源vrs
+    
     public static final String SOLR_CONFIG = "solr_config.properties";
     public static final String ALL_INDEX_START_DATE =PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "ALL_INDEX_START_DATE");
     public static final String ALL_INDEX_END_DATE = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "ALL_INDEX_END_DATE");
