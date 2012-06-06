@@ -53,7 +53,7 @@ public class ConstantUtil {
     public static final String ALL_INDEX_END_DATE = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "ALL_INDEX_END_DATE");
     public static final String EMBED_SOLR_HOME = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_SOLR_HOME");
     public static final String EMBED_SOLR_CORE_NAME=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_SOLR_CORE_NAME");
-    public static final String HTTP_SOLR_SERVER_URL =PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL");
+    public static final String HTTP_SOLR_SERVER_URL =PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_UGC");
     public static final int INDEX_PAGE_SIZE=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "INDEX_PAGE_SIZE"));
     public static final int JVM_CREATE_INDEX = Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(ConstantUtil.SOLR_CONFIG, "JVM_CREATE_INDEX"));
     public static final int QUERY_PAGE_SIZE=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "QUERY_PAGE_SIZE"));
@@ -65,4 +65,14 @@ public class ConstantUtil {
     
     public static final String HTTP_GET_USER_URL=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_GET_USER_URL");
     public static final String HTTP_GET_USER_PORT=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_GET_USER_PORT");
+    
+    public static final String HTTP_SOLR_SERVER_URL_VRS =PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_VRS");
+    public static final String HTTP_SOLR_SERVER_SHARDING_PARAM =PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_SHARDING_PARAM");
+    
+    public static final int RESP_STATUS_0=0;    //请求参数错误
+    public static final int RESP_STATUS_1=1;    //请求处理正常
+    public static final int RESP_STATUS_2=2;    //服务异常
+    
+    public static final String CALL_METHOD_COUNT="count";
+    public static final String CALL_METHOD_LIST="list";
 }

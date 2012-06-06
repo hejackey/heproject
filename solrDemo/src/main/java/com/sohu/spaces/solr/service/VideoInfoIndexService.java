@@ -108,7 +108,7 @@ public class VideoInfoIndexService {
                 solrServer = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_SOLR_CORE_NAME);
             } else {
                 log.info("create index use http");
-                solrServer = SolrIndexClient.getHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
+                solrServer = SolrIndexClient.getUgcHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
             }
             
             /*UpdateRequest req = new UpdateRequest();

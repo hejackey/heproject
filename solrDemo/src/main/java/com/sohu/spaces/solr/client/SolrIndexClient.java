@@ -24,7 +24,9 @@ import org.xml.sax.SAXException;
 public class SolrIndexClient {
     private static Logger log = LoggerFactory.getLogger(SolrIndexClient.class);
     private static EmbeddedSolrServer embeddSolrServer;
-    private static HttpSolrServer httpSolrServer;
+    private static HttpSolrServer ugcHttpSolrServer;
+    private static HttpSolrServer vrsHttpSolrServer;
+    private static HttpSolrServer shardHttpSolrServer;
     
     /**
      * 获取EmbeddedSolrServer对象
@@ -66,21 +68,67 @@ public class SolrIndexClient {
      * @param url   solrserver的url地址
      * @return  httpsolrserver对象
      */
-    public static HttpSolrServer getHttpSolrServer(String url){
-        if (httpSolrServer != null) {
-            return httpSolrServer;
+    public static HttpSolrServer getShardHttpSolrServer(String url){
+        if (shardHttpSolrServer != null) {
+            return shardHttpSolrServer;
         } else {
-            httpSolrServer = new HttpSolrServer( url );
-            httpSolrServer.setSoTimeout(3000); 
-            httpSolrServer.setConnectionTimeout(100);
-            httpSolrServer.setDefaultMaxConnectionsPerHost(100);
-            httpSolrServer.setMaxTotalConnections(100);
-            httpSolrServer.setFollowRedirects(false);  
-            httpSolrServer.setAllowCompression(true);
-            httpSolrServer.setMaxRetries(1); 
-            httpSolrServer.setParser(new XMLResponseParser()); 
+            shardHttpSolrServer = new HttpSolrServer( url );
+            shardHttpSolrServer.setSoTimeout(3000); 
+            shardHttpSolrServer.setConnectionTimeout(100);
+            shardHttpSolrServer.setDefaultMaxConnectionsPerHost(100);
+            shardHttpSolrServer.setMaxTotalConnections(100);
+            shardHttpSolrServer.setFollowRedirects(false);  
+            shardHttpSolrServer.setAllowCompression(true);
+            shardHttpSolrServer.setMaxRetries(1); 
+            shardHttpSolrServer.setParser(new XMLResponseParser()); 
             
-            return httpSolrServer;
+            return shardHttpSolrServer;
+        }
+    }
+    
+    /**
+     * 获取ugc httpsolrserver对象
+     * @param url   solrserver的url地址
+     * @return  httpsolrserver对象
+     */
+    public static HttpSolrServer getUgcHttpSolrServer(String url){
+        if (ugcHttpSolrServer != null) {
+            return ugcHttpSolrServer;
+        } else {
+            ugcHttpSolrServer = new HttpSolrServer( url );
+            ugcHttpSolrServer.setSoTimeout(3000); 
+            ugcHttpSolrServer.setConnectionTimeout(100);
+            ugcHttpSolrServer.setDefaultMaxConnectionsPerHost(100);
+            ugcHttpSolrServer.setMaxTotalConnections(100);
+            ugcHttpSolrServer.setFollowRedirects(false);  
+            ugcHttpSolrServer.setAllowCompression(true);
+            ugcHttpSolrServer.setMaxRetries(1); 
+            ugcHttpSolrServer.setParser(new XMLResponseParser()); 
+            
+            return ugcHttpSolrServer;
+        }
+    }
+    
+    /**
+     * 获取vrs httpsolrserver对象
+     * @param url   solrserver的url地址
+     * @return  httpsolrserver对象
+     */
+    public static HttpSolrServer getVrSHttpSolrServer(String url){
+        if (vrsHttpSolrServer != null) {
+            return vrsHttpSolrServer;
+        } else {
+            vrsHttpSolrServer = new HttpSolrServer( url );
+            vrsHttpSolrServer.setSoTimeout(3000); 
+            vrsHttpSolrServer.setConnectionTimeout(100);
+            vrsHttpSolrServer.setDefaultMaxConnectionsPerHost(100);
+            vrsHttpSolrServer.setMaxTotalConnections(100);
+            vrsHttpSolrServer.setFollowRedirects(false);  
+            vrsHttpSolrServer.setAllowCompression(true);
+            vrsHttpSolrServer.setMaxRetries(1); 
+            vrsHttpSolrServer.setParser(new XMLResponseParser()); 
+            
+            return vrsHttpSolrServer;
         }
     }
     
@@ -183,14 +231,14 @@ public class SolrIndexClient {
      */
     public static UpdateResponse httpIndexCommit(Collection<SolrInputDocument> docs,String url){
         try {
-            getHttpSolrServer(url);
-            UpdateResponse res = httpSolrServer.add( docs );
+            getUgcHttpSolrServer(url);
+            UpdateResponse res = ugcHttpSolrServer.add( docs );
             log.info( "httpSolrServer add status" + res.getStatus() );
             log.info(  "httpSolrServer add qtime " + res.getQTime() );
             if(res.getStatus() != 0 )
                 return null;
             
-            res = httpSolrServer.commit();
+            res = ugcHttpSolrServer.commit();
             log.info(  "httpSolrServer commit status" + res.getStatus() );
             log.info( "httpSolrServer commit qtime " + res.getQTime() );
             if(res.getStatus() != 0 )
