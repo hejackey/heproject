@@ -72,7 +72,7 @@ public class VideoInfoServlet extends HttpServlet {
             System.out.println(queryStr);
             SolrParams solrParams = SolrRequestParsers.parseQueryString(queryStr);
             
-            SolrServer server = SolrIndexClient.getHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
+            SolrServer server = SolrIndexClient.getUgcHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
             QueryResponse rsp = server.query( solrParams);//query );
 
             if (rsp != null) {

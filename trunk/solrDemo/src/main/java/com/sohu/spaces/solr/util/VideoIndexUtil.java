@@ -1,11 +1,28 @@
 package com.sohu.spaces.solr.util;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.apache.solr.common.SolrInputDocument;
 
+import net.sf.json.JSONObject;
+
+import com.mysql.jdbc.StringUtils;
+
 import com.sohu.spaces.solr.model.VideoInfo;
+
+
 
 /**
  * 视频建索引工具类
@@ -275,5 +292,50 @@ public class VideoIndexUtil {
         }
         
         return page;
+    }
+    
+    /**
+     * 根据登录email取userid
+     * @param userName  登录email
+     * @return  userid
+     */
+    public static Long getUserId(String userName){
+        if (!StringUtils.isNullOrEmpty(userName)) {
+            HttpGet httpGet = null;
+            try {
+                String url=ConstantUtil.HTTP_GET_USER_URL;
+                Map<String,String> paramMap = new HashMap<String,String>();
+                paramMap.put("passport",userName);
+                httpGet = HttpClientUtil.getHttpGet(url, paramMap, HTTP.UTF_8);
+                
+                HttpClient httpClient = HttpConnectionManager.getHttpClient();
+                HttpResponse httpResponse = httpClient.execute(httpGet);
+                
+                if (httpResponse != null && httpResponse.getStatusLine().getStatusCode()==200) {
+                    String res = EntityUtils.toString(httpResponse.getEntity());
+                        
+                    if (!StringUtils.isNullOrEmpty(res)) {
+                        JSONObject object = JSONObject.fromObject(JSONObject.fromObject(res).get("data"));
+                        if ( 1 == object.getInt("status") ){
+                            return Long.valueOf(object.get("id").toString());
+                        }
+                    }
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            finally{
+                if(httpGet != null)
+                    httpGet.abort();
+            }
+        }
+        
+        return null;
     }
 }
