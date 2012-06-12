@@ -34,13 +34,13 @@ public class SolrClient {
      */
     public static void main(String[] args) {
         //String url = "http://10.11.132.63:8983/solr";
-        String url =  "http://localhost:8080/solr";
+        String url =  "http://localhost:8983/solr";
         //addIndex(url);
         
-        queryIndex(url);   
+        //queryIndex(url);   
         //String emburl = "http://localhost:8080/solr/core0/";
         //addIndex(emburl);//core0的schemal中无price字段，addfireld不能加price
-        //addIndexByEmbedd(url);
+        addIndexByEmbedd(url);
     }
     
     public static void addIndex(String url){
