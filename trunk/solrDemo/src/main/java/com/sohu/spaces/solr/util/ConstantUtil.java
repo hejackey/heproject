@@ -75,4 +75,31 @@ public class ConstantUtil {
     
     public static final String CALL_METHOD_COUNT="count";
     public static final String CALL_METHOD_LIST="list";
+    
+    public static final String EMBED_MULTI_SOLR_HOME = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_HOME");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_01=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_01");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_02=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_02");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_03=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_03");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_04=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_04");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_05=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_05");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_06=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_06");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_07=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_07");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_08=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_08");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_09=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_09");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_10=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_10");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_11=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_11");
+    public static final String EMBED_MULTI_SOLR_CORE_NAME_12=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_MULTI_SOLR_CORE_NAME_12");
+    
+    public static final String HTTP_SOLR_SERVER_URL_CORE01=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE01");
+    public static final String HTTP_SOLR_SERVER_URL_CORE02=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE02");
+    public static final String HTTP_SOLR_SERVER_URL_CORE03=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE03");
+    public static final String HTTP_SOLR_SERVER_URL_CORE04=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE04");
+    public static final String HTTP_SOLR_SERVER_URL_CORE05=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE05");
+    public static final String HTTP_SOLR_SERVER_URL_CORE06=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE06");
+    public static final String HTTP_SOLR_SERVER_URL_CORE07=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE07");
+    public static final String HTTP_SOLR_SERVER_URL_CORE08=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE08");
+    public static final String HTTP_SOLR_SERVER_URL_CORE09=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE09");
+    public static final String HTTP_SOLR_SERVER_URL_CORE10=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE10");
+    public static final String HTTP_SOLR_SERVER_URL_CORE11=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE11");
+    public static final String HTTP_SOLR_SERVER_URL_CORE12=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE12");
 }

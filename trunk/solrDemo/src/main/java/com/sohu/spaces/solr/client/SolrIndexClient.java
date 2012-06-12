@@ -34,33 +34,27 @@ public class SolrIndexClient {
      * @param coreName  solr.xml中配置的corename
      * @return EmbeddedSolrServer对象
      */
-    public static synchronized EmbeddedSolrServer getEmbeddedSolrServer(String solrHome,String coreName){
-        if (embeddSolrServer != null) {
-            return embeddSolrServer;
-        } else {
-            try {
-                log.info("solrhome====>"+solrHome+",coreName=====>"+coreName);
+    public static  EmbeddedSolrServer getEmbeddedSolrServer(String solrHome,String coreName){
+        try {
+            log.info("solrhome====>"+solrHome+",coreName=====>"+coreName);
                 
-                System.setProperty("solr.solr.home", solrHome);
-                CoreContainer.Initializer initializer = new CoreContainer.Initializer();
-                CoreContainer coreContainer = initializer.initialize();
+            System.setProperty("solr.solr.home", solrHome);
+            CoreContainer.Initializer initializer = new CoreContainer.Initializer();
+            CoreContainer coreContainer = initializer.initialize();
                 
-                embeddSolrServer = new EmbeddedSolrServer(coreContainer, coreName);
-                
-                return embeddSolrServer;
-            } catch (IOException e) {
-                e.printStackTrace();
-                log.error("getEmbeddedSolrServer error",e.getMessage());
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-                log.error("getEmbeddedSolrServer error",e.getMessage());
-            } catch (SAXException e) {
-                e.printStackTrace();
-                log.error("getEmbeddedSolrServer error",e.getMessage());
-            }
-            
-            return null;
+            return new EmbeddedSolrServer(coreContainer, coreName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("getEmbeddedSolrServer error",e.getMessage());
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            log.error("getEmbeddedSolrServer error",e.getMessage());
+        } catch (SAXException e) {
+            e.printStackTrace();
+            log.error("getEmbeddedSolrServer error",e.getMessage());
         }
+        
+        return null;
     }
     
     /**
