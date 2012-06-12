@@ -61,7 +61,7 @@ public class VideoInfoIndexService {
     private static String serverUrl12 = ConstantUtil.HTTP_SOLR_SERVER_URL_CORE12;
     
     private static VideoInfoIndexService instance = null;
-    private VideoInfoDaoImpl dao;
+    private static VideoInfoDaoImpl dao = VideoInfoDaoImpl.getInstantce(); ;
     private SolrServer solrServer = null;
     
     private VideoInfoIndexService(){
@@ -138,10 +138,6 @@ public class VideoInfoIndexService {
                 solrServer = SolrIndexClient.getUgcHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
             }
             
-            /*UpdateRequest req = new UpdateRequest();
-            req.setAction( UpdateRequest.ACTION.COMMIT, false, false );
-            req.deleteById("U"+vid);
-            UpdateResponse res = req.process( solrServer );*/
             solrServer.deleteById("U"+vid);
             solrServer.commit();
              
@@ -281,10 +277,88 @@ public class VideoInfoIndexService {
     }
     
     private EmbeddedSolrServer getCoreSolrServerByMonth(int month){
-        return map.get(month+1);
+        return map.get(month);
     }
     
     private String getCoreSolrServerUrlByMonth(int month){
-        return urlMap.get(month+1);
+        return urlMap.get(month);
+    }
+    
+    /**
+     * 根据id返回全量索引
+     */
+    public void allVideoInfoIndexById(){
+        long time0 = 0;
+        long time1 = 0;
+        long time2 = 0;
+        long time3 = 0;
+        long time4 = 0;
+        long time5 = 0;
+        int count = 0;
+        int hjcount = 0;
+        EmbeddedSolrServer server = null;
+        String sorlServerUrl = null;
+        
+        time0 = System.currentTimeMillis();
+        try {
+            hjcount = dao.countVideoInfo();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            System.out.print(e1.getMessage());
+            
+            return;
+        }
+        
+        for(int i=1;i<=map.size();i++){
+            server = getCoreSolrServerByMonth(i);
+            sorlServerUrl = getCoreSolrServerUrlByMonth(i);
+            
+            int start=(i-1)*ConstantUtil.INDEX_PAGE_COUNT+1;
+            if (start>hjcount) {
+                break;
+            }
+            
+            for(int j=start ; j<=i*ConstantUtil.INDEX_PAGE_COUNT ; j++){
+                try {
+                    time1 = System.currentTimeMillis();
+                    List<VideoInfo> videoInfoList = dao.getVideoInfoByIdRange(j, ConstantUtil.INDEX_PAGE_SIZE);
+                    if (videoInfoList != null && videoInfoList.size()>0){
+                        time2= System.currentTimeMillis();
+                        
+                        System.out.println("i==>"+i+",j==>"+j+"get date size==>"+videoInfoList.size()+",use times=====>"+(time2-time1)/1000);
+                       
+                        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+                        docs = VideoIndexUtil.putDataToDoc(videoInfoList,docs);
+                       
+                        time3 = System.currentTimeMillis();
+                        SolrIndexClient.singleIndexAdd(sorlServerUrl, docs, server);
+                        SolrIndexClient.singleIndexCommit(sorlServerUrl, docs, server);
+                        
+                        time4 = System.currentTimeMillis();
+                        
+                        System.out.println("i==>"+i+",j==>"+j+"====>add docs size=====>"+docs.size()+",use times=====>"+(time4-time3)/1000);
+                        
+                        count +=docs.size();
+                    } else {
+                        System.out.println("i==>"+i+",j==>"+j+",videoInfoList is null");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.out.println("getVideoInfoByIdRange exception "+e.getMessage());
+                    break;
+                } catch (SolrServerException e) {
+                    e.printStackTrace();
+                    System.out.println("getVideoInfoByIdRange exception "+e.getMessage());
+                    break;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("getVideoInfoByIdRange exception "+e.getMessage());
+                    break;
+                }
+            }
+        }
+        
+        time5 = System.currentTimeMillis();
+        System.out.println("all doc size ===>"+count+",use times===>"+(time5-time0)/1000);
     }
 }

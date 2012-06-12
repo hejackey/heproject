@@ -77,4 +77,32 @@ public class VideoInfoDaoImpl extends AbstractVideoInfoDao {
        
         return sb.toString();
     }
+    
+    public String getDynamicSqlByIdRange(int page,int pageSize){
+        StringBuffer sb = new StringBuffer();
+       
+        sb.append("select id,title,tag,categoriesid as categoriesId,introduction,status,videolength as videoLength,videosize as videoSize," +
+                "uploadtime as uploadTime,uploadip as uploadIp,cuscoverurl as cusCoverURL,cutcoverurl as cutCoverURL,userid as userId," +
+                "lastmodified as lastModified,videotype as videoType,uploadfrom as uploadFrom,plevel,ver_type as verType,play_limit as playLimit," +
+                "cate_code as cateCode from videoinfo  ");
+        sb.append(" where id>=");
+        sb.append((page-1)*pageSize);
+        sb.append(" and id<=");
+        sb.append(page*pageSize);
+        sb.append("  order by id desc");
+            
+        return sb.toString();
+    }
+    
+    /**
+     * 拼装视频表总记录数sql
+     * @return
+     */
+    public String getCountVideoSql(){
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append("select count(1) from videoinfo  ");
+        
+        return sb.toString();
+    }
 }

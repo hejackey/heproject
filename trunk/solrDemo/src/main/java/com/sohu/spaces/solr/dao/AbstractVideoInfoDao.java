@@ -94,6 +94,49 @@ public abstract class AbstractVideoInfoDao {
     }
     
     /**
+     * 根据id范围获取视频信息
+     * @param start
+     * @param limit
+     * @return
+     * @throws SQLException
+     */
+    public List<VideoInfo> getVideoInfoByIdRange(int start,int limit) throws SQLException{
+        String sql = getDynamicSqlByIdRange(start,limit);
+        log.info("getVideoInfoByIdRange sql =====>"+sql);
+        
+        QueryRunner runner = new QueryRunner(dataSource);
+        
+        return runner.query(sql, getBeanListHandler());
+    }
+    
+    /**
+     * 查询符合条件的记录总数
+    * @param sdate 起始日期
+     * @param edate 截止日期
+     * @return  记录总数
+     * @throws SQLException
+     */
+    public int countVideoInfo() throws SQLException{
+        String sql = getCountVideoSql();
+        log.info("countVideoInfo sql =====>"+sql);
+        
+        Object[] params={};
+        
+        QueryRunner runner = new QueryRunner(dataSource);
+        Integer count = runner.query(sql, new ResultSetHandler<Integer>(){
+            public Integer handle(final ResultSet rs) throws SQLException {
+                log.info("query size=====>"+rs.getFetchSize());
+                if(rs.next()){
+                    return rs.getInt(1); 
+                }
+                return 0;
+            }
+        },params);
+        
+        return count;
+    }
+    
+    /**
      * 查询列表结果封装list
      * @return
      */
@@ -114,4 +157,19 @@ public abstract class AbstractVideoInfoDao {
      * @return  拼接后的sql语句
      */
     public abstract String getDynamicSql(Long vid,int flag,int page,int pageSize);
+    
+    /**
+     * 根据id范围拼接sql
+     * @param start 页码
+     * @param limit 每页大小
+     * @return
+     * @throws SQLException
+     */
+    public abstract String getDynamicSqlByIdRange(int page,int pageSize); 
+    
+    /**
+     * 拼装视频表总记录数sql
+     * @return
+     */
+    public abstract String getCountVideoSql();
 }

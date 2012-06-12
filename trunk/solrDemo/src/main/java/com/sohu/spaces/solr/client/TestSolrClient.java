@@ -9,7 +9,7 @@ import com.sohu.spaces.solr.service.VideoInfoIndexService;
 public class TestSolrClient {
     public static void main(String[] args) throws DateParseException, ParseException {
         VideoInfoIndexService service = VideoInfoIndexService.getInstantce();
-        service.allVideoInfoIndex();
+        service.allVideoInfoIndexById();//.allVideoInfoIndex();
         /* long time1 = System.currentTimeMillis();
         
         service.updateVideoIndex(66l);

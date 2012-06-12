@@ -55,6 +55,7 @@ public class ConstantUtil {
     public static final String EMBED_SOLR_CORE_NAME=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "EMBED_SOLR_CORE_NAME");
     public static final String HTTP_SOLR_SERVER_URL =PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_UGC");
     public static final int INDEX_PAGE_SIZE=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "INDEX_PAGE_SIZE"));
+    public static final int INDEX_PAGE_COUNT=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "INDEX_PAGE_COUNT"));
     public static final int JVM_CREATE_INDEX = Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(ConstantUtil.SOLR_CONFIG, "JVM_CREATE_INDEX"));
     public static final int QUERY_PAGE_SIZE=Integer.valueOf(PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "QUERY_PAGE_SIZE"));
     
