@@ -314,6 +314,7 @@ public class VideoInfoIndexService {
             sorlServerUrl = getCoreSolrServerUrlByMonth(i);
             
             int start=(i-1)*ConstantUtil.INDEX_PAGE_COUNT+1;
+            System.out.println("start===>"+start+",hjcount===>"+hjcount);
             if (start>hjcount) {
                 break;
             }
