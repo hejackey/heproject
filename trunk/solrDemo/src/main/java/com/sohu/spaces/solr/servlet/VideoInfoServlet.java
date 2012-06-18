@@ -1,6 +1,7 @@
 package com.sohu.spaces.solr.servlet;
 
 import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
@@ -17,6 +18,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -24,8 +26,6 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.servlet.SolrRequestParsers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -51,7 +51,8 @@ public class VideoInfoServlet extends HttpServlet {
      * 
      */
     private static final long serialVersionUID = -6631086997410377006L;
-    private static Logger log = LoggerFactory.getLogger(VideoInfoServlet.class);
+    //private static Logger log = LoggerFactory.getLogger(VideoInfoServlet.class);
+    private static Logger log = Logger.getLogger(VideoInfoServlet.class);
     
     public void doPost(HttpServletRequest request,HttpServletResponse response){
         doGet(request,response);
@@ -70,6 +71,7 @@ public class VideoInfoServlet extends HttpServlet {
             //仿solrj客户端请求，原生把请求参数传到solr
             String queryStr = URLDecoder.decode(request.getQueryString(),"gbk");
             System.out.println(queryStr);
+            log.info("queryStr====>"+queryStr);
             SolrParams solrParams = SolrRequestParsers.parseQueryString(queryStr);
             
             SolrServer server = SolrIndexClient.getUgcHttpSolrServer(ConstantUtil.HTTP_SOLR_SERVER_URL);
