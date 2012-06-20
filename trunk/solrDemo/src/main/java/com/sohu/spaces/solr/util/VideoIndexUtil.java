@@ -41,7 +41,7 @@ public class VideoIndexUtil {
             SolrInputDocument doc = new SolrInputDocument();
             doc.addField("c_name", videoInfo.getTitle());
             doc.addField("c_vid", videoInfo.getId());
-            doc.addField("c_name_exact", videoInfo.getTitle());
+            doc.addField("c_name_exact", videoInfo.getTitle().trim());
             doc.addField("c_ver_vid", "U"+videoInfo.getId());
             doc.addField("c_duration", videoInfo.getVideoLength());
             doc.addField("c_version", getIndexVerType(videoInfo.getVerType()));
@@ -60,7 +60,7 @@ public class VideoIndexUtil {
             doc.addField("c_valid", getValidStatus(videoInfo.getStatus()));
             
             doc.addField("u_tag", videoInfo.getTag());
-            doc.addField("u_tag_exact", videoInfo.getTag());
+            doc.addField("u_tag_exact", videoInfo.getTag().trim());
             doc.addField("u_introduction", videoInfo.getIntroduction());
             doc.addField("u_size", videoInfo.getVideoSize());
             doc.addField("u_uploadip", videoInfo.getUploadIp());
