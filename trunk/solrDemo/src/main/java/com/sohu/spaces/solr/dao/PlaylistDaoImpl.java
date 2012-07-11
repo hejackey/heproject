@@ -44,4 +44,22 @@ public class PlaylistDaoImpl extends AbstractPlayListDao {
        
         return sb.toString();
     }
+    
+    public String getDynamicSqlCreatetimeNull(Long id, int flag, int page, int pageSize) {
+        StringBuffer sb = new StringBuffer();
+        if(flag == 0)
+            sb.append("select id,userid as userId,title,coverurl as coverUrl,status,tag,description,createtime as createTime,lastmodified as lastModified," +
+                    "videocount as videoCount,cate_code as cateCode,createfrom as createFrom,create_ip as createIp from playlist  where createtime=? ");
+        else 
+            sb.append("select count(1) from playlist where createtime=? ");
+      
+        if(flag == 0){
+            sb.append(" limit ");
+            sb.append((page-1)*pageSize);
+            sb.append(",");
+            sb.append(pageSize);
+        }
+       
+        return sb.toString();
+    }
 }
