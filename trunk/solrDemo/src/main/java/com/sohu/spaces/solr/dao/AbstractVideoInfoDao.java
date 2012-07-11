@@ -1,14 +1,13 @@
 package com.sohu.spaces.solr.dao;
 
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +20,7 @@ import com.sohu.spaces.solr.model.VideoInfo;
  * @author xiaolianghe
  *
  */
-public abstract class AbstractVideoInfoDao {
+public abstract class AbstractVideoInfoDao extends BaseDao{
     private static Logger log = LoggerFactory.getLogger(AbstractVideoInfoDao.class);
     private static ComboPooledDataSource dataSource = DataSourceFactory.getDataSouce();
     
@@ -63,6 +62,7 @@ public abstract class AbstractVideoInfoDao {
      * @return  视频集合
      * @throws SQLException
      */
+    @SuppressWarnings("unchecked")
     public List<VideoInfo> getVideoInfo(Date sdate,Date edate,int start,int limit) throws SQLException{
         Long lsdate = sdate.getTime();
         Long ledate = edate.getTime();
@@ -73,7 +73,7 @@ public abstract class AbstractVideoInfoDao {
         
         QueryRunner runner = new QueryRunner(dataSource);
         
-        return runner.query(sql, getBeanListHandler(), params);
+        return (List<VideoInfo>) runner.query(sql, getBeanListHandler(), params);
     }
     
     /**
@@ -90,7 +90,7 @@ public abstract class AbstractVideoInfoDao {
         
         QueryRunner runner = new QueryRunner(dataSource);
         
-        return runner.query(sql, getBeanObjectHandler(), params);
+        return (VideoInfo) runner.query(sql, getBeanObjectHandler(), params);
     }
     
     /**
@@ -100,13 +100,14 @@ public abstract class AbstractVideoInfoDao {
      * @return
      * @throws SQLException
      */
+    @SuppressWarnings("unchecked")
     public List<VideoInfo> getVideoInfoByIdRange(int start,int limit) throws SQLException{
         String sql = getDynamicSqlByIdRange(start,limit);
         log.info("getVideoInfoByIdRange sql =====>"+sql);
         
         QueryRunner runner = new QueryRunner(dataSource);
         
-        return runner.query(sql, getBeanListHandler());
+        return (List<VideoInfo>) runner.query(sql, getBeanListHandler());
     }
     
     /**
@@ -136,27 +137,6 @@ public abstract class AbstractVideoInfoDao {
         return count;
     }
     
-    /**
-     * 查询列表结果封装list
-     * @return
-     */
-    protected abstract BeanListHandler<VideoInfo> getBeanListHandler();
-    
-    /**
-     * 查询对象结果封装object
-     * @return
-     */
-    protected abstract BeanHandler<VideoInfo> getBeanObjectHandler();
-    
-    /**
-     * 封装查询视频sql语句
-     * @param vid 视频id
-     * @param flag  0、集合查询 1、统计查询 
-     * @param page  起始记录
-     * @param pageSize  每页记录总数
-     * @return  拼接后的sql语句
-     */
-    public abstract String getDynamicSql(Long vid,int flag,int page,int pageSize);
     
     /**
      * 根据id范围拼接sql
