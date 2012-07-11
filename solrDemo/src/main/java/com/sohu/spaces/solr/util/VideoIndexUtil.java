@@ -20,6 +20,7 @@ import net.sf.json.JSONObject;
 
 import com.mysql.jdbc.StringUtils;
 
+import com.sohu.spaces.solr.model.Playlist;
 import com.sohu.spaces.solr.model.VideoInfo;
 
 
@@ -36,7 +37,7 @@ public class VideoIndexUtil {
      * @param docs doclist
      * @return  doclist
      */
-    public static Collection<SolrInputDocument> putDataToDoc(List<VideoInfo> videoInfoList,Collection<SolrInputDocument> docs){
+    public static Collection<SolrInputDocument> putVideoInfoToDoc(List<VideoInfo> videoInfoList,Collection<SolrInputDocument> docs){
         for (VideoInfo videoInfo : videoInfoList) {
             SolrInputDocument doc = new SolrInputDocument();
             doc.addField("c_name", videoInfo.getTitle());
@@ -337,5 +338,43 @@ public class VideoIndexUtil {
         }
         
         return null;
+    }
+    
+    /**
+     * 把list数据封装到doc list中
+     * @param playlistList 提取的数据
+     * @param docs doclist
+     * @return  doclist
+     */
+    public static Collection<SolrInputDocument> putPlaylistToDoc(List<Playlist> playlistList,Collection<SolrInputDocument> docs){
+        for (Playlist playlist : playlistList) {
+            SolrInputDocument doc = new SolrInputDocument();
+            doc.addField("c_name", playlist.getTitle());
+            doc.addField("c_vid", playlist.getId());
+            doc.addField("c_name_exact", StringUtils.isNullOrEmpty(playlist.getTitle())?"":playlist.getTitle().trim());
+            doc.addField("c_ver_vid", "U"+playlist.getId());
+            doc.addField("c_userid", playlist.getUserId());
+            doc.addField("c_cover_url", playlist.getCoverUrl());
+            doc.addField("c_status", playlist.getStatus());
+            doc.addField("c_tag", playlist.getTag());
+            doc.addField("c_tag_exact", StringUtils.isNullOrEmpty(playlist.getTag())?"":playlist.getTag().trim());
+            doc.addField("c_description",playlist.getDescription());
+            doc.addField("c_lastmodified", playlist.getLastModified());
+            doc.addField("c_createtime", playlist.getCreateTime());
+            doc.addField("c_video_count", playlist.getVideoCount());
+            doc.addField("c_cate_code", playlist.getCateCode());
+            doc.addField("c_create_from", playlist.getCreateFrom());
+            doc.addField("c_create_ip", playlist.getCreateIp());
+            doc.addField("c_channel", "ugc");
+            doc.addField("c_ver_type",0);
+            doc.addField("c_is_pay", 0);
+            
+            doc.addField("c_expired_time", "");
+            doc.addField("c_intrest", 0);
+            
+            docs.add(doc);
+        }
+        
+        return docs;
     }
 }

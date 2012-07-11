@@ -104,7 +104,7 @@ public class VideoInfoIndexService {
             videoInfoList.add(videoInfo);
             
             Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-            docs = VideoIndexUtil.putDataToDoc(videoInfoList,docs); 
+            docs = VideoIndexUtil.putVideoInfoToDoc(videoInfoList,docs); 
             
             if ( ConstantUtil.JVM_CREATE_INDEX == 1){
                 log.info("create index use jvm");
@@ -203,7 +203,7 @@ public class VideoInfoIndexService {
                         System.out.println(strDate+","+i+"====>get date use times=====>"+(time3-time2)/1000);
                        
                         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-                        docs = VideoIndexUtil.putDataToDoc(videoInfoList,docs);
+                        docs = VideoIndexUtil.putVideoInfoToDoc(videoInfoList,docs);
                         
                        
                         time4 = System.currentTimeMillis();
@@ -329,7 +329,7 @@ public class VideoInfoIndexService {
                         System.out.println("i==>"+i+",j==>"+j+"get date size==>"+videoInfoList.size()+",use times=====>"+(time2-time1)/1000);
                        
                         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-                        docs = VideoIndexUtil.putDataToDoc(videoInfoList,docs);
+                        docs = VideoIndexUtil.putVideoInfoToDoc(videoInfoList,docs);
                        
                         time3 = System.currentTimeMillis();
                         SolrIndexClient.singleIndexAdd(sorlServerUrl, docs, server);

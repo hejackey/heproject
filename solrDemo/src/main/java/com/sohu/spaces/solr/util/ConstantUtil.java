@@ -103,4 +103,12 @@ public class ConstantUtil {
     public static final String HTTP_SOLR_SERVER_URL_CORE10=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE10");
     public static final String HTTP_SOLR_SERVER_URL_CORE11=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE11");
     public static final String HTTP_SOLR_SERVER_URL_CORE12=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "HTTP_SOLR_SERVER_URL_CORE12");
+    
+    //专辑全量索引开始截止时间
+    public static final String PL_ALL_INDEX_END_DATE = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "PL_ALL_INDEX_END_DATE");
+    public static final String PL_ALL_INDEX_START_DATE = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "PL_ALL_INDEX_START_DATE");
+    
+    public static final String PL_EMBED_SOLR_HOME = PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "PL_EMBED_SOLR_HOME");
+    public static final String PL_EMBED_SOLR_CORE_NAME=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "PL_EMBED_SOLR_CORE_NAME");
+    public static final String PL__SOLR_SERVER_URL=PropertiesUtil.getValueFromPropertyByKey(SOLR_CONFIG, "PL__SOLR_SERVER_URL");
 }
