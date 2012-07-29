@@ -30,7 +30,7 @@ public class GenCode {
 	private static final String GC_PASS=PropertiesUtil.getValueFromPropertyByKey(PROPERTIES_NAME, "GC_PASS");
 	private static final String GC_TABLE_NAME=PropertiesUtil.getValueFromPropertyByKey(PROPERTIES_NAME, "GC_TABLE_NAME");
 	private static final String GC_PACK_NAME=PropertiesUtil.getValueFromPropertyByKey(PROPERTIES_NAME, "GC_PACK_NAME");
-	
+	private static final String GC_PRI_KEY=PropertiesUtil.getValueFromPropertyByKey(PROPERTIES_NAME, "GC_PRI_KEY");
 	private static final String ENTER_SPACES="\r\n";
 	private static Connection con;
 	
@@ -79,20 +79,22 @@ public class GenCode {
 		return rs.getMetaData();
 	}
 
-	public static void genCodeModel() throws SQLException, IOException{
-		GenCode gc = new GenCode();
+	private static GenCode gc = new GenCode();
+	public static void genCode() throws SQLException, IOException{
+		gc.genCodeModel();
+		gc.genCodeService();
+	}
+	
+	/**
+	 * 生成model文件
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	private void genCodeModel() throws SQLException, IOException{
 		gc.initDb();
 		
 		ResultSetMetaData rsmd = gc.getTableMetaData();
 		int columnCount = rsmd.getColumnCount();
-		
-		List<String> ccNameList = new ArrayList<String>();
-		List<String> cNameList = new ArrayList<String>();
-		Map<String,String> map = new HashMap<String,String>();
-		
-		String fieldInfo = gc.gcFieldInfo(columnCount,rsmd,map,cNameList,ccNameList);
-		Set<String> set = map.keySet();
-		Iterator<String> it = set.iterator();
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append("package ").append(GC_PACK_NAME).append(".")
@@ -105,6 +107,14 @@ public class GenCode {
 		sb.append("import javax.persistence.Id;").append(ENTER_SPACES);
 		sb.append("import javax.persistence.Table;").append(ENTER_SPACES);
 		
+		List<String> ccNameList = new ArrayList<String>();
+		List<String> cNameList = new ArrayList<String>();
+		Map<String,String> map = new HashMap<String,String>();
+
+		String fieldInfo = gc.gcFieldInfo(columnCount,rsmd,map,cNameList,ccNameList);
+		Set<String> set = map.keySet();
+		Iterator<String> it = set.iterator();
+		
 		while(it.hasNext()){
 			String pk = it.next();
 			sb.append("import ").append(map.get(pk)).append(";").append(ENTER_SPACES);
@@ -113,7 +123,7 @@ public class GenCode {
 		sb.append(ENTER_SPACES).append("@Entity");
 		sb.append(ENTER_SPACES).append("@Table(name=\"").append(GC_TABLE_NAME).append("\")")
 			.append(ENTER_SPACES);
-		sb.append("public class ").append(gc.getClassName("recom_video"))
+		sb.append("public class ").append(gc.getClassName(GC_TABLE_NAME))
 			.append(" implements Serializable {").append(ENTER_SPACES);
 		
 		sb.append(fieldInfo);
@@ -141,12 +151,64 @@ public class GenCode {
 		bos.close();
 	}
 	
+	private void genCodeService() throws IOException{
+		StringBuffer sb = new StringBuffer();
+		sb.append("package ").append(GC_PACK_NAME).append(".")
+			.append("service;").append(ENTER_SPACES).append(ENTER_SPACES);
+		sb.append("import org.osoa.sca.annotations.Remotable").append(ENTER_SPACES);
+		sb.append("import com.sohu.blog.exception.ServiceDaoException;").append(ENTER_SPACES);
+		sb.append("import com.sohu.blog.exception.ServiceException;").append(ENTER_SPACES);
+		
+		sb.append("import ").append(GC_PACK_NAME).append(".model.")
+			.append(gc.getClassName(GC_TABLE_NAME)).append(";")
+			.append(ENTER_SPACES).append(ENTER_SPACES);
+		
+		sb.append("@Remotable").append(ENTER_SPACES);
+		
+		sb.append("public interface ").append(gc.getClassName(GC_TABLE_NAME))
+			.append("Service {").append(ENTER_SPACES);
+		
+		sb.append("    public ").append(gc.getClassName(GC_TABLE_NAME)).append(" ")
+			.append("get").append(gc.getClassName(GC_TABLE_NAME))
+			.append("(Long id)throws ServiceDaoException, ServiceException;")
+			.append(ENTER_SPACES).append(ENTER_SPACES);
+		
+		sb.append("    public ").append(gc.getClassName(GC_TABLE_NAME)).append(" ")
+			.append("save").append(gc.getClassName(GC_TABLE_NAME))
+			.append("(").append(gc.getClassName(GC_TABLE_NAME))
+			.append(" model)throws ServiceDaoException, ServiceException;")
+			.append(ENTER_SPACES).append(ENTER_SPACES);
+		
+		sb.append("    public ").append("boolean ")
+			.append("update").append(gc.getClassName(GC_TABLE_NAME))
+			.append("(").append(gc.getClassName(GC_TABLE_NAME))
+			.append(" model)throws ServiceDaoException, ServiceException;")
+			.append(ENTER_SPACES).append(ENTER_SPACES);
+		
+		sb.append("}");
+		
+		String projectPath = System.getProperty("user.dir");
+		String pkName = (GC_PACK_NAME+".service").replace(".", "\\");
+		String srcPath = projectPath+MAVEN_SRC_PATH+pkName;
+		
+		File file = new File(srcPath);
+		if(!file.exists()){
+			file.mkdirs();
+		}
+		
+		File javaFile = new File(srcPath+"\\"+gc.getClassName(GC_TABLE_NAME)+"Service.java");
+		FileOutputStream out = new FileOutputStream(javaFile);  
+		BufferedOutputStream bos = new BufferedOutputStream(out);
+		bos.write(sb.toString().getBytes());
+		
+		bos.close();
+	}
 	/**
 	 * 类或field名每个词第一个字母大写
 	 * @param tableName
 	 * @return
 	 */
-	public String getClassName(String tableName) {
+	private String getClassName(String tableName) {
 		
 		if(tableName == null || tableName =="") {
 			return "";
@@ -168,7 +230,7 @@ public class GenCode {
 	 * @param fieldName
 	 * @return
 	 */
-	public String getFieldName(String fieldName) {
+	private String getFieldName(String fieldName) {
 		
 		if(fieldName == null || fieldName =="") {
 			return "";
@@ -195,10 +257,10 @@ public class GenCode {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public String gcGetSetMethod(ResultSetMetaData rsmd,List<String> cNameList,List<String> ccNameList) throws SQLException{
+	private String gcGetSetMethod(ResultSetMetaData rsmd,List<String> cNameList,List<String> ccNameList) throws SQLException{
 		StringBuffer sb = new StringBuffer();
 		for(int j=0; j<cNameList.size(); j++) {
-			if(cNameList.get(j).equals("id")){
+			if(cNameList.get(j).equals(GC_PRI_KEY)){
 				sb.append("    @Id").append(ENTER_SPACES)
 					.append("    @GeneratedValue(strategy = GenerationType.AUTO)").append(ENTER_SPACES)
 					.append("    @Column(name=\"").append(rsmd.getColumnName(j+1)).append("\")")
@@ -235,7 +297,7 @@ public class GenCode {
 	 * @return
 	 * @throws SQLException
 	 */
-	public String gcFieldInfo(int columnCount,ResultSetMetaData rsmd,
+	private String gcFieldInfo(int columnCount,ResultSetMetaData rsmd,
 			Map<String,String> map,List<String> cNameList,List<String> ccNameList) throws SQLException{
 		StringBuffer sb = new StringBuffer();
 		

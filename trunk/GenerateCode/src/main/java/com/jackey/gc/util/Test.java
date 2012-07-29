@@ -11,7 +11,7 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		try {
-			GenCode.genCodeModel();
+			GenCode.genCode();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
