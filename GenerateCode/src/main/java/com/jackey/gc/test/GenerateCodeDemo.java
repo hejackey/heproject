@@ -1,5 +1,10 @@
 package com.jackey.gc.test;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,6 +25,7 @@ public class GenerateCodeDemo implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 8126679126868064229L;
+	private static final String ENTER_SPACES="\r\n";
 	private static Connection con;
 	
 	public static void initDb(String ip,int port,String dbName,
@@ -38,20 +44,22 @@ public class GenerateCodeDemo implements Serializable{
 		
 	}
 
+	private static final String MAVEN_SRC_PATH="\\src\\main\\java\\";
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
 			StringBuffer sb = new StringBuffer();
-			sb.append("package com.jackey.gc.model;").append("\r\n").append("\r\n");
-			sb.append("import java.io.Serializable;").append("\r\n");
-			sb.append("import javax.persistence.Column;").append("\r\n");
-			sb.append("import javax.persistence.Entity;").append("\r\n");
-			sb.append("import javax.persistence.GeneratedValue;").append("\r\n");
-			sb.append("import javax.persistence.GenerationType;").append("\r\n");
-			sb.append("import javax.persistence.Id;").append("\r\n");
-			sb.append("import javax.persistence.Table;").append("\r\n");
+			sb.append("package com.jackey.gc.model;").append(ENTER_SPACES).append(ENTER_SPACES);
+			sb.append("import java.io.Serializable;").append(ENTER_SPACES);
+			sb.append("import javax.persistence.Column;").append(ENTER_SPACES);
+			sb.append("import javax.persistence.Entity;").append(ENTER_SPACES);
+			sb.append("import javax.persistence.GeneratedValue;").append(ENTER_SPACES);
+			sb.append("import javax.persistence.GenerationType;").append(ENTER_SPACES);
+			sb.append("import javax.persistence.Id;").append(ENTER_SPACES);
+			sb.append("import javax.persistence.Table;").append(ENTER_SPACES);
 			
 			initDb("10.10.77.43",3306,"spaces_activity","umsManager","daYfs5F");
 
@@ -73,31 +81,51 @@ public class GenerateCodeDemo implements Serializable{
 				Iterator<String> it = set.iterator();
 				while(it.hasNext()){
 					String pk = it.next();
-					sb.append("import ").append(map.get(pk)).append(";").append("\r\n");
+					sb.append("import ").append(map.get(pk)).append(";").append(ENTER_SPACES);
 				}
 				
-				sb.append("\r\n").append("@Entity");
-				sb.append("\r\n").append("@Table(name=\"").append(tableName).append("\")")
-					.append("\r\n");
+				sb.append(ENTER_SPACES).append("@Entity");
+				sb.append(ENTER_SPACES).append("@Table(name=\"").append(tableName).append("\")")
+					.append(ENTER_SPACES);
 				sb.append("public class ").append(getClassName("recom_video"))
-					.append(" implements Serializable {").append("\r\n");
+					.append(" implements Serializable {").append(ENTER_SPACES);
 				
 				sb.append(fieldInfo);
 				
-				sb.append("\r\n");
+				sb.append(ENTER_SPACES);
 				sb.append(gcGetSetMethod(rsmd,cNameList,ccNameList));
 			}
 			
 			sb.append("}");
-			System.out.println(sb.toString());
+			
+
+			String projectPath = System.getProperty("user.dir");
+			String pkName = "com.jackey.gc.user.model".replace(".", "\\");
+			String srcPath = projectPath+MAVEN_SRC_PATH+pkName;
+			
+			File file = new File(srcPath);
+			if(!file.exists()){
+				file.mkdirs();
+			}
+			
+			File javaFile = new File(srcPath+"\\"+getClassName("recom_video")+".java");
+			FileOutputStream out = new FileOutputStream(javaFile);  
+			BufferedOutputStream bos = new BufferedOutputStream(out);
+			bos.write(sb.toString().getBytes());
+			
+			bos.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
 
 	/**
-	 * Àà»òfieldÃûÃ¿¸ö´ÊµÚÒ»¸ö×ÖÄ¸´óĞ´
+	 * ç±»æˆ–fieldåæ¯ä¸ªè¯ç¬¬ä¸€ä¸ªå­—æ¯å¤§å†™
 	 * @param tableName
 	 * @return
 	 */
@@ -119,7 +147,7 @@ public class GenerateCodeDemo implements Serializable{
 	}
 	
 	/**
-	 * ³ıµÚÒ»¸ö´ÊÊ××ÖÄ¸²»´óĞ´£¬ÆäËû´Ê×ÖÄ¸¶¼´óĞ´
+	 * é™¤ç¬¬ä¸€ä¸ªè¯é¦–å­—æ¯ä¸å¤§å†™ï¼Œå…¶ä»–è¯å­—æ¯éƒ½å¤§å†™
 	 * @param fieldName
 	 * @return
 	 */
@@ -144,7 +172,7 @@ public class GenerateCodeDemo implements Serializable{
 	}
 	
 	/**
-	 * Éú³ÉÀàµÄget¡¢set·½·¨
+	 * ç”Ÿæˆç±»çš„getã€setæ–¹æ³•
 	 * @param cNameList
 	 * @param ccNameList
 	 * @return
@@ -154,34 +182,34 @@ public class GenerateCodeDemo implements Serializable{
 		StringBuffer sb = new StringBuffer();
 		for(int j=0; j<cNameList.size(); j++) {
 			if(cNameList.get(j).equals("id")){
-				sb.append("    @Id").append("\r\n")
-					.append("    @GeneratedValue(strategy = GenerationType.AUTO)").append("\r\n")
+				sb.append("    @Id").append(ENTER_SPACES)
+					.append("    @GeneratedValue(strategy = GenerationType.AUTO)").append(ENTER_SPACES)
 					.append("    @Column(name=\"").append(rsmd.getColumnName(j+1)).append("\")")
-					.append("\r\n");
+					.append(ENTER_SPACES);
 			} else {
 				sb.append("    @Column(name=\"").append(rsmd.getColumnName(j+1)).append("\")")
-					.append("\r\n");
+					.append(ENTER_SPACES);
 			}
 			
 			sb.append("    public ").append(ccNameList.get(j))
 				.append(" get").append(getClassName(cNameList.get(j)))
-				.append("() {").append("\r\n")
+				.append("() {").append(ENTER_SPACES)
 				.append("        return ").append(cNameList.get(j)).append(";")
-				.append("\r\n").append("    }").append("\r\n").append("\r\n");
+				.append(ENTER_SPACES).append("    }").append(ENTER_SPACES).append(ENTER_SPACES);
 			
 			sb.append("    public void set").append(getClassName(cNameList.get(j)))
 				.append("(").append(ccNameList.get(j)).append(" ")
-				.append(cNameList.get(j)).append(") {").append("\r\n")
+				.append(cNameList.get(j)).append(") {").append(ENTER_SPACES)
 				.append("        this.").append(cNameList.get(j))
 				.append(" = ").append(cNameList.get(j)).append(";")
-				.append("\r\n").append("    }").append("\r\n").append("\r\n");
+				.append(ENTER_SPACES).append("    }").append(ENTER_SPACES).append(ENTER_SPACES);
 		}
 		
 		return sb.toString();
 	}
 	
 	/**
-	 * Éú³ÉfieldĞÅÏ¢
+	 * ç”Ÿæˆfieldä¿¡æ¯
 	 * @param columnCount
 	 * @param rsmd
 	 * @param map
@@ -205,7 +233,7 @@ public class GenerateCodeDemo implements Serializable{
 			sb.append("    ").append("private ")
 				.append(ccName.substring(ccName.lastIndexOf(".")+1))
 				.append(" ").append(cName).append(";")
-				.append("\r\n");
+				.append(ENTER_SPACES);
 			
 			cNameList.add(cName);
 			ccNameList.add(ccName.substring(ccName.lastIndexOf(".")+1));
