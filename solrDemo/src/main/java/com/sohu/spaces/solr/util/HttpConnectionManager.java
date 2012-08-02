@@ -60,9 +60,11 @@ public class HttpConnectionManager {
     }  
 
     public static void main(String[] args){
-    	HttpClient client = getHttpClient();
+    	/*HttpClient client = getHttpClient();
     	HttpParams params = client.getParams();
     	HttpConnectionParams.setConnectionTimeout(params, CONNECT_TIMEOUT);
-    	HttpConnectionParams.setSoTimeout(params, READ_TIMEOUT);
+    	HttpConnectionParams.setSoTimeout(params, READ_TIMEOUT);*/
+    	System.out.println(28424282/5000000);
+    	System.out.println(28424282%5000000);
     }
 }
