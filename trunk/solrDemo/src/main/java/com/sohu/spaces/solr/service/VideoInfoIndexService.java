@@ -34,18 +34,19 @@ import com.sohu.spaces.solr.util.VideoIndexUtil;
  */
 public class VideoInfoIndexService {
     private static Logger log = LoggerFactory.getLogger(VideoInfoIndexService.class);
-    private static EmbeddedSolrServer server01 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_01);
-    private static EmbeddedSolrServer server02 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_02);
-    private static EmbeddedSolrServer server03 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_03);
-    private static EmbeddedSolrServer server04 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_04);
-    private static EmbeddedSolrServer server05 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_05);
+    private static EmbeddedSolrServer server01 =  null;//SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_01);
+    private static EmbeddedSolrServer server02 =  null;//SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_02);
+    private static EmbeddedSolrServer server03 =  null;//SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_03);
+    private static EmbeddedSolrServer server04 =  null;//SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_04);
+    private static EmbeddedSolrServer server05 =  null;//SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_05);
+    
     private static EmbeddedSolrServer server06 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_06);
     private static EmbeddedSolrServer server07 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_07);
     private static EmbeddedSolrServer server08 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_08);
     private static EmbeddedSolrServer server09 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_09);
-    private static EmbeddedSolrServer server10 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_10);
-    private static EmbeddedSolrServer server11 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_11);
-    private static EmbeddedSolrServer server12 = SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_12);
+    private static EmbeddedSolrServer server10 = null;//SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_10);
+    private static EmbeddedSolrServer server11 =  null;//SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_11);
+    private static EmbeddedSolrServer server12 =  null;//SolrIndexClient.getEmbeddedSolrServer(ConstantUtil.EMBED_SOLR_HOME, ConstantUtil.EMBED_MULTI_SOLR_CORE_NAME_12);
     
     private static String serverUrl01 = ConstantUtil.HTTP_SOLR_SERVER_URL_CORE01;
     private static String serverUrl02 = ConstantUtil.HTTP_SOLR_SERVER_URL_CORE02;
@@ -203,18 +204,36 @@ public class VideoInfoIndexService {
                         System.out.println(strDate+","+i+"====>get date use times=====>"+(time3-time2)/1000);
                        
                         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+                       /* List<VideoInfo> list = new ArrayList<VideoInfo>();
+                        for (VideoInfo vinfo : videoInfoList){
+                        	
+                        	list.add(vinfo);
+                        	docs = VideoIndexUtil.putVideoInfoToDoc(list,docs);
+                        	
+                        	int a = Integer.valueOf(String.valueOf((vinfo.getId()/5000000)));
+                        	int b = Integer.valueOf(String.valueOf((vinfo.getId()%5000000)));
+                        	if(b>0)
+                        		a=a+1;
+                        	
+                        	
+                        }*/
                         docs = VideoIndexUtil.putVideoInfoToDoc(videoInfoList,docs);
-                        
-                       
+                        server = getCoreSolrServerByMonth(6);
+                        sorlServerUrl = getCoreSolrServerUrlByMonth(6);
+                    	
+                        //System.out.println("server====>"+server);
+                        //System.out.println("sorlServerUrl====>"+sorlServerUrl);
+                        SolrIndexClient.singleIndexAdd(sorlServerUrl, docs, server);
+                        SolrIndexClient.singleIndexCommit(sorlServerUrl, docs, server);
                         time4 = System.currentTimeMillis();
-                        
+                        /*
                         server = getCoreSolrServerByMonth(sdate.getMonth());
                         sorlServerUrl = getCoreSolrServerUrlByMonth(sdate.getMonth());
                         
                         SolrIndexClient.singleIndexAdd(sorlServerUrl, docs, server);
                         SolrIndexClient.singleIndexCommit(sorlServerUrl, docs, server);
                         
-                        time5 = System.currentTimeMillis();
+                        time5 = System.currentTimeMillis();*/
                         
                         System.out.println(strDate+","+i+"====>add docs size=====>"+docs.size()+",use times=====>"+(time5-time4)/1000);
                     }

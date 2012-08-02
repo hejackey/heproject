@@ -78,6 +78,44 @@ public class VideoInfoDaoImpl extends AbstractVideoInfoDao {
         return sb.toString();
     }
     
+    /**
+     * 封装查询视频sql语句
+     * @param starDate	开始日期
+     * @param endDate	截止日期
+     * @param vid 视频id
+     * @param flag  0、集合查询 1、统计查询 
+     * @param page  起始记录
+     * @param pageSize  每页记录总数
+     * @return  拼接后的sql语句
+     */
+    public String getDynamicSqlByDate(Long starDate,Long endDate,Long vid,int flag,int page,int pageSize){
+        StringBuffer sb = new StringBuffer();
+        if(flag == 0)
+            sb.append("select id,title,tag,categoriesid as categoriesId,introduction,status,videolength as videoLength,videosize as videoSize," +
+                    "uploadtime as uploadTime,uploadip as uploadIp,cuscoverurl as cusCoverURL,cutcoverurl as cutCoverURL,userid as userId," +
+                    "lastmodified as lastModified,videotype as videoType,uploadfrom as uploadFrom,plevel,ver_type as verType,play_limit as playLimit," +
+                    "cate_code as cateCode from videoinfo  where 1=1 ");
+        else 
+            sb.append("select count(1) from videoinfo where 1=1 ");
+      
+        if (vid != null) {//有id条件时只查询id，否则按最后修改日期范围查询
+            sb.append(" and id = ?");
+        } else {
+            sb.append(" and lastmodified >=? ");
+            sb.append(" and lastmodified <= ?");
+            sb.append("  order by lastmodified desc");
+            
+            if(flag == 0){
+                sb.append(" limit ");
+                sb.append((page-1)*pageSize);
+                sb.append(",");
+                sb.append(pageSize);
+            }
+        }
+       
+        return sb.toString();
+    }
+    
     public String getDynamicSqlByIdRange(int page,int pageSize){
         StringBuffer sb = new StringBuffer();
        

@@ -34,7 +34,7 @@ public abstract class AbstractVideoInfoDao extends BaseDao{
     public int countVideoInfo(Date sdate,Date edate) throws SQLException{
         Long lsdate = sdate.getTime();
         Long ledate = edate.getTime();
-        String sql = getDynamicSql(null,1,0,0);
+        String sql = getDynamicSqlByDate(lsdate,ledate,null,1,0,0);//getDynamicSql(null,1,0,0);
         log.info("countVideoInfo sql =====>"+sql);
         
         Object[] params={lsdate,ledate};
@@ -66,7 +66,7 @@ public abstract class AbstractVideoInfoDao extends BaseDao{
     public List<VideoInfo> getVideoInfo(Date sdate,Date edate,int start,int limit) throws SQLException{
         Long lsdate = sdate.getTime();
         Long ledate = edate.getTime();
-        String sql = getDynamicSql(null,0,start,limit);
+        String sql = getDynamicSqlByDate(lsdate,ledate,null,0,start,limit);//getDynamicSql(null,0,start,limit);
         log.info("getVideoInfo sql =====>"+sql);
         
         Object[] params={lsdate,ledate};
@@ -152,4 +152,16 @@ public abstract class AbstractVideoInfoDao extends BaseDao{
      * @return
      */
     public abstract String getCountVideoSql();
+    
+    /**
+     * 根据日期查询记录
+     * @param starDate	开始日期
+     * @param endDate	截止日期
+     * @param vid	视频id
+     * @param flag	
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public abstract String getDynamicSqlByDate(Long starDate,Long endDate,Long vid,int flag,int page,int pageSize);
 }
