@@ -24,27 +24,21 @@
 
   <mongo:mongo host="activity.mgdb.tv.sohu.com" port="27017" />
 
-
-  <bean id="employService" class="com.jackey.spring.mong.service.EmployeeServiceImpl">
-  	<property name="mongoOperation" ref="mongoOperation"/>
+  <bean id="usercredentical" class="org.springframework.data.authentication.UserCredentials">
+  	<constructor-arg name="username" value="fcdp"/>
+  	<constructor-arg name="password" value="fcdp2012"/>
   </bean>
   
-  <bean id="mongoOperation" class="org.springframework.data.mongodb.core.MongoTemplate">
-
+  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
       <constructor-arg ref="mongo" />
-
       <constructor-arg name="databaseName" value="fcdp_vote" />
-
-      <constructor-arg name="defaultCollectionName" value="drama_vote" />
-
+   	  <constructor-arg name="userCredentials" ref="usercredentical"/>
   </bean>
-
-
-
-  <!-- To translate any MongoExceptions thrown in @Repository annotated classes -->
-
+  
+  <bean id="employService" class="com.jackey.spring.mong.service.EmployeeServiceImpl">
+  	<property name="mongoTemplate" ref="mongoTemplate"/>
+  </bean>
+  
   <context:annotation-config />
-
-
 
 </beans>
